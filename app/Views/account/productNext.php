@@ -175,8 +175,8 @@
                         <button class="btn btn-primary  payment-btn" @click="paycheckout('cash')">
                             <i class="fas fa-bitcoin " style="vertical-align: middle;"></i> Pay With Crypto
                         </button>
-                        <button class="btn btn-warning  payment-btn" @click="paycheckout('paypal')">
-                            <i class="fas fa-bitcoin " style="vertical-align: middle;"></i> Pay With PayPal
+                        <button class="btn btn-warning  payment-btn" @click="paycheckout('paypal')" v-html="btnoneValue" :disabled="btnState">
+
                         </button>
                         <!-- <div ref="paypal"></div> -->
                     </div>
@@ -259,44 +259,6 @@
                 var newpriceme = newPrice;
                 $("#hidden").show();
                 $("#hid").hide();
-                // let paymentApi = paypal.Buttons({
-                //     // Sets up the transaction when a payment button is clicked
-                //     createOrder: (data, actions) => {
-                //         return actions.order.create({
-                //             purchase_units: [{
-                //                 amount: {
-                //                     value: '' + newpriceme // Can also reference a variable or function
-                //                 }
-                //             }]
-                //         });
-                //     },
-                //     // Finalize the transaction after payer approval
-                //     onApprove: (data, actions) => {
-                //         return actions.order.capture().then(function(orderData) {
-                //             // Successful
-                //             const transaction = orderData.purchase_units[0].payments.captures[0];
-                //             fm = new FormData();
-                //             fm.append("ProductPrice", newPrice);
-                //             if (transaction.status == "COMPLETED") {
-                //                 axios.post("<?= getenv("soapBaseUrl"); ?>" + "api/v1/add/new/orders", {
-                //                     "shopName": "TheEmperor",
-                //                     "productId": "pda9-rd8f-o1e9-d185-u5c6-cc2a-t6dc",
-                //                     "Quantity": "2",
-                //                     "productName": "food",
-                //                     "unitPrice": "200",
-                //                     "ProductPrice": "" +
-                //                         newpriceme,
-                //                     "orderFrom": "" + email,
-                //                     "paymentGateway": "paypal"
-                //                 }).then(function(res) {
-                //                     console.log(res.data);
-                //                 }).catch(function(err) {
-                //                     console.log(err);
-                //                 });
-                //             }
-                //         });
-                //     }
-                // }).render('#paypal-button-container');
             }
         });
 

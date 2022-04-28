@@ -295,22 +295,36 @@ class Login extends BaseController
             'shops' => $shopRes['shops'],
         ]);
     }
-    public function productorder(string $shopName, string $productUID)
+    public function productorder(string $shopName, string $orderId)
     {
         $data = [
 
-            'name' => $shopName,
-            'OrderId' => $productUID,
-            'shopName' => $shopName,
+
+            'orderId' => $orderId,
+
         ];
+        $apiEndpoints = config('ApiEndpoints');
+        $oauthxTokenEndpoint = $apiEndpoints->baseUrl . 'api/v1/fetch/orderbyid';
 
+        try {
+            $response = $this->client->request('GET', $oauthxTokenEndpoint, ['json' => $data]);
+        } catch (BadResponseException $exception) {
+            die($exception->getMessage());
+        }
 
-        return view('account/productOrder', [
-            'title' => "Products | " . $shopName,
+        $userRes = json_decode($response->getBody(), true);
 
-            "name" => $shopName,
-            'OrderId' => $productUID,
-            'shopName' => $shopName,
-        ]);
+        if ($userRes["status"]  == "error") {
+            return redirect()->to('/@' . $shopName);
+            //redirect();
+        } else {
+            return view('account/productOrder', [
+                'title' => "Products | " . $shopName,
+
+                "name" => $shopName,
+                'OrderId' => $orderId,
+                'orders' => $userRes["orders"][0],
+            ]);
+        }
     }
 }

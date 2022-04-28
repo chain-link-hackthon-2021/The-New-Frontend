@@ -2,28 +2,114 @@ var baseUrl;
 if (document.getElementById("base_url")) {
     baseUrl = document.getElementById("base_url").value;
 }
-// const Toast = Swal.mixin({
-//     toast: true,
-//     position: "top-end",
-//     showConfirmButton: false,
-//     timer: 4000,
-//     timerProgressBar: true,
-//     didOpen: (toast) => {
-//         toast.addEventListener("mouseenter", Swal.stopTimer);
-//         toast.addEventListener("mouseleave", Swal.resumeTimer);
-//     },
-// });
 
 
+var config = {
+    headers: {
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Headers': '*',
+        'Content-Type': 'multipart/form-data',
+        'Access-Control-Allow-Headers': "Origin, Content-Type, X-Auth-Token",
+        "content-type": "application/json",
+        "Access-Control-Allow-Methods": " GET, POST, PUT, DELETE"
+    },
+}
 
 
-
+const loading = `<div class="spinner-grow spinner-grow-sm" role="status">
+<span class="visually-hidden">Loading...</span>
+</div>`;
 
 if (document.getElementById("loadpayment")) {
     const app = Vue.createApp({
         data() {
             return {
                 price: 0,
+                btnState: false,
+                btnoneValue: "Pay With PayPal",
+            };
+        },
+        mounted() {},
+        methods: {
+
+            async paycheckout(paymethod) {
+                //alert(process.env);
+                this.btnoneValue = loading;
+                this.btnState = true;
+                let unitPrice = this.$refs.unitPrice.value;
+                let shopName = this.$refs.shopName.value;
+                let quantity = this.$refs.quantity.value;
+                let paymentGateway = paymethod;
+                let orderFrom = this.$refs.orderFrom.value;
+                let totalPrice = this.$refs.price.value;
+                let productName = this.$refs.productName.value;
+                let productId = this.$refs.productId.value;
+                let fm = {
+                    shopName: shopName,
+                    productId: productId,
+                    productName: productName,
+                    unitPrice: unitPrice,
+                    ProductPrice: totalPrice,
+                    Quantity: quantity,
+                    orderFrom: orderFrom,
+                    paymentGateway: paymentGateway
+                }
+                let res = await axios.post(baseUrl + "api/v1/add/new/orders", fm, config);
+                try {
+                    if (res.data.status !== "error") {
+                        const Toast = Swal.mixin({
+                            toast: true,
+                            position: "top-end",
+                            showConfirmButton: false,
+                            timer: 4000,
+                            timerProgressBar: true,
+                            didOpen: (toast) => {
+                                toast.addEventListener("mouseenter", Swal.stopTimer);
+                                toast.addEventListener("mouseleave", Swal.resumeTimer);
+                            },
+                        });
+                        Toast.fire({
+                            icon: "info",
+                            title: "Please Wait,Your Order Has Been Created...",
+                        });
+                        setTimeout(() => {
+                            window.location.href = "/@" + shopName + "/OrderDetails/" + res.data.orders.orderId;
+                        }, 3000);
+
+                    } else {
+                        this.btnoneValue = "Pay With PayPal";
+                        const Toast = Swal.mixin({
+                            toast: true,
+                            position: "top-end",
+                            showConfirmButton: false,
+                            timer: 4000,
+                            timerProgressBar: true,
+                            didOpen: (toast) => {
+                                toast.addEventListener("mouseenter", Swal.stopTimer);
+                                toast.addEventListener("mouseleave", Swal.resumeTimer);
+                            },
+                        });
+                        Toast.fire({
+                            icon: "error",
+                            title: "Error in Connecting...",
+                        });
+
+                    }
+                } catch (err) {
+                    console.log(err);
+                }
+
+            },
+        }
+    }).mount("#loadpayment");
+}
+if (document.getElementById("payment")) {
+    const app = Vue.createApp({
+        data() {
+            return {
+                price: 0,
+                btnState: false,
+                btnoneValue: "Pay With PayPal",
             };
         },
         mounted() {
@@ -33,47 +119,14 @@ if (document.getElementById("loadpayment")) {
                 "https://www.paypal.com/sdk/js?client-id=AZ4nF2Gcr-Afy1P2zqp8MeUIQ7kSS-e9kvADv5ynLTtw4HC_jMucHIvHesgXLRx8ooWebaJffVKp0yNW";
             script.addEventListener("load", this.setLoaded);
             document.body.appendChild(script);
-
         },
         methods: {
 
-            paycheckout(paymethod) {
-                //alert(process.env);
-
-                var date = new Date();
-                var formattedDate = date.getFullYear() + (date.getMonth() + 1) + date.getDate();
-                let order = (Math.random() + 1).toString(36).substring(6) + formattedDate;
-                let unitPrice = this.$refs.unitPrice.value;
-                let shopName = this.$refs.shopName.value;
-                let quantity = this.$refs.quantity.value;
-                let paymentGateway = paymethod;
-                let orderFrom = this.$refs.orderFrom.value;
-                let totalPrice = this.$refs.price.value;
-                let productName = this.$refs.productName.value;
-                let productId = this.$refs.productId.value;
-                let orderId = order;
-                window.location.href = "/@" + shopName + "/OrderDetails/" + orderId;
-                axios.post(baseUrl + "api/v1/add/new/orders", {
-                    "shopName": shopName,
-                    "productId": productId,
-                    "productName": productName,
-                    "unitPrice": unitPrice,
-                    "totalPrice": totalPrice,
-                    "quantity": quantity,
-                    "orderFrom": email,
-                    "paymentGateway": paymentGateway
-                }).then(function(res) {
-                    console.log(res.data);
-                }).catch(function(err) {
-                    console.log(err);
-                });
-            },
             setLoaded() {
-                //this.loaded = true;
-                // this.$nextTick(() => {
-                //     this.price = this.$refs.price.value;
-                //     editButtonRef.focus();
-                // });
+
+                let price = this.$refs.amount.value;
+                let orderid = this.$refs.orderid.value;
+
                 window.paypal
                     .Buttons({
                         createOrder: (data, actions) => {
@@ -82,15 +135,54 @@ if (document.getElementById("loadpayment")) {
                                     //description: this.product.description,
                                     amount: {
                                         currency_code: "USD",
-                                        value: "" + this.price
+                                        value: "" + price
                                     }
                                 }]
                             });
                         },
                         onApprove: async(data, actions) => {
                             const order = await actions.order.capture();
-                            this.paidFor = true;
-                            console.log(order);
+
+                            if (order.status == "COMPLETED") {
+                                let pId = this.$refs.uniqueID.value;
+                                let quantity = this.$refs.quantity.value;
+                                // let NewStock = 0;
+                                try {
+                                    let res = await axios.post(baseUrl + "api/v1/fetch/single/product", { uniqueID: pId }, config);
+                                    let stock = parseInt(res.data.product[0].stock) - parseInt(quantity);
+
+                                    // console.log(res.data.product[0].stock, quantity, pId);
+
+                                    let resqone = axios.post(baseUrl + "api/v1/update/order/status", {
+                                        orderId: orderid,
+                                        orderStatus: "completed"
+                                    }, config);
+                                    let resqtwo = axios.post(baseUrl + "api/v1/update/product/stock", {
+                                        productId: uniqueID,
+                                        stock: stock
+                                    }, config);
+                                    //
+                                    axios.all([
+                                            resqone, resqtwo
+                                        ])
+                                        .then(axios.spread((obj1, obj2) => {
+                                            //
+                                            if (obj1.data.status == "success") {
+                                                window.location.href = "";
+                                            } else {
+                                                window.location.href = "";
+                                            }
+                                        }))
+                                        .catch(function(err) {
+                                            console.log(err);
+                                        });
+
+                                } catch (error) {
+
+                                }
+
+                            }
+
                         },
                         onError: err => {
                             console.log(err);
@@ -99,7 +191,7 @@ if (document.getElementById("loadpayment")) {
                     .render(this.$refs.paypal);
             }
         }
-    }).mount("#loadpayment");
+    }).mount("#payment");
 }
 
 if (document.getElementById("user")) {

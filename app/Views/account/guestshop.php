@@ -1044,7 +1044,7 @@
                                                 }
                                                 ?>
                                                 <span> $<?= $product['productPrice']; ?> USD</span> <br>
-                                                <span class="mla <?= $stockClass; ?>"><strong>
+                                                <span class="mla <?= $stockClass; ?>"><?= $product['stock']; ?><strong>
                                                         <?php
                                                         if ($product['stock'] == 0) {
                                                             echo "Out Stock";
