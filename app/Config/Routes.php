@@ -185,6 +185,12 @@ $routes->post('/api/getDepositBalance', 'Login::getDepositBalance', ['filter' =>
 
 
 
+$routes->group('/backend', function ($routes) {
+	$routes->add('', 'Admin::index');
+	//$routes->add('blog', 'Admin\Blog::index');
+});
+
+
 
 
 

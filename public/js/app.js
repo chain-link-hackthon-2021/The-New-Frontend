@@ -395,19 +395,18 @@ if (document.getElementById("btcpayment")) {
                     console.log(error);
                 })
             },
-            confirmBalance(amountReceive, orderid, shopName) {
+            async confirmBalance(amountReceive, orderid, shopName) {
                 // var shopName = this.$refs.shopName.innerText;
                 // let orderId = this.$refs.orderId.innerText;
                 let fm = new FormData();
-                console.log(orderid);
-                //fm.append('shopName', shopName);
                 fm.append('orderId', orderid);
-                try {
-                    let res = axios.get(baseUrl + "api/v1/fetch/orderbyid", { orderId: orderid }, config);
-                    console.log(res.data.orders);
-                } catch (error) {
 
-                }
+                await axios.get(baseUrl + "api/v1/fetch/orderbyid", { orderId: orderid }, config).then(response => {
+
+                }).catch(error => {
+                    console.log(error);
+                })
+
 
 
 
