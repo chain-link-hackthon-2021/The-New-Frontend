@@ -761,7 +761,7 @@
                 'Your file has been deleted.',
                 'success'
               )
-              //window.location.href = "";
+              window.location.href = "";
             } else {
               swalWithBootstrapButtons.fire(
                 'Deleted!',
