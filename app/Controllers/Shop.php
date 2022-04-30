@@ -65,6 +65,7 @@ class Shop extends BaseController
             'title' => 'Shops',
             'user' => $userRes['user'],
             'shops' => $shopRes['shops'],
+            "url" => $this->client,
         ]);
     }
 
