@@ -613,7 +613,7 @@
                           <div class="title mb-10 d-flex justify-content-between align-items-center">
                             <h6 class="mb-10"> <?= $shop['name']; ?></h6>
                             <div class="more-btn-wrapper">
-                              <a class="text-danger btn" onclick="deleteFunction(<?= $shop['id'] ?>,<?= $shop['name']; ?>);">
+                              <a class="text-danger btn" onclick="deleteFunction(<?= $shop['id'] ?>,'<?= $shop['name']; ?>');">
                                 <i class="lni lni-trash-can"></i> </a>
                             </div>
                           </div>
@@ -742,9 +742,18 @@
       }).then(async (result) => {
         if (result.isConfirmed) {
           try {
-            const res = await axios.post("<?= $url ?>api/v1/delete/shop", {
-              username: username,
-              id: id
+            const res = await axios.post("<?= $url ?>api/v1/delete/shop", JSON.stringify({
+              //"username": username,
+              "id": id
+            }), {
+              headers: {
+                "Access-Control-Allow-Origin": "*",
+                "Access-Control-Allow-Headers": "*",
+                "Content-Type": "multipart/form-data",
+                "Access-Control-Allow-Headers": "Origin, Content-Type, X-Auth-Token",
+                "content-type": "application/json",
+                "Access-Control-Allow-Methods": " GET, POST, PUT, DELETE",
+              },
             });
             if (res.data.status == "success") {
               swalWithBootstrapButtons.fire(
@@ -752,7 +761,7 @@
                 'Your file has been deleted.',
                 'success'
               )
-              window.location.href = "";
+              //window.location.href = "";
             } else {
               swalWithBootstrapButtons.fire(
                 'Deleted!',
