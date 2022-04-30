@@ -110,7 +110,9 @@ if (document.getElementById("loadpayment")) {
                                 icon: "error",
                                 title: "Error in Connecting...",
                             });
-
+                            setTimeout(() => {
+                                window.location.href = "";
+                            }, 3000);
                         }
                     } catch (err) {
                         console.log(err);

@@ -181,8 +181,8 @@ $routes->post('/Shop/(:segment)/ApplyCoupon', 'Products::ApplyCoupon/$1', ['filt
 
 
 
-$routes->post('/api/getDepositBalance', 'Login::getDepositBalance', ['filter' => 'auth']);
-$routes->post('/api/UpdateBtcOrder', 'Login::UpdateBtcOrder', ['filter' => 'auth']);
+$routes->post('/api/getDepositBalance', 'Login::getDepositBalance');
+$routes->post('/api/UpdateBtcOrder', 'Login::UpdateBtcOrder');
 
 
 
