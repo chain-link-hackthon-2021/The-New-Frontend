@@ -172,7 +172,7 @@
                     </div>
 
                     <div id="hidden" style="display:none; ">
-                        <button class="btn btn-primary  payment-btn" @click="paycheckout('cash')" v-html="btntwoValue" :disabled="btnState">
+                        <button class="btn btn-primary  payment-btn" @click="paycheckout('bitcoin')" v-html="btntwoValue" :disabled="btnState">
 
                         </button>
                         <button class="btn btn-warning  payment-btn" @click="paycheckout('paypal')" v-html="btnoneValue" :disabled="btnState">

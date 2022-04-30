@@ -51,18 +51,19 @@ if (document.getElementById("loadpayment")) {
 
                 let res = await axios.post("https://blockchain.info/tobtc?currency=USD&value=" + totalPrice);
                 try {
-                    console.log(res.data);
+                    // console.log(res.data);
                     let fm = {
-                        shopName: shopName,
-                        productId: productId,
-                        productName: productName,
-                        unitPrice: unitPrice,
-                        ProductPrice: totalPrice,
-                        Quantity: quantity,
-                        orderFrom: orderFrom,
-                        paymentGateway: paymentGateway,
-                        btcAmount: res.data
-                    }
+                            shopName: shopName,
+                            productId: productId,
+                            productName: productName,
+                            unitPrice: unitPrice,
+                            ProductPrice: totalPrice,
+                            Quantity: quantity,
+                            orderFrom: orderFrom,
+                            paymentGateway: paymentGateway,
+                            btcAmount: res.data
+                        }
+                        //console.log(fm);
                     let ress = await axios.post(baseUrl + "api/v1/add/new/orders", fm, config);
                     try {
                         if (ress.data.status !== "error") {
@@ -81,7 +82,7 @@ if (document.getElementById("loadpayment")) {
                                 icon: "info",
                                 title: "Please Wait,Your Order Has Been Created...",
                             });
-                            if (paymentGateway !== "cash") {
+                            if (paymentGateway == "paypal") {
                                 setTimeout(() => {
                                     window.location.href = "/@" + shopName + "/OrderDetails/" + ress.data.orders.orderId;
                                 }, 3000);
