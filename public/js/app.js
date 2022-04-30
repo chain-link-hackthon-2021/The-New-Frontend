@@ -49,7 +49,7 @@ if (document.getElementById("loadpayment")) {
                 let productId = this.$refs.productId.value;
 
 
-                let res = await axios.post("https://blockchain.info/tobtc?currency=USD&value=" + totalPrice);
+                let res = await axios.get("https://blockchain.info/tobtc?currency=USD&value=" + totalPrice);
                 try {
                     // console.log(res.data);
                     let fm = {

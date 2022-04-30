@@ -98,7 +98,7 @@
                                 <?php endif; ?>
                                 <?php
                                     if($shops[0]['displayImage'] == 1){
-                                        $storeImg = $shops[0]['imageSrc'];
+                                        //$storeImg = $shops[0]['imageSrc'];
                                     } else {
                                         $storeImg = "";
                                     }
