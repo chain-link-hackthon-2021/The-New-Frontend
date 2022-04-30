@@ -584,12 +584,17 @@
               </div>
               <div class="profile-meta text-center pt-50">
                 <h5 class="text-bold mb-10"><?= ucfirst($user[0]['username']); ?> Shop</h5>
-
+                <div class="float-end" style="margin-right: 30px;">
+                  <a class="btn btn-primary" id="newshopbutton" href="/Shop/CreateShop/CreateShop">Create A New Shop</a>
+                </div>
               </div>
+
             </div>
+            <br>
             <div class="client-info">
               <div class="projects-wrapper">
                 <div class="row">
+
                   <?php
                   if ($shops == "") {
                     echo "You have not created any shop";
@@ -608,7 +613,7 @@
                           <div class="title mb-10 d-flex justify-content-between align-items-center">
                             <h6 class="mb-10"> <?= $shop['name']; ?></h6>
                             <div class="more-btn-wrapper">
-                              <a class="text-danger btn" onclick="deleteFunction('<?= $shop['id'] ?>')">
+                              <a class="text-danger btn" onclick="deleteFunction(<?= $shop['id'] ?>,<?= $shop['name']; ?>);">
                                 <i class="lni lni-trash-can"></i> </a>
                             </div>
                           </div>
@@ -707,7 +712,7 @@
       });
     });
     //useSubmitClass();
-    useDeleteConfirmation();
+    //useDeleteConfirmation();
     $(document).ready(function() {
       var isTopNavLayout = $('body').hasClass('layout-top-nav');
       if (!isTopNavLayout) {
@@ -717,13 +722,13 @@
       }
     });
 
-    function deleteFunction(id) {
+    function deleteFunction(id, username) {
       const swalWithBootstrapButtons = Swal.mixin({
         customClass: {
           confirmButton: 'btn btn-success',
           cancelButton: 'btn btn-danger'
         },
-        buttonsStyling: false
+        buttonsStyling: true
       })
 
       swalWithBootstrapButtons.fire({
@@ -734,20 +739,39 @@
         confirmButtonText: 'Yes, delete it!',
         cancelButtonText: 'No, cancel!',
         reverseButtons: true
-      }).then((result) => {
+      }).then(async (result) => {
         if (result.isConfirmed) {
-          swalWithBootstrapButtons.fire(
-            'Deleted!',
-            'Your file has been deleted.',
-            'success'
-          )
+          try {
+            const res = await axios.post("<?= $url ?>api/v1/delete/shop", {
+              username: username,
+              id: id
+            });
+            if (res.data.status == "success") {
+              swalWithBootstrapButtons.fire(
+                'Deleted!',
+                'Your file has been deleted.',
+                'success'
+              )
+              window.location.href = "";
+            } else {
+              swalWithBootstrapButtons.fire(
+                'Deleted!',
+                'Your file has been ....',
+                'error'
+              )
+            }
+          } catch (error) {
+
+          }
+
+
         } else if (
           /* Read more about handling dismissals below */
           result.dismiss === Swal.DismissReason.cancel
         ) {
           swalWithBootstrapButtons.fire(
             'Cancelled',
-            'Your imaginary file is safe :)',
+            'Your  file is safe :)',
             'error'
           )
         }

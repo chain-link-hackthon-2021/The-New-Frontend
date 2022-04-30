@@ -254,11 +254,47 @@
                     title: ' Empty Field Data'
                 })
             } else {
+                axios.post("<?= $url ?>api/v1/fetch/single/blacklist", JSON.stringify({
+                    shopName: "<?= $name; ?>",
+                    "BlockedData": "" + email
+                }), {
+                    headers: {
+                        "Access-Control-Allow-Origin": "*",
+                        "Access-Control-Allow-Headers": "*",
+                        "Content-Type": "multipart/form-data",
+                        "Access-Control-Allow-Headers": "Origin, Content-Type, X-Auth-Token",
+                        "content-type": "application/json",
+                        "Access-Control-Allow-Methods": " POST",
+                    },
+                }).then(res => {
+                    console.log(res.data);
+                    if (res.data.blacklists.length > 0) {
+                        const Toast = Swal.mixin({
+                            toast: true,
+                            position: 'top-end',
+                            showConfirmButton: false,
+                            timer: 3000,
+                            timerProgressBar: true,
+                            didOpen: (toast) => {
+                                toast.addEventListener('mouseenter', Swal.stopTimer)
+                                toast.addEventListener('mouseleave', Swal.resumeTimer)
+                            }
+                        })
+                        Toast.fire({
+                            icon: 'warning',
+                            title: ' Your Email Address Has Been Blocked.'
+                        });
+                    } else {
+                        var newpriceme = newPrice;
+                        $("#hidden").show();
+                        $("#hid").hide();
 
-                // console.log(newPrice, quantity);
-                var newpriceme = newPrice;
-                $("#hidden").show();
-                $("#hid").hide();
+                    }
+                }).catch(error => {
+                    console.log(error);
+                });
+
+
             }
         });
 

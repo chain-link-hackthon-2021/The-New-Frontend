@@ -293,6 +293,7 @@ class Login extends BaseController
             "name" => $shopName,
             "quantity" => $quantity,
             'shops' => $shopRes['shops'],
+            "url" => $apiEndpoints->baseUrl,
         ]);
     }
     public function productorder(string $shopName, string $orderId)
@@ -325,6 +326,7 @@ class Login extends BaseController
                 "name" => $shopName,
                 'OrderId' => $orderId,
                 'orders' => $userRes["orders"][0],
+                "url" => $apiEndpoints->baseUrl,
             ]);
         }
     }

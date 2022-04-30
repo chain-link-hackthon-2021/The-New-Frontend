@@ -147,7 +147,7 @@
         <li class="nav-item nav-item <?php if ($uri == '@<?= $name; ?>') {
                                         echo "active";
                                       } ?>">
-          <a href="/Shop/@<?= $name; ?>">
+          <a href="/@<?= $name; ?>">
             <span class="icon">
               <i class="lni lni-money-location"></i>
             </span>

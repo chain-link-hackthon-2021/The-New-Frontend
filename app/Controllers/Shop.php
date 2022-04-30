@@ -65,7 +65,7 @@ class Shop extends BaseController
             'title' => 'Shops',
             'user' => $userRes['user'],
             'shops' => $shopRes['shops'],
-            "url" => $this->client,
+            "url" => $apiEndpoints->baseUrl,
         ]);
     }
 
@@ -156,9 +156,22 @@ class Shop extends BaseController
 
         $userRes = json_decode($response->getBody(), true);
 
+        // Get user's shops
+
+        $apiEndpoints = config('ApiEndpoints');
+        $oauthxTokenEndpoint = $apiEndpoints->baseUrl . 'api/v1/fetch/single/shop';
+
+        try {
+            $response = $this->client->request('GET', $oauthxTokenEndpoint, ['json' => $data]);
+        } catch (BadResponseException $exception) {
+            die($exception->getMessage());
+        }
+
+        $shopRes = json_decode($response->getBody(), true);
         return view('users/create', [
             'title' => 'Shops',
             'user' => $userRes['user'],
+            "shops" => $shopRes["shops"]
         ]);
     }
 
@@ -169,23 +182,29 @@ class Shop extends BaseController
             'name' => $this->request->getVar('Name'),
         ];
 
+        if ($data["name"] !== "") {
+            $apiEndpoints = config('ApiEndpoints');
+            $oauthxTokenEndpoint = $apiEndpoints->baseUrl . 'api/v1/add/new/shop';
+
+            try {
+                $response = $this->client->request('POST', $oauthxTokenEndpoint, ['json' => $data]);
+            } catch (BadResponseException $exception) {
+                die($exception->getMessage());
+            }
+
+            $shopRes = json_decode($response->getBody(), true);
+
+            $status = $shopRes['status'];
+
+            session()->setFlashdata($shopRes['status'], $shopRes['message']);
+            return redirect()->route('shop');
+        } else {
+            session()->setFlashdata("error", "Empty Data");
+            return redirect()->route('createshopnow');
+        }
         // Add user's shops
 
-        $apiEndpoints = config('ApiEndpoints');
-        $oauthxTokenEndpoint = $apiEndpoints->baseUrl . 'api/v1/add/new/shop';
 
-        try {
-            $response = $this->client->request('POST', $oauthxTokenEndpoint, ['json' => $data]);
-        } catch (BadResponseException $exception) {
-            die($exception->getMessage());
-        }
-
-        $shopRes = json_decode($response->getBody(), true);
-
-        $status = $shopRes['status'];
-
-        session()->setFlashdata($shopRes['status'], $shopRes['message']);
-        return redirect()->route('shop');
     }
 
     public function deleteShop(string $id, string $shopName)
