@@ -24,6 +24,65 @@
                 color: darkslategray;
             }
         </style>
+        <style>
+    .table > tbody:nth-child(2) > tr:nth-child(1) > td:nth-child(1) > div:nth-child(1) {
+        background-image: url('/Image/Product/');
+        width: auto;
+    }
+
+
+    #gotodash, #accountsettings, #discord {
+        color: #018387;
+    }
+
+    #accountsettings {
+        align-content: center !important;
+    }
+
+    #delete {
+        color: red;
+    }
+
+    .circle {
+        border-radius: 1000px !important;
+        overflow: hidden;
+        width: 128px;
+        height: 128px;
+        border: 8px solid rgba(255, 255, 255, 0.7);
+        position: absolute;
+        top: 72px;
+    }
+
+    #profile-card {
+        margin: auto;
+    }
+
+    #blah {
+        width: 40%;
+        height: auto;
+        margin-left: 30%;
+        margin-right: 30%;
+    }
+
+    #newshopbutton {
+        color: white;
+        background-color: #018387;
+    }
+
+    .table th,
+    .table td, .table thead th {
+        border-top: none;
+        border-bottom: none;
+    }
+
+    tr {
+        border-bottom: 2px solid #f8f9fc;
+    }
+
+    #messagefromautobuy {
+        font-size: .85em;
+    }
+</style>
     </head>
     <body>
         <!-- ======== main-wrapper start =========== -->
@@ -115,7 +174,7 @@
                                     <hr>
                                     <div>
                                         <div id="profile-card">
-                                            <img id="blah" class="img-circle img-bordered-sm" style="border-radius: 100%; width: 100%;" src='<?= $user[0]['display_picture']; ?>' alt="User Image">
+                                            <img id="blah" class="img-circle img-bordered-sm"  src='<?= $user[0]['display_picture']; ?>' alt="User Image">
                                         </div><br />
                                         <h6><strong>Message from AnyBuy:</strong></h6>
                                         <p id="messagefromAnyBuy">Thanks for using AnyBuy.IO! If you haven't already, make sure to join our <a href="<?= $user[0]['DiscordLink']; ?>" id="discord" target="_blank"> Discord Server</a> so you can keep up to date on all of the newest features and changes as well as get access to exclusive giveaways, live chat support, sneak peaks, and more. </p>
@@ -165,25 +224,11 @@
                                                                 </td>
                                                                 <td>
                                                                     <span title="Delete">
-                                                                        <a class="text-danger btn" onclick="deleteFunction<?= $shop['id']; ?>('<?= $shop['id']; ?>')">
+                                                                        <a class="text-danger btn" onclick="deleteFunction('<?= $shop['id']; ?>')">
                                                                             <i class="lni lni-trash-can"></i> &nbsp; Delete Shop
                                                                         </a>
                                                                     </span>
-                                                                    <script>
-                                                                        function deleteFunction<?= $shop['id']; ?>(shopID){
-                                                                            let text = "Are you sure you want to delete this category?"
-                                                                            if(confirm(text) == true){
-                                                                                $.ajax({
-                                                                                    url: "/Shop/<?= $shop['id']; ?>/Delete/<?= $shop['name']; ?>",
-                                                                                    type: "GET",
-                                                                                    data: "shopID=" + shopID ,
-                                                                                    success: function() {
-                                                                                        window.location.href = "/Shop";
-                                                                                    }
-                                                                                });
-                                                                            }
-                                                                        }
-                                                                    </script>
+                                                                    
                                                                 </td>
                                                             </tr>
                                                         <?php
@@ -247,7 +292,10 @@
         <script src="/assets/js/world-merc.js"></script>
         <script src="/assets/js/polyfill.js"></script>
         <script src="/assets/js/main.js"></script>
-
+        <script src="/js/vue3.tests.js"></script>
+    <script src="/js/axios.min.js"></script>
+    <script src="/js/app.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
         <script>
             $(document).ready(function () {
@@ -265,6 +313,43 @@
                     $('#header-logo').show();
                 }
             });
+         function deleteFunction(id){
+            const swalWithBootstrapButtons = Swal.mixin({
+                customClass: {
+                    confirmButton: 'btn btn-success',
+                    cancelButton: 'btn btn-danger'
+                },
+                buttonsStyling: false
+                })
+
+                swalWithBootstrapButtons.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Yes, delete it!',
+                cancelButtonText: 'No, cancel!',
+                reverseButtons: true
+                }).then((result) => {
+                if (result.isConfirmed) {
+                    swalWithBootstrapButtons.fire(
+                    'Deleted!',
+                    'Your file has been deleted.',
+                    'success'
+                    )
+                } else if (
+                    /* Read more about handling dismissals below */
+                    result.dismiss === Swal.DismissReason.cancel
+                ) {
+                    swalWithBootstrapButtons.fire(
+                    'Cancelled',
+                    'Your imaginary file is safe :)',
+                    'error'
+                    )
+                }
+                })
+            }
         </script>
+       
     </body>
 </html>
