@@ -170,8 +170,8 @@ if (document.getElementById("payment")) {
                                 // let NewStock = 0;
                                 try {
                                     let res = await axios.post(baseUrl + "api/v1/fetch/single/product", { uniqueID: pId }, config);
-                                    let stock = 66;
-                                    // let stock = parseInt(res.data.product[0].stock) - parseInt(quantity);
+                                    // let stock = 66;
+                                    let stock = parseInt(res.data.product[0].stock) - parseInt(quantity);
 
                                     // console.log(res.data.product[0].stock, quantity, pId);
 
