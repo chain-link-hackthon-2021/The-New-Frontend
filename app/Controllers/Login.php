@@ -470,4 +470,46 @@ class Login extends BaseController
         $userRes = json_decode($response->getBody(), true);
         return view("account/completedpay", ['title' => "Products | ", "orders" => $userRes["orders"][0]]);
     }
+    public function UpdateBtcOrder()
+    {
+        $data = [
+            "shopName" => $this->request->getVar('shopName'),
+            "productId" => $this->request->getVar('productId'),
+            "productName" => $this->request->getVar('productName'),
+            "orderId" => $this->request->getVar('orderId'),
+            "stock" => $this->request->getVar('stock')
+        ];
+        $apiEndpoints = config('ApiEndpoints');
+        $oauthxTokenEndpoint = $apiEndpoints->baseUrl . 'api/v1/fetch/single/product';
+
+        try {
+            $response = $this->client->request('GET', $oauthxTokenEndpoint, ['json' => ["uniqueID" => $data["productId"]]]);
+        } catch (BadResponseException $exception) {
+            die($exception->getMessage());
+        }
+        $userRes = json_decode($response->getBody(), true);
+
+        $newstock = $userRes["product"][0]["stock"] - $data["stock"];
+        $newstock;
+        $apiEndpoints = config('ApiEndpoints');
+        $oauthxTokenEndpoint = $apiEndpoints->baseUrl . 'api/v1/update/order/status';
+
+        try {
+            $response = $this->client->request('POST', $oauthxTokenEndpoint, ['json' => ["orderId" => $data["orderId"], "orderStatus" => "completed"]]);
+        } catch (BadResponseException $exception) {
+            die($exception->getMessage());
+        }
+
+        $apiEndpoints = config('ApiEndpoints');
+        $oauthxTokenEndpoint = $apiEndpoints->baseUrl . 'api/v1/update/product/stock';
+
+        try {
+            $responsea = $this->client->request('POST', $oauthxTokenEndpoint, ['json' => ["productId" => $data["productId"], "stock" => $newstock]]);
+        } catch (BadResponseException $exception) {
+            die($exception->getMessage());
+        }
+        $result = json_decode($responsea->getBody(), true);
+        return  $this->respond($result);
+        //email notification here
+    }
 }

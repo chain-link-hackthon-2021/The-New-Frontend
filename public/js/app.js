@@ -170,33 +170,30 @@ if (document.getElementById("payment")) {
                                 // let NewStock = 0;
                                 try {
                                     let res = await axios.post(baseUrl + "api/v1/fetch/single/product", { uniqueID: pId }, config);
-                                    let stock = parseInt(res.data.product[0].stock) - parseInt(quantity);
+                                    let stock = 66;
+                                    // let stock = parseInt(res.data.product[0].stock) - parseInt(quantity);
 
                                     // console.log(res.data.product[0].stock, quantity, pId);
 
-                                    let resqone = await axios.post(baseUrl + "api/v1/update/order/status", {
+                                    axios.post(baseUrl + "api/v1/update/order/status", {
                                         orderId: orderid,
                                         orderStatus: "completed"
-                                    }, config);
-                                    let resqtwo = await axios.post(baseUrl + "api/v1/update/product/stock", {
-                                        productId: uniqueID,
-                                        stock: stock
-                                    }, config);
-                                    //
-                                    await axios.all([
-                                            resqone, resqtwo
-                                        ])
-                                        .then(axios.spread((obj1, obj2) => {
-                                            //
-                                            if (obj1.data.status == "success") {
-                                                window.location.href = "/Completed/" + orderId;
+                                    }, config).then((response) => {
+                                        axios.post(baseUrl + "api/v1/update/product/stock", {
+                                            productId: pId,
+                                            stock: stock
+                                        }, config).then((response) => {
+                                            if (response.data.status == "success") {
+                                                window.location.href = "/Completed/" + orderid;
                                             } else {
                                                 window.location.href = "";
                                             }
-                                        }))
-                                        .catch(function(err) {
-                                            console.log(err);
+
                                         });
+                                    });
+
+                                    //
+
 
                                 } catch (error) {
 
@@ -396,42 +393,56 @@ if (document.getElementById("btcpayment")) {
                 })
             },
             async confirmBalance(amountReceive, orderid, shopName) {
-                // var shopName = this.$refs.shopName.innerText;
-                // let orderId = this.$refs.orderId.innerText;
-                let fm = new FormData();
-                fm.append('orderId', orderid);
+                var shopName = this.$refs.shopName.innerText;
+                //let orderId = this.$refs.orderId.innerText;
 
-                await axios.get(baseUrl + "api/v1/fetch/orderbyid", { orderId: orderid }, config).then(response => {
+                axios.post(baseUrl + "api/v1/fetch/orderbyid", { orderId: orderid }, config).then(response => {
+                    var amountGet = response.data.orders[0].btcAmount;
+                    const Toast = Swal.mixin({
+                        toast: true,
+                        position: "top-end",
+                        showConfirmButton: false,
+                        timer: 4000,
+                        timerProgressBar: true,
+                        didOpen: (toast) => {
+                            toast.addEventListener("mouseenter", Swal.stopTimer);
+                            toast.addEventListener("mouseleave", Swal.resumeTimer);
+                        },
+                    });
+                    Toast.fire({
+                        icon: "info",
+                        title: "Waiting for your Payment to be process and Check",
+                    });
+
+                    if (amountReceive >= amountGet) {
+                        let fm = {
+                            shopName: response.data.orders[0].shopName,
+                            productId: response.data.orders[0].productId,
+                            productName: response.data.orders[0].productName,
+                            stock: response.data.orders[0].quantity,
+                            orderId: orderid
+                        }
+                        axios.post('/api/UpdateBtcOrder', fm).then(response => {
+
+                            Toast.fire({
+                                icon: "success",
+                                title: "Coin Cofirm Successfully",
+                            });
+                            //showNotification('top', 'center', "success", "Coin Cofirm Successfully");
+                            setTimeout(() => {
+                                    window.location.href = "/Completed/" + orderid;
+                                }, 3000)
+                                //console.log(response.data);
+                        }).catch(error => {
+                            console.log(error);
+                        })
+                    } else {
+                        //this.getDepositBalance();
+                    }
 
                 }).catch(error => {
                     console.log(error);
                 })
-
-
-
-
-
-                // axios.get(baseUrl + "api/v1/fetch/orderbyid", { orderId: orderid }, config).then(response => {
-                //     console.log(response.data.orders);
-                //     var amountGet = response.data[0].btcAmount;
-                //     showNotification('top', 'center', "info", "Waiting for your Payment to process and Check");
-                //     if (amountReceive >= amountGet) {
-                //         axios.post(this.baseUrl + 'Ajaxrequest/Updatesellcoin', fm).then(response => {
-                //             showNotification('top', 'center', "success", "Coin Cofirm Successfully");
-                //             setTimeout(() => {
-                //                     window.location.href = "/@" + shopName + "/Completed/" + orderId;
-                //                 }, 3000)
-                //                 //console.log(response.data);
-                //         }).catch(error => {
-                //             console.log(error);
-                //         })
-                //     } else {
-                //         //this.getDepositBalance();
-                //     }
-
-                // }).catch(error => {
-                //     console.log(error);
-                // })
             }
         },
     }).mount("#btcpayment")
