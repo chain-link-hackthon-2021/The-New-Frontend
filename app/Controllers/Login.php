@@ -418,7 +418,7 @@ class Login extends BaseController
         $url = "https://api.blockchain.info/v2/receive?";
         $api_key = "1666eca2-5dda-4f69-9834-832f4ca5df4d";
         $gap_limit = "120";
-        $callback = urlencode(base_url() . "Login/getbtcPayment?orderId=fajlsdfjsf");
+        $callback = 'https://mystore.com?invoice_id=058921123';
         $blockchain_xpub = "xpub6DQm9YnKmRSepqp7LRf5kAAba1aqfyuKNAaAV8QG9tnmxukZNoRHftkhjVwiYBtVch1DWy8b9LCtQ4gPUBbctpk7JzKZMj7pYDkqnqfU5g4";
         try {
             $response = $this->client->request('GET',  $url . 'xpub=' . $blockchain_xpub . '&callback=' . $callback . '&key=' . $api_key . '&gap_limit=' . $gap_limit . '');
