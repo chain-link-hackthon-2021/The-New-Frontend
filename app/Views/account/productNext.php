@@ -172,8 +172,8 @@
                     </div>
 
                     <div id="hidden" style="display:none; ">
-                        <button class="btn btn-primary  payment-btn" @click="paycheckout('cash')">
-                            <i class="fas fa-bitcoin " style="vertical-align: middle;"></i> Pay With Crypto
+                        <button class="btn btn-primary  payment-btn" @click="paycheckout('cash')" v-html="btntwoValue" :disabled="btnState">
+
                         </button>
                         <button class="btn btn-warning  payment-btn" @click="paycheckout('paypal')" v-html="btnoneValue" :disabled="btnState">
 

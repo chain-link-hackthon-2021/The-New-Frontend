@@ -39,12 +39,15 @@ $routes->get('/', 'Home::index', ['as' => 'home']);
 $routes->get('/Account/Login', 'Login::showLoginPage', ['as' => 'login', 'filter' => 'noauth']);
 $routes->get('/Account/Logout', 'Login::logout', ['as' => 'logout']);
 $routes->get('/Account/LogOff', 'Login::logout', ['as' => 'logoff']);
+$routes->get('/Completed/(:segment)', 'Login::completePayment/$1');
 $routes->get('/Account/Register', 'Login::showRegisterPage', ['as' => 'register', 'filter' => 'noauth']);
 $routes->get('/Verify/User/(:segment)/(:segment)', 'Login::verify/$1/$2', ['as' => 'verify']);
 $routes->get('/@(:segment)/', 'Login::guestshop/$1');
 $routes->get('/@(:segment)/checkout/(:segment)', 'Login::shop/$1/$2');
 $routes->get('/@(:segment)/checkout/(:segment)/(:segment)', 'Login::shopnext/$1/$2/$3');
 $routes->get('/@(:segment)/OrderDetails/(:segment)', 'Login::productorder/$1/$2');
+$routes->get('/@(:segment)/CryptoPayment/(:segment)', 'Login::productorderbtc/$1/$2');
+
 // Post routes
 $routes->post('/Account/Login', 'Login::initiateLogin', ['filter' => 'noauth']);
 
@@ -177,6 +180,8 @@ $routes->post('/Shop/(:segment)/ApplyCoupon', 'Products::ApplyCoupon/$1', ['filt
 
 
 
+
+$routes->post('/api/getDepositBalance', 'Login::getDepositBalance', ['filter' => 'auth']);
 
 
 

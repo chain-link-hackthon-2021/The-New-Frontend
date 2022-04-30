@@ -318,6 +318,7 @@ class Login extends BaseController
             return redirect()->to('/@' . $shopName);
             //redirect();
         } else {
+
             return view('account/productOrder', [
                 'title' => "Products | " . $shopName,
 
@@ -326,5 +327,147 @@ class Login extends BaseController
                 'orders' => $userRes["orders"][0],
             ]);
         }
+    }
+    public function productorderbtc(string $shopName, string $orderId)
+    {
+        $data = [
+
+
+            'orderId' => $orderId,
+
+        ];
+        $apiEndpoints = config('ApiEndpoints');
+        $oauthxTokenEndpoint = $apiEndpoints->baseUrl . 'api/v1/fetch/orderbyid';
+
+        try {
+            $response = $this->client->request('GET', $oauthxTokenEndpoint, ['json' => $data]);
+        } catch (BadResponseException $exception) {
+            die($exception->getMessage());
+        }
+
+        $userRes = json_decode($response->getBody(), true);
+        if ($userRes["status"]  == "error") {
+            return redirect()->to('/@' . $shopName);
+            //redirect();
+        } else {
+
+            if (empty($userRes["orders"][0]["btc_address"])) {
+                $oauthxTokenEndpoints = $apiEndpoints->baseUrl . 'api/v1/update/order/btc';
+                $address =  self::getWallet();
+                $data["btc_address"] = $address;
+                try {
+                    $response = $this->client->request('POST', $oauthxTokenEndpoints, ['json' => $data]);
+                } catch (BadResponseException $exception) {
+                    die($exception->getMessage());
+                }
+                $apiEndpoints = config('ApiEndpoints');
+                $oauthxTokenEndpoint = $apiEndpoints->baseUrl . 'api/v1/fetch/orderbyid';
+
+                try {
+                    $response = $this->client->request('GET', $oauthxTokenEndpoint, ['json' => $data]);
+                } catch (BadResponseException $exception) {
+                    die($exception->getMessage());
+                }
+
+                $userRes = json_decode($response->getBody(), true);
+            }
+
+
+            return view('account/productOrderbtc', [
+                'title' => "Products | " . $shopName,
+
+                "name" => $shopName,
+                'OrderId' => $orderId,
+                'orders' => $userRes["orders"][0],
+            ]);
+        }
+    }
+
+    public function loadbtccon($amount)
+    {
+
+
+        try {
+            $response = $this->client->request('GET', "https://blockchain.info/tobtc?currency=USD&value=" . $amount . "");
+        } catch (BadResponseException $exception) {
+            die($exception->getMessage());
+        }
+
+        $result = json_decode($response->getBody(), true);
+        return $result;
+    }
+    public function getbtcPayment()
+    {
+        $invoice_id = $_GET['invoice_id']; //invoice_id is passed back to
+        // the callback URL
+        $transaction_hash = $_GET['confirmations'];
+        $value_in_satoshi = $_GET['value'];
+        $value_in_btc = $value_in_satoshi / 100000000;
+        if ($_GET['confirmations'] > 6) {
+            echo "*ok*";
+        }
+        //Commented out to test, uncomment when live
+        // if ($_GET['test'] == true) {
+        //   return
+        // }
+
+        echo "*ok*";
+    }
+    public function getWallet()
+    {
+        $url = "https://api.blockchain.info/v2/receive?";
+        $api_key = "1666eca2-5dda-4f69-9834-832f4ca5df4d";
+        $gap_limit = "120";
+        $callback = urlencode(base_url() . "Login/getbtcPayment?orderId=fajlsdfjsf");
+        $blockchain_xpub = "xpub6DQm9YnKmRSepqp7LRf5kAAba1aqfyuKNAaAV8QG9tnmxukZNoRHftkhjVwiYBtVch1DWy8b9LCtQ4gPUBbctpk7JzKZMj7pYDkqnqfU5g4";
+        try {
+            $response = $this->client->request('GET',  $url . 'xpub=' . $blockchain_xpub . '&callback=' . $callback . '&key=' . $api_key . '&gap_limit=' . $gap_limit . '');
+        } catch (BadResponseException $exception) {
+            die($exception->getMessage());
+        }
+
+        $result = json_decode($response->getBody(), true);
+        return $result["address"];
+    }
+    public function getDepositBalance()
+    {
+        //echo "efefsd";
+        $address =  $this->request->getVar('address');
+        $orderId = $this->request->getVar('orderId');
+        $shopName = $this->request->getVar('shopName');
+        if ($address == "") {
+            print 0;
+        } else {
+            $confirm = "?confirmations=6";
+            $url = "https://blockchain.info/q/addressbalance/";
+            // $address = $addres;
+            try {
+                $response = $this->client->request('GET', $url . $address . $confirm);
+            } catch (BadResponseException $exception) {
+                die($exception->getMessage());
+            }
+
+            $result = json_decode($response->getBody(), true);
+            return  $this->respond($result);
+            // $loadresult = json_decode($result);
+            // echo $loadresult;
+        }
+    }
+    public function confirmBalance()
+    {
+    }
+    public function completePayment($orderId)
+    {
+        $apiEndpoints = config('ApiEndpoints');
+        $oauthxTokenEndpoint = $apiEndpoints->baseUrl . 'api/v1/fetch/orderbyid';
+
+        try {
+            $response = $this->client->request('GET', $oauthxTokenEndpoint, ['json' => ["orderId" => $orderId]]);
+        } catch (BadResponseException $exception) {
+            die($exception->getMessage());
+        }
+
+        $userRes = json_decode($response->getBody(), true);
+        return view("account/completedpay", ['title' => "Products | ", "orders" => $userRes["orders"][0]]);
     }
 }

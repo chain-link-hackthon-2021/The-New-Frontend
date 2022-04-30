@@ -2,7 +2,9 @@ var baseUrl;
 if (document.getElementById("base_url")) {
     baseUrl = document.getElementById("base_url").value;
 }
-
+if (document.getElementById("site_url")) {
+    siteUrl = document.getElementById("site_url").value;
+}
 
 var config = {
     headers: {
@@ -27,6 +29,7 @@ if (document.getElementById("loadpayment")) {
                 price: 0,
                 btnState: false,
                 btnoneValue: "Pay With PayPal",
+                btntwoValue: '<i class="fas fa-bitcoin " style="vertical-align: middle;"></i> Pay With Crypto'
             };
         },
         mounted() {},
@@ -44,57 +47,75 @@ if (document.getElementById("loadpayment")) {
                 let totalPrice = this.$refs.price.value;
                 let productName = this.$refs.productName.value;
                 let productId = this.$refs.productId.value;
-                let fm = {
-                    shopName: shopName,
-                    productId: productId,
-                    productName: productName,
-                    unitPrice: unitPrice,
-                    ProductPrice: totalPrice,
-                    Quantity: quantity,
-                    orderFrom: orderFrom,
-                    paymentGateway: paymentGateway
-                }
-                let res = await axios.post(baseUrl + "api/v1/add/new/orders", fm, config);
+
+
+                let res = await axios.post("https://blockchain.info/tobtc?currency=USD&value=" + totalPrice);
                 try {
-                    if (res.data.status !== "error") {
-                        const Toast = Swal.mixin({
-                            toast: true,
-                            position: "top-end",
-                            showConfirmButton: false,
-                            timer: 4000,
-                            timerProgressBar: true,
-                            didOpen: (toast) => {
-                                toast.addEventListener("mouseenter", Swal.stopTimer);
-                                toast.addEventListener("mouseleave", Swal.resumeTimer);
-                            },
-                        });
-                        Toast.fire({
-                            icon: "info",
-                            title: "Please Wait,Your Order Has Been Created...",
-                        });
-                        setTimeout(() => {
-                            window.location.href = "/@" + shopName + "/OrderDetails/" + res.data.orders.orderId;
-                        }, 3000);
-
-                    } else {
-                        this.btnoneValue = "Pay With PayPal";
-                        const Toast = Swal.mixin({
-                            toast: true,
-                            position: "top-end",
-                            showConfirmButton: false,
-                            timer: 4000,
-                            timerProgressBar: true,
-                            didOpen: (toast) => {
-                                toast.addEventListener("mouseenter", Swal.stopTimer);
-                                toast.addEventListener("mouseleave", Swal.resumeTimer);
-                            },
-                        });
-                        Toast.fire({
-                            icon: "error",
-                            title: "Error in Connecting...",
-                        });
-
+                    console.log(res.data);
+                    let fm = {
+                        shopName: shopName,
+                        productId: productId,
+                        productName: productName,
+                        unitPrice: unitPrice,
+                        ProductPrice: totalPrice,
+                        Quantity: quantity,
+                        orderFrom: orderFrom,
+                        paymentGateway: paymentGateway,
+                        btcAmount: res.data
                     }
+                    let ress = await axios.post(baseUrl + "api/v1/add/new/orders", fm, config);
+                    try {
+                        if (ress.data.status !== "error") {
+                            const Toast = Swal.mixin({
+                                toast: true,
+                                position: "top-end",
+                                showConfirmButton: false,
+                                timer: 4000,
+                                timerProgressBar: true,
+                                didOpen: (toast) => {
+                                    toast.addEventListener("mouseenter", Swal.stopTimer);
+                                    toast.addEventListener("mouseleave", Swal.resumeTimer);
+                                },
+                            });
+                            Toast.fire({
+                                icon: "info",
+                                title: "Please Wait,Your Order Has Been Created...",
+                            });
+                            if (paymentGateway !== "cash") {
+                                setTimeout(() => {
+                                    window.location.href = "/@" + shopName + "/OrderDetails/" + ress.data.orders.orderId;
+                                }, 3000);
+                            } else {
+                                setTimeout(() => {
+                                    window.location.href = "/@" + shopName + "/CryptoPayment/" + ress.data.orders.orderId;
+                                }, 3000);
+                            }
+
+
+                        } else {
+                            this.btnoneValue = "Pay With PayPal";
+                            const Toast = Swal.mixin({
+                                toast: true,
+                                position: "top-end",
+                                showConfirmButton: false,
+                                timer: 4000,
+                                timerProgressBar: true,
+                                didOpen: (toast) => {
+                                    toast.addEventListener("mouseenter", Swal.stopTimer);
+                                    toast.addEventListener("mouseleave", Swal.resumeTimer);
+                                },
+                            });
+                            Toast.fire({
+                                icon: "error",
+                                title: "Error in Connecting...",
+                            });
+
+                        }
+                    } catch (err) {
+                        console.log(err);
+                    }
+
+
                 } catch (err) {
                     console.log(err);
                 }
@@ -153,22 +174,22 @@ if (document.getElementById("payment")) {
 
                                     // console.log(res.data.product[0].stock, quantity, pId);
 
-                                    let resqone = axios.post(baseUrl + "api/v1/update/order/status", {
+                                    let resqone = await axios.post(baseUrl + "api/v1/update/order/status", {
                                         orderId: orderid,
                                         orderStatus: "completed"
                                     }, config);
-                                    let resqtwo = axios.post(baseUrl + "api/v1/update/product/stock", {
+                                    let resqtwo = await axios.post(baseUrl + "api/v1/update/product/stock", {
                                         productId: uniqueID,
                                         stock: stock
                                     }, config);
                                     //
-                                    axios.all([
+                                    await axios.all([
                                             resqone, resqtwo
                                         ])
                                         .then(axios.spread((obj1, obj2) => {
                                             //
                                             if (obj1.data.status == "success") {
-                                                window.location.href = "";
+                                                window.location.href = "/Completed/" + orderId;
                                             } else {
                                                 window.location.href = "";
                                             }
@@ -328,4 +349,91 @@ if (document.getElementById("user")) {
             }
         },
     }).mount("#user");
+}
+if (document.getElementById("btcpayment")) {
+    const app = Vue.createApp({
+        data() {
+            return {
+                paidamount: 0,
+            }
+        },
+        mounted() {
+            this.getDepositBalance();
+        },
+        methods: {
+            getDepositBalance() {
+                var newAddress = this.$refs.newAddress.innerText;
+                var orderId = this.$refs.orderId.innerText;
+                var shopName = this.$refs.shopName.innerText;
+                // console.log(newAddress);
+                let fm = new FormData();
+                fm.append('address', newAddress);
+                fm.append('orderId', orderId);
+                fm.append('shopName', shopName);
+                //alert(siteUrl);
+                axios.post('/api/getDepositBalance', fm, config).then(response => {
+
+                    this.paidamount = response.data / 100000000;
+
+                    if (this.paidamount == 0) {
+                        this.confirmBalance(this.paidamount, orderId, shopName);
+                    }
+                }).catch(error => {
+                    console.log(error);
+                })
+            },
+            checkUserAddress() {
+                var orderId = this.$refs.orderId.innerText;
+                let fm = new FormData();
+                fm.append('userId', userId);
+                fm.append('orderId', orderId);
+                axios.post(this.baseUrl + 'Ajaxrequest/sellconfirmBalance', fm).then(response => {
+                    if (response.data[0].address === "") {
+                        this.getWalletAddress();
+                    }
+                }).catch(error => {
+                    console.log(error);
+                })
+            },
+            confirmBalance(amountReceive, orderid, shopName) {
+                // var shopName = this.$refs.shopName.innerText;
+                // let orderId = this.$refs.orderId.innerText;
+                let fm = new FormData();
+                console.log(orderid);
+                //fm.append('shopName', shopName);
+                fm.append('orderId', orderid);
+                try {
+                    let res = axios.get(baseUrl + "api/v1/fetch/orderbyid", { orderId: orderid }, config);
+                    console.log(res.data.orders);
+                } catch (error) {
+
+                }
+
+
+
+
+                // axios.get(baseUrl + "api/v1/fetch/orderbyid", { orderId: orderid }, config).then(response => {
+                //     console.log(response.data.orders);
+                //     var amountGet = response.data[0].btcAmount;
+                //     showNotification('top', 'center', "info", "Waiting for your Payment to process and Check");
+                //     if (amountReceive >= amountGet) {
+                //         axios.post(this.baseUrl + 'Ajaxrequest/Updatesellcoin', fm).then(response => {
+                //             showNotification('top', 'center', "success", "Coin Cofirm Successfully");
+                //             setTimeout(() => {
+                //                     window.location.href = "/@" + shopName + "/Completed/" + orderId;
+                //                 }, 3000)
+                //                 //console.log(response.data);
+                //         }).catch(error => {
+                //             console.log(error);
+                //         })
+                //     } else {
+                //         //this.getDepositBalance();
+                //     }
+
+                // }).catch(error => {
+                //     console.log(error);
+                // })
+            }
+        },
+    }).mount("#btcpayment")
 }
