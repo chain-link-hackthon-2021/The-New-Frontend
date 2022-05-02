@@ -361,4 +361,82 @@ class Shop extends BaseController
             'shops' => $shopRes['shops'],
         ]);
     }
+    public function credit($name)
+    {
+        $data = [
+            'email' => session()->email,
+            'username' => session()->username,
+            'name' => $name,
+        ];
+
+        // Get user details
+        $apiEndpoints = config('ApiEndpoints');
+        $oauthxTokenEndpoint = $apiEndpoints->baseUrl . 'api/v1/fetch/single/user';
+
+        try {
+            $response = $this->client->request('GET', $oauthxTokenEndpoint, ['json' => $data]);
+        } catch (BadResponseException $exception) {
+            die($exception->getMessage());
+        }
+
+        $userRes = json_decode($response->getBody(), true);
+
+        return view('users/credit', [
+            'title' => 'Shops | ' . $name,
+            'user' => $userRes['user'],
+            "name" => $name,
+        ]);
+    }
+
+    public function UpdateCredit()
+    {
+        $credit = $this->request->getVar('credit');
+        $shopName = $this->request->getVar('shopName');
+        $data = [
+            "shopName" => $shopName,
+            "shopCredit" => $credit
+        ];
+
+
+        switch ($data["shopCredit"]) {
+            case '15':
+                $newcredit = 50;
+                break;
+            case '30':
+                $newcredit = 100;
+                break;
+            case '45':
+                $newcredit = 150;
+                break;
+            case '60':
+                $newcredit = 200;
+                break;
+
+            default:
+                # code...
+                break;
+        }
+        $apiEndpoints = config('ApiEndpoints');
+        $oauthxTokenEndpoint = $apiEndpoints->baseUrl . 'api/v1/fetch/single/shop/name';
+
+        try {
+            $response = $this->client->request('GET', $oauthxTokenEndpoint, ['json' => $data]);
+        } catch (BadResponseException $exception) {
+            die($exception->getMessage());
+        }
+
+        $userRes = json_decode($response->getBody(), true);
+        print_r($userRes);
+        $data["shopCredit"] = $userRes["shops"][0]["shopCredit"] + $newcredit;
+        $apiEndpoints = config('ApiEndpoints');
+        $oauthxTokenEndpoint = $apiEndpoints->baseUrl . 'api/v1/add/credits';
+        try {
+            $response = $this->client->request('POST', $oauthxTokenEndpoint, ['json' => $data]);
+        } catch (BadResponseException $exception) {
+            die($exception->getMessage());
+        }
+
+        $userRes = json_decode($response->getBody(), true);
+        return  $this->respond($userRes);
+    }
 }

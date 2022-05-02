@@ -513,3 +513,105 @@ if (document.getElementById("btcpayment")) {
         },
     }).mount("#btcpayment");
 }
+if (document.getElementById("paycredit")) {
+    const app = Vue.createApp({
+        data() {
+            return {
+                selectedcredit: "",
+                // btnState: false,
+                // btnoneValue: "Pay With PayPal",
+            };
+        },
+        mounted() {
+            console.dir(this.$refs.shopname.outerText);
+
+            const script = document.createElement("script");
+            script.src =
+                "https://www.paypal.com/sdk/js?client-id=AZ4nF2Gcr-Afy1P2zqp8MeUIQ7kSS-e9kvADv5ynLTtw4HC_jMucHIvHesgXLRx8ooWebaJffVKp0yNW";
+            script.addEventListener("load", this.setLoaded);
+            document.body.appendChild(script);
+        },
+        methods: {
+            setLoaded() {
+                // let orderid = this.$refs.orderid.value;
+
+                window.paypal
+                    .Buttons({
+                        createOrder: function(data, actions) {
+                            //actions.disable();
+
+                            var ddl = document.getElementById("check");
+                            var selectedValue =
+                                ddl.options[ddl.selectedIndex].value;
+                            this.selectedcredit = selectedValue;
+
+                            if (selectedValue == "") {
+                                alert("Please select a Credit type");
+                            } else {
+                                return actions.order.create({
+                                    purchase_units: [{
+                                        amount: {
+                                            currency_code: "USD",
+                                            value: selectedValue,
+                                        },
+                                    }, ],
+                                });
+                            }
+                        },
+                        onApprove: async(data, actions) => {
+                            const order = await actions.order.capture();
+
+                            if (order.status == "COMPLETED") {
+                                let shopname = this.$refs.shopname.outerText;
+                                let credit = this.selectedcredit;
+
+                                axios
+                                    .post(
+                                        "/api/UpdateCredit", {
+                                            shopName: shopname,
+                                            credit: credit,
+                                        },
+                                        config
+                                    )
+                                    .then((response) => {
+                                        console.log(response.data);
+                                        if (response.data.status == "success") {
+                                            const Toast = Swal.mixin({
+                                                toast: true,
+                                                position: "top-end",
+                                                showConfirmButton: false,
+                                                timer: 4000,
+                                                timerProgressBar: true,
+                                                didOpen: (toast) => {
+                                                    toast.addEventListener(
+                                                        "mouseenter",
+                                                        Swal.stopTimer
+                                                    );
+                                                    toast.addEventListener(
+                                                        "mouseleave",
+                                                        Swal.resumeTimer
+                                                    );
+                                                },
+                                            });
+                                            Toast.fire({
+                                                icon: "success",
+                                                title: "Credit TopUp Successfully",
+                                            });
+                                            setTimeout(() => {
+                                                window.location.href = "";
+                                            }, 3000);
+                                        } else {
+                                            window.location.href = "";
+                                        }
+                                    });
+                            }
+                        },
+                        onError: (err) => {
+                            console.log(err);
+                        },
+                    })
+                    .render(this.$refs.paypal);
+            },
+        },
+    }).mount("#paycredit");
+}
