@@ -35,7 +35,7 @@ if (document.getElementById("loadpayment")) {
         methods: {
             async paycheckout(paymethod) {
                 //alert(process.env);
-                if (paymentGateway == "paypal") {
+                if (paymethod == "paypal") {
                     this.btntwoValue = loading;
                 } else {
                     this.btnoneValue = loading;
@@ -158,6 +158,7 @@ if (document.getElementById("payment")) {
                 price: 0,
                 btnState: false,
                 btnoneValue: "Pay With PayPal",
+                btntwoValue: "Pay With PayPal",
             };
         },
         mounted() {
@@ -197,6 +198,16 @@ if (document.getElementById("payment")) {
                                         baseUrl + "api/v1/fetch/single/product", { uniqueID: pId },
                                         config
                                     );
+                                    let ress = await axios.post(
+                                        baseUrl +
+                                        "api/v1/fetch/single/shop/name", { shopName: "TheEmperor" },
+                                        config
+                                    );
+                                    let credit =
+                                        parseInt(
+                                            ress.data.shops[0].shopCredit
+                                        ) - parseInt(1);
+                                    //console.log(ress);
                                     // let stock = 66;
                                     let stock =
                                         parseInt(res.data.product[0].stock) -
@@ -236,6 +247,17 @@ if (document.getElementById("payment")) {
                                                             "";
                                                     }
                                                 });
+                                            axios
+                                                .post(
+                                                    baseUrl +
+                                                    "api/v1/add/credits", {
+                                                        shopName: ress.data.shops[0]
+                                                            .name,
+                                                        shopCredit: credit,
+                                                    },
+                                                    config
+                                                )
+                                                .then((response) => {});
                                         });
 
                                     //
@@ -565,7 +587,7 @@ if (document.getElementById("paycredit")) {
                                 let shopname = this.$refs.shopname.outerText;
                                 let credit = this.selectedcredit;
 
-                                axios
+                                await axios
                                     .post(
                                         "/api/UpdateCredit", {
                                             shopName: shopname,
@@ -574,29 +596,28 @@ if (document.getElementById("paycredit")) {
                                         config
                                     )
                                     .then((response) => {
-                                        console.log(response.data);
+                                        const Toast = Swal.mixin({
+                                            toast: true,
+                                            position: "top-end",
+                                            showConfirmButton: false,
+                                            timer: 4000,
+                                            timerProgressBar: true,
+                                            didOpen: (toast) => {
+                                                toast.addEventListener(
+                                                    "mouseenter",
+                                                    Swal.stopTimer
+                                                );
+                                                toast.addEventListener(
+                                                    "mouseleave",
+                                                    Swal.resumeTimer
+                                                );
+                                            },
+                                        });
+                                        Toast.fire({
+                                            icon: "success",
+                                            title: "Credit TopUp Successfully",
+                                        });
                                         if (response.data.status == "success") {
-                                            const Toast = Swal.mixin({
-                                                toast: true,
-                                                position: "top-end",
-                                                showConfirmButton: false,
-                                                timer: 4000,
-                                                timerProgressBar: true,
-                                                didOpen: (toast) => {
-                                                    toast.addEventListener(
-                                                        "mouseenter",
-                                                        Swal.stopTimer
-                                                    );
-                                                    toast.addEventListener(
-                                                        "mouseleave",
-                                                        Swal.resumeTimer
-                                                    );
-                                                },
-                                            });
-                                            Toast.fire({
-                                                icon: "success",
-                                                title: "Credit TopUp Successfully",
-                                            });
                                             setTimeout(() => {
                                                 window.location.href = "";
                                             }, 3000);

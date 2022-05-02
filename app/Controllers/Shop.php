@@ -396,8 +396,6 @@ class Shop extends BaseController
             "shopName" => $shopName,
             "shopCredit" => $credit
         ];
-
-
         switch ($data["shopCredit"]) {
             case '15':
                 $newcredit = 50;
@@ -426,8 +424,9 @@ class Shop extends BaseController
         }
 
         $userRes = json_decode($response->getBody(), true);
-        print_r($userRes);
-        $data["shopCredit"] = $userRes["shops"][0]["shopCredit"] + $newcredit;
+        // print_r($userRes);
+        $me = (empty($userRes["shops"][0]["shopCredit"])) ? 0 : $userRes["shops"][0]["shopCredit"];
+        $data["shopCredit"] = $me + $newcredit;
         $apiEndpoints = config('ApiEndpoints');
         $oauthxTokenEndpoint = $apiEndpoints->baseUrl . 'api/v1/add/credits';
         try {

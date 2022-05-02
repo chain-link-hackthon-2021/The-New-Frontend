@@ -503,6 +503,29 @@ class Login extends BaseController
         }
 
         $apiEndpoints = config('ApiEndpoints');
+        $oauthxTokenEndpoint = $apiEndpoints->baseUrl . 'api/v1/fetch/single/shop/name';
+
+        try {
+            $response = $this->client->request('GET', $oauthxTokenEndpoint, ['json' => $data]);
+        } catch (BadResponseException $exception) {
+            die($exception->getMessage());
+        }
+
+        $credit = json_decode($response->getBody(), true);
+        // print_r($userRes);
+        $me = (empty($credit["shops"][0]["shopCredit"])) ? 0 : $credit["shops"][0]["shopCredit"];
+        $data["shopCredit"] = $me - 1;
+        $apiEndpoints = config('ApiEndpoints');
+        $oauthxTokenEndpoint = $apiEndpoints->baseUrl . 'api/v1/add/credits';
+        try {
+            $response = $this->client->request('POST', $oauthxTokenEndpoint, ['json' => $data]);
+        } catch (BadResponseException $exception) {
+            die($exception->getMessage());
+        }
+
+        $userRes = json_decode($response->getBody(), true);
+
+        $apiEndpoints = config('ApiEndpoints');
         $oauthxTokenEndpoint = $apiEndpoints->baseUrl . 'api/v1/update/product/stock';
 
         try {
@@ -510,6 +533,7 @@ class Login extends BaseController
         } catch (BadResponseException $exception) {
             die($exception->getMessage());
         }
+
         $result = json_decode($responsea->getBody(), true);
         return  $this->respond($result);
         //email notification here

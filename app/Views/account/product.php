@@ -17,18 +17,18 @@
     <script src="/assets/js/jquery.min.js"></script>
 </head>
 <style>
-    .btn.btn-primary.payment-btn>img {
-        max-height: 100%;
-    }
+.btn.btn-primary.payment-btn>img {
+    max-height: 100%;
+}
 
-    .btn-group-vertical-spacing>button,
-    .payment-btn {
-        width: 100%;
-        border-radius: 4px !important;
-        margin-bottom: 10px;
-        width: 100% !important;
-        height: 40px !important;
-    }
+.btn-group-vertical-spacing>button,
+.payment-btn {
+    width: 100%;
+    border-radius: 4px !important;
+    margin-bottom: 10px;
+    width: 100% !important;
+    height: 40px !important;
+}
 </style>
 
 <body>
@@ -44,7 +44,8 @@
                     <div class="col-lg-5 col-md-5 col-6">
                         <div class="header-left d-flex align-items-center">
                             <a href="/" id="header-logo" class="navbar-brand ml-1 p-0">
-                                <img src="/images/cube.png" alt="AnyBuy Logo" class="brand-image img-circle elevation-3" width="50px" style="opacity: .8">
+                                <img src="/images/cube.png" alt="AnyBuy Logo" class="brand-image img-circle elevation-3"
+                                    width="50px" style="opacity: .8">
                                 <span class="brand-text font-weight-light">AnyBuy</span>
                             </a>
                         </div>
@@ -86,14 +87,18 @@
                             Quantity
                         </h6>
                         <div class="input-style-1" style="display: inline-flex;">
-                            <button type="button" id="reduceQuantityButton" class="btn btn-primary" style="width: 50px;"> <strong> - </strong> </button>
-                            <input type="number" name="Quantity" value="1" style="text-align: center;" id="Quantity" onkeyup="qproduct()">
-                            <button type="button" id="increaseQuantityButton" class="btn btn-primary" style="width: 50px;"> <strong> + </strong> </button>
+                            <button type="button" id="reduceQuantityButton" class="btn btn-primary"
+                                style="width: 50px;"> <strong> - </strong> </button>
+                            <input type="number" name="Quantity" value="1" style="text-align: center;" id="Quantity"
+                                onkeyup="qproduct()">
+                            <button type="button" id="increaseQuantityButton" class="btn btn-primary"
+                                style="width: 50px;"> <strong> + </strong> </button>
                         </div>
                         <div class="result">
                             <div class="text-center">
                                 <input type="hidden" name="productPrice" id="productPrice">
-                                <span id="visiblePrice"> <?= $products[0]['productPrice']; ?></span> <?= $shops[0]['CurrencyType']; ?>
+                                <span id="visiblePrice"> <?= $products[0]['productPrice']; ?></span>
+                                <?= $shops[0]['CurrencyType']; ?>
                             </div>
                         </div>
                         <hr />
@@ -121,78 +126,89 @@
             <!-- End Row -->
         </div>
         <style>
-            input[type=number] {
-                -moz-appearance: textfield;
-            }
+        input[type=number] {
+            -moz-appearance: textfield;
+        }
 
-            input::-webkit-outer-spin-button,
-            input::-webkit-inner-spin-button {
-                -webkit-appearance: none;
-                margin: 0;
-            }
+        input::-webkit-outer-spin-button,
+        input::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
         </style>
         <script>
-            function qproduct() {
+        function qproduct() {
+            let unitPrice = parseInt("<?= $products[0]['productPrice']; ?>");
+            let quantity = parseInt($("#Quantity").val());
+            let unitp = parseInt("<?= $products[0]['stock']; ?>");
+            if (unitp >= quantity) {
+                let newQuantity = parseInt(quantity);
+                $("#Quantity").val(newQuantity)
+                let newPrice = parseInt(unitPrice * newQuantity);
+                $("#productPrice").val(newPrice)
+                $("#visiblePrice").html(newPrice)
+            } else {
+                let newQuantity = parseInt(quantity);
+                $("#Quantity").val(unitp)
+                let newPrice = parseInt(unitPrice * unitp);
+                $("#productPrice").val(newPrice)
+                $("#visiblePrice").html(newPrice)
+            }
+
+        }
+        $(document).ready(function() {
+
+            $("#reduceQuantityButton").on("click", function() {
+                let quantity = parseInt($("#Quantity").val());
+                let unitPrice = parseInt("<?= $products[0]['productPrice']; ?>");
+
+                if (quantity > 1) {
+                    let newQuantity = parseInt(quantity - 1);
+                    $("#Quantity").val(newQuantity);
+                    let newPrice = parseInt(unitPrice * newQuantity);
+                    $("#productPrice").val(newPrice)
+                    $("#visiblePrice").html(newPrice)
+                }
+            })
+            $("#increaseQuantityButton").on("click", function() {
+
                 let unitPrice = parseInt("<?= $products[0]['productPrice']; ?>");
                 let quantity = parseInt($("#Quantity").val());
                 let unitp = parseInt("<?= $products[0]['stock']; ?>");
-                if (unitp >= quantity) {
-                    let newQuantity = parseInt(quantity);
+
+                if (unitp !== quantity) {
+
+                    let newQuantity = parseInt(quantity + 1);
                     $("#Quantity").val(newQuantity)
                     let newPrice = parseInt(unitPrice * newQuantity);
                     $("#productPrice").val(newPrice)
                     $("#visiblePrice").html(newPrice)
                 } else {
                     let newQuantity = parseInt(quantity);
-                    $("#Quantity").val(unitp)
-                    let newPrice = parseInt(unitPrice * unitp);
+                    $("#Quantity").val(newQuantity)
+                    let newPrice = parseInt(unitPrice * newQuantity);
                     $("#productPrice").val(newPrice)
                     $("#visiblePrice").html(newPrice)
                 }
 
-            }
-            $(document).ready(function() {
 
-                $("#reduceQuantityButton").on("click", function() {
+            })
+            $("#buyNow").on("click", function() {
+                let stock = parseInt("<?= $shops[0]['shopCredit']; ?>");
+                if (stock > 1) {
                     let quantity = parseInt($("#Quantity").val());
-                    let unitPrice = parseInt("<?= $products[0]['productPrice']; ?>");
+                    window.location.href = "/@<?= $name; ?>/checkout/<?= $uniqueID; ?>/" + quantity;
+                } else {
+                    Swal.fire({
+                        title: 'Info!',
+                        text: 'This Vendor is Not Available to Take Order Currently..',
+                        icon: 'info',
+                        confirmButtonText: 'Okay'
+                    });
+                }
 
-                    if (quantity > 1) {
-                        let newQuantity = parseInt(quantity - 1);
-                        $("#Quantity").val(newQuantity);
-                        let newPrice = parseInt(unitPrice * newQuantity);
-                        $("#productPrice").val(newPrice)
-                        $("#visiblePrice").html(newPrice)
-                    }
-                })
-                $("#increaseQuantityButton").on("click", function() {
-
-                    let unitPrice = parseInt("<?= $products[0]['productPrice']; ?>");
-                    let quantity = parseInt($("#Quantity").val());
-                    let unitp = parseInt("<?= $products[0]['stock']; ?>");
-
-                    if (unitp !== quantity) {
-
-                        let newQuantity = parseInt(quantity + 1);
-                        $("#Quantity").val(newQuantity)
-                        let newPrice = parseInt(unitPrice * newQuantity);
-                        $("#productPrice").val(newPrice)
-                        $("#visiblePrice").html(newPrice)
-                    } else {
-                        let newQuantity = parseInt(quantity);
-                        $("#Quantity").val(newQuantity)
-                        let newPrice = parseInt(unitPrice * newQuantity);
-                        $("#productPrice").val(newPrice)
-                        $("#visiblePrice").html(newPrice)
-                    }
-
-
-                })
-                $("#buyNow").on("click", function() {
-                    let quantity = parseInt($("#Quantity").val());
-                    window.location.href = "/@<?= $name; ?>/checkout/<?= $uniqueID; ?>/" + quantity
-                })
-            });
+            })
+        });
         </script>
         <!-- ========== signin-section end ========== -->
 
@@ -209,6 +225,7 @@
     <script src="/assets/js/world-merc.js"></script>
     <script src="/assets/js/polyfill.js"></script>
     <script src="/assets/js/main.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </body>
 
 </html>

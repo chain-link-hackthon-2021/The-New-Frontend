@@ -33,7 +33,7 @@
     <?php
 
     $me =  trim($name, "@");
-    $data = ["shopName" => "" . $me];
+    $data = ["shopName" => "" . $name];
 
     $client = new \GuzzleHttp\Client();
 
@@ -41,6 +41,7 @@
         $response = $client->request('GET',  getenv("soapBaseUrl") . 'api/v1/fetch/single/shop/name', ['json' => $data]);
         // echo $response->getBody();
         $creditme = json_decode($response->getBody(), true);
+        // print_r($creditme);
     } catch (\GuzzleHttp\Exception\BadResponseException $exception) {
         die($exception->getMessage());
     }
