@@ -78,6 +78,7 @@ $routes->post('/Shop/CreateShop/CreateShop', 'Shop::createShopNow', ['filter' =>
 // Get routes
 $routes->get('/ShopAnalytics/RecentActivity/(:segment)', 'Orders::recentOrders/$1', ['filter' => 'auth']);
 $routes->get('/Shop/(:segment)/Orders', 'Orders::showOrders/$1', ['filter' => 'auth', 'as' => 'showorders']);
+$routes->get('/Shop/(:segment)/Orders/(:segment)', 'Orders::viewOrder/$1/$2', ['filter' => 'auth']);
 
 
 /*			Products Controller -> Related Routes			*/

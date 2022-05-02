@@ -35,8 +35,12 @@ if (document.getElementById("loadpayment")) {
         methods: {
             async paycheckout(paymethod) {
                 //alert(process.env);
-                this.btnoneValue = loading;
-                this.btntwoValue = loading;
+                if (paymentGateway == "paypal") {
+                    this.btntwoValue = loading;
+                } else {
+                    this.btnoneValue = loading;
+                }
+
                 this.btnState = true;
                 let unitPrice = this.$refs.unitPrice.value;
                 let shopName = this.$refs.shopName.value;
@@ -138,7 +142,7 @@ if (document.getElementById("loadpayment")) {
                             }, 3000);
                         }
                     } catch (err) {
-                        console.log(err);
+                        window.location.href = "";
                     }
                 } catch (err) {
                     console.log(err);

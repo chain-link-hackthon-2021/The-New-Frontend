@@ -14,44 +14,46 @@ use GuzzleHttp\Exception\BadResponseException;
 
 class Orders extends BaseController
 {
-	use ResponseTrait;
+    use ResponseTrait;
 
     public HTTPClient $client;
 
-    public function __construct(){
+    public function __construct()
+    {
         $this->client = new HTTPClient();
 
-        $apiEndpointsConfig = config('ApiEndpoints');		
+        $apiEndpointsConfig = config('ApiEndpoints');
     }
 
-    public function showOrders(string $name){
+    public function showOrders(string $name)
+    {
         $data = [
             'email' => session()->email,
             'username' => session()->username,
             'name' => $name,
         ];
 
-         // Get user details
-            $apiEndpoints = config('ApiEndpoints');
-            $oauthxTokenEndpoint = $apiEndpoints->baseUrl . 'api/v1/fetch/single/user';
+        // Get user details
+        $apiEndpoints = config('ApiEndpoints');
+        $oauthxTokenEndpoint = $apiEndpoints->baseUrl . 'api/v1/fetch/single/user';
 
-            try {
-                $response = $this->client->request('GET', $oauthxTokenEndpoint, ['json' => $data]);
-            } catch (BadResponseException $exception) {
-                die($exception->getMessage());
-            }
+        try {
+            $response = $this->client->request('GET', $oauthxTokenEndpoint, ['json' => $data]);
+        } catch (BadResponseException $exception) {
+            die($exception->getMessage());
+        }
 
-            $userRes = json_decode($response->getBody(), true);
+        $userRes = json_decode($response->getBody(), true);
         // ENDS
 
         // Get orders start
-            $oauthxTokenEndpoint = $apiEndpoints->baseUrl . 'api/v1/fetch/all/orders';
-            try {
-                $response = $this->client->request('GET', $oauthxTokenEndpoint, ['json' => $data]);
-            } catch (BadResponseException $exception) {
-                die($exception->getMessage());
-            }
-            $ordersRes = json_decode($response->getBody(), true);
+        $oauthxTokenEndpoint = $apiEndpoints->baseUrl . 'api/v1/fetch/all/orders';
+        try {
+            $response = $this->client->request('GET', $oauthxTokenEndpoint, ['json' => $data]);
+        } catch (BadResponseException $exception) {
+            die($exception->getMessage());
+        }
+        $ordersRes = json_decode($response->getBody(), true);
         // Get orders end
 
         return view('users/orders', [
@@ -61,8 +63,36 @@ class Orders extends BaseController
             "name" => $name,
         ]);
     }
+    public function viewOrder(string $name, string $order)
+    {
+        $data = [
+            'email' => session()->email,
+            'username' => session()->username,
+            'name' => $name,
+        ];
 
-    public function recentOrders(string $name) {
+        // Get user details
+        $apiEndpoints = config('ApiEndpoints');
+        $oauthxTokenEndpoint = $apiEndpoints->baseUrl . 'api/v1/fetch/single/user';
+
+        try {
+            $response = $this->client->request('GET', $oauthxTokenEndpoint, ['json' => $data]);
+        } catch (BadResponseException $exception) {
+            die($exception->getMessage());
+        }
+
+        $userRes = json_decode($response->getBody(), true);
+
+        // Get user details end
+
+        return view('users/viewOrder', [
+            'title' => "Order | " . $name,
+            'user' => $userRes['user'],
+            "name" => $name,
+        ]);
+    }
+    public function recentOrders(string $name)
+    {
         $data = [
             'email' => session()->email,
             'username' => session()->username,
@@ -73,13 +103,13 @@ class Orders extends BaseController
         $apiEndpoints = config('ApiEndpoints');
 
         // Get orders start
-            $oauthxTokenEndpoint = $apiEndpoints->baseUrl . 'api/v1/fetch/all/orders/recent';
-            try {
-                $response = $this->client->request('GET', $oauthxTokenEndpoint, ['json' => $data]);
-            } catch (BadResponseException $exception) {
-                die($exception->getMessage());
-            }
-            $ordersRes = json_decode($response->getBody(), true);
+        $oauthxTokenEndpoint = $apiEndpoints->baseUrl . 'api/v1/fetch/all/orders/recent';
+        try {
+            $response = $this->client->request('GET', $oauthxTokenEndpoint, ['json' => $data]);
+        } catch (BadResponseException $exception) {
+            die($exception->getMessage());
+        }
+        $ordersRes = json_decode($response->getBody(), true);
         // Get orders end
 
         $oauthxTokenEndpoint = $apiEndpoints->baseUrl . 'api/v1/fetch/single/shop/name';
@@ -99,7 +129,8 @@ class Orders extends BaseController
         ]);
     }
 
-    public function orderProduct(string $shopName, string $product){
+    public function orderProduct(string $shopName, string $product)
+    {
         $data = [
             'email' => session()->email,
             'username' => session()->username,
@@ -114,18 +145,18 @@ class Orders extends BaseController
             'unitPrice' => $this->request->getVar('unitPrice'),
         ];
         // insert into orders
-            $apiEndpoints = config('ApiEndpoints');
-            $oauthxTokenEndpoint = $apiEndpoints->baseUrl . 'api/v1/add/new/orders';
+        $apiEndpoints = config('ApiEndpoints');
+        $oauthxTokenEndpoint = $apiEndpoints->baseUrl . 'api/v1/add/new/orders';
 
-            try {
-                $response = $this->client->request('POST', $oauthxTokenEndpoint, ['json' => $data]);
-            } catch (BadResponseException $exception) {
-                die($exception->getMessage());
-            }
+        try {
+            $response = $this->client->request('POST', $oauthxTokenEndpoint, ['json' => $data]);
+        } catch (BadResponseException $exception) {
+            die($exception->getMessage());
+        }
 
-            $orderRes = json_decode($response->getBody(), true);
+        $orderRes = json_decode($response->getBody(), true);
         // ENDS
-        if($orderRes['status'] == "success") {
+        if ($orderRes['status'] == "success") {
             $couponUses = $this->request->getVar('couponUses');
             $couponData = [
                 'couponCode' => $this->request->getVar('couponCodeH'),
@@ -133,20 +164,19 @@ class Orders extends BaseController
                 'couponUses' => $couponUses,
             ];
             // insert into orders
-                $oauthxTokenEndpoint = $apiEndpoints->baseUrl . 'api/v1/update/coupon/order';
+            $oauthxTokenEndpoint = $apiEndpoints->baseUrl . 'api/v1/update/coupon/order';
 
-                try {
-                    $response = $this->client->request('POST', $oauthxTokenEndpoint, ['json' => $couponData]);
-                } catch (BadResponseException $exception) {
-                    die($exception->getMessage());
-                }
+            try {
+                $response = $this->client->request('POST', $oauthxTokenEndpoint, ['json' => $couponData]);
+            } catch (BadResponseException $exception) {
+                die($exception->getMessage());
+            }
 
-                $couponRes = json_decode($response->getBody(), true);
-                session()->setFlashdata('success', '<i class="lni lni-check"></i> <strong>Success!</strong> Order recieved!');
+            $couponRes = json_decode($response->getBody(), true);
+            session()->setFlashdata('success', '<i class="lni lni-check"></i> <strong>Success!</strong> Order recieved!');
         } else {
             session()->setFlashdata('error', '<i class="lni lni-ban"></i> <strong>Error!</strong> An error occurred ');
         }
         return redirect()->back();
     }
-
 }

@@ -29,35 +29,44 @@
                         <!-- end table row-->
                     </thead>
                     <tbody>
-                        <?php if(empty($orders)){
+                        <?php
+
+                        if (empty($orders)) {
+
+                        ?>
+                        <tr class="odd">
+                            <td colspan="5" class="min-width" valign="top">No data available in table</td>
+                        </tr>
+                        <?php
+                        } else {
+                            foreach ($orders as $order) {
                             ?>
-                                <tr class="odd">
-                                    <td colspan="5" class="min-width" valign="top">No data available in table</td>
-                                </tr>
-                            <?php
-                            } else {
-                                foreach($orders as $order){
-                                    ?>
-                                        <tr>
-                                            <td class="min-width">
-                                                <?= $order['productName']; ?>
-                                            </td>
-                                            <td class="min-width">
-                                                <?= $order['paymentGateway']; ?>
-                                            </td>
-                                            <td class="min-width">
-                                                <?= $order['created_at']; ?>
-                                            </td>
-                                            <td class="min-width">
-                                                <?= $order['totalPrice']; ?>
-                                            </td>
-                                            <td class="min-width">
-                                                <?= $order['orderStatus']; ?>
-                                            </td>
-                                        </tr>
-                                    <?php
-                                }
+
+                        <tr>
+                            <td class="min-width">
+                                <a
+                                    href="/Shop/@<?= $name ?>/Orders/<?= $order['orderId'] ?>"><?= $order['productName']; ?></a>
+                            </td>
+                            <td class="min-width">
+                                <?= $order['paymentGateway']; ?>
+                            </td>
+                            <td class="min-width">
+                                <?= $order['created_at']; ?>
+                            </td>
+                            <td class="min-width">
+                                $<?= $order['totalPrice']; ?>
+                            </td>
+                            <td class="min-width">
+                                <span
+                                    class="status-btn <?= $retVal = ($order['orderStatus'] == 'completed') ? 'success-btn' : 'close-btn'; ?>">
+                                    <?= $order['orderStatus']; ?>
+                                </span>
+
+                            </td>
+                        </tr>
+                        <?php
                             }
+                        }
                         ?>
                     </tbody>
                 </table>
