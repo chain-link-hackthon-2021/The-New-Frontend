@@ -101,16 +101,6 @@
                                             <p class="text-sm">$4000</p>
                                         </td>
                                     </tr>
-                                    <tr>
-                                        <td></td>
-
-                                        <td>
-                                            <h6 class="text-sm text-medium">Discounts</h6>
-                                        </td>
-                                        <td>
-                                            <h6 class="text-sm text-bold">$33</h6>
-                                        </td>
-                                    </tr>
 
                                     <tr>
                                         <td></td>

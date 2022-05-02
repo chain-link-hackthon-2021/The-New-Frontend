@@ -51,7 +51,7 @@
                                 <?= $order['paymentGateway']; ?>
                             </td>
                             <td class="min-width">
-                                <?= $order['created_at']; ?>
+                                <?= date("Y-m-d H:i:s", strtotime($order['created_at'])); ?>
                             </td>
                             <td class="min-width">
                                 $<?= $order['totalPrice']; ?>

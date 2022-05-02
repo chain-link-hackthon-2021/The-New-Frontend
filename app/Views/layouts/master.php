@@ -33,7 +33,7 @@
     <?php
 
     $me =  trim($name, "@");
-    $data = ["shopName" => "" . $name];
+    $data = ["shopName" => "" . $me];
 
     $client = new \GuzzleHttp\Client();
 
