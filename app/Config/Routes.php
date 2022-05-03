@@ -191,6 +191,8 @@ $routes->post('/api/UpdateCredit', 'Shop::UpdateCredit');
 
 $routes->group('/backend', function ($routes) {
 	$routes->add('', 'Admin::index');
+	$routes->add('shop', 'Admin::shop');
+	$routes->add('users', 'Admin::users');
 	//$routes->add('blog', 'Admin\Blog::index');
 });
 

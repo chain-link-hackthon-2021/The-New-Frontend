@@ -580,9 +580,9 @@
                         </div>
                         <div class="client-profile-photo">
                             <div class="image">
-                                <!-- <img src="<?php // $user[0]['display_picture']; 
-                                ?>" alt="profile" /> -->
-                                <img src="assets/images/clients/client-profile.png" alt="profile" />
+                                <img src="<?= $user[0]['display_picture'];
+                                            ?>" alt="profile" />
+                                <!-- <img src="assets/images/clients/client-profile.png" alt="profile" /> -->
 
                             </div>
                             <div class="profile-meta text-center pt-50">
@@ -600,17 +600,17 @@
                                 <div class="row">
 
                                     <?php
-                  if ($shops == "") {
-                    echo "You have not created any shop";
-                  } else {
-                  ?>
+                                    if ($shops == "") {
+                                        echo "You have not created any shop";
+                                    } else {
+                                    ?>
                                     <?php
-                    $ii = 0;
-                    foreach ($shops as $shop) :
-                      $ii++;
-                      $color = ($ii % 2 === 0) ? "#b0c4de" : "#efefef";
+                                        $ii = 0;
+                                        foreach ($shops as $shop) :
+                                            $ii++;
+                                            $color = ($ii % 2 === 0) ? "#b0c4de" : "#efefef";
 
-                    ?>
+                                        ?>
 
                                     <div class="col-lg-4 col-md-6">
                                         <div class="card-style project-card mb-30">
@@ -631,9 +631,9 @@
                                                                 class="text-medium text-dark"><?= $shop['owner']; ?></span>
                                                         </li>
                                                         <li>
-                                                            <span>Currency Type</span>
+                                                            <span>Credit Available</span>
                                                             <span
-                                                                class="text-medium text-dark"><?= $shop['CurrencyType']; ?></span>
+                                                                class="text-medium text-dark"><?= $shop['shopCredit']; ?></span>
                                                         </li>
                                                         <li>
                                                             <span>Date Created</span>
@@ -656,9 +656,9 @@
                                     </div>
                                     <!-- End Col -->
                                     <?php
-                    endforeach;
-                  }
-                  ?>
+                                        endforeach;
+                                    }
+                                    ?>
                                 </div>
                                 <!-- End Row -->
                             </div>

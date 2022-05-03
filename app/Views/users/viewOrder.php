@@ -4,6 +4,36 @@
 <style>
 
 </style>
+<style>
+@media (max-width: 767px) {
+    .main-wrapper .container-fluid {
+        padding-left: 5px;
+        padding-right: 5px;
+    }
+
+    thead th {
+        font-size: 1em;
+        padding: 1px !important;
+    }
+
+    th {
+        font-weight: normal;
+        font-size: 1em;
+        padding: 1px !important;
+    }
+
+    table td {
+        border-top: none !important;
+        padding: 1px !important;
+    }
+
+    /* table {
+        table-layout: fixed;
+        word-wrap: break-word;
+    }    */
+
+}
+</style>
 <!-- ========== section start ========== -->
 <section>
 
@@ -15,7 +45,9 @@
                     <div class="title d-flex align-items-center flex-wrap mb-30">
                         <ul class="buttons-group">
                             <li>
-                                <a href="#0" class="main-btn primary-btn square-btn btn-hover">Customer View</a>
+                                <a href="/Shop/@<?= $name ?>/"
+                                    class="main-btn primary-btn square-btn btn-hover">Customer
+                                    View</a>
                             </li>
                             <li>
                                 <a href="#0" class="main-btn secondary-btn square-btn btn-hover">Refund</a>
@@ -46,7 +78,8 @@
             <!-- end row -->
         </div>
         <!-- ========== title-wrapper end ========== -->
-
+        <?php //    print_r($order); 
+        ?>
         <!-- Invoice Wrapper Start -->
         <div class="invoice-wrapper">
             <div class="row">
@@ -56,18 +89,26 @@
                             <div class="invoice-for">
                                 <h2 class="mb-10">Invoice</h2>
                                 <p class="text-sm">
-                                    Nivea men
+                                    <?= $order['productName']; ?>
                                 </p>
                             </div>
+                            <div class="row">
 
+                                <div class="col-md-9">
+                                    <b>Paid By</b>
+                                    <p><?= $order['orderFrom']; ?></p>
+                                </div>
+
+                            </div>
                             <div class="invoice-date">
-                                <p><span>Date Issued:</span> 4/29/2022 7:36:21 AM</p>
+                                <p><span>Date Issued:</span>
+                                    <?= date("Y-m-d H:i:s", strtotime($order['created_at'])); ?></p>
                                 <p><span>Payment Status:</span>
                                     <span class=" success-btn">
-                                        Completed
+                                        <?= $order['orderStatus']; ?>
                                     </span>
                                 </p>
-                                <p><span>Order ID:</span> 11141ba5-8afe-402a-a888-0939abfb12ad</p>
+                                <p><span>Order ID:</span> <?= $order['orderId']; ?></p>
                             </div>
                         </div>
                         <div class="table-responsive">
@@ -91,14 +132,14 @@
 
                                     <tr>
                                         <td>
-                                            <p class="text-sm">Web design</p>
+                                            <p class="text-sm"> <?= $order['productName']; ?></p>
                                         </td>
 
                                         <td>
-                                            <p class="text-sm">2</p>
+                                            <p class="text-sm"> <?= $order['quantity']; ?></p>
                                         </td>
                                         <td>
-                                            <p class="text-sm">$4000</p>
+                                            <p class="text-sm">$ <?= $order['unitPrice']; ?></p>
                                         </td>
                                     </tr>
 
@@ -106,10 +147,10 @@
                                         <td></td>
 
                                         <td>
-                                            <h6 class="text-sm text-medium">PlatForm Fees</h6>
+                                            <h6 class="text-sm text-medium">Discount</h6>
                                         </td>
                                         <td>
-                                            <h6 class="text-sm text-bold">Free</h6>
+                                            <h6 class="text-sm text-bold">0</h6>
                                         </td>
                                     </tr>
                                     <tr>
@@ -119,62 +160,73 @@
                                             <h4>Total</h4>
                                         </td>
                                         <td>
-                                            <h4>$3135</h4>
+                                            <h4>$ <?= $order['totalPrice']; ?></h4>
                                         </td>
                                     </tr>
                                 </tbody>
                             </table>
                         </div>
-                        <table class="table">
-                            <thead class=" padd">
-                                <tr>
-                                    <th class="col-md-1" scope="col">Crypto Details</th>
-                                    <th class="col-md-1" scope="col"></th>
-                                    <th class="col-md-1" scope="col"></th>
-                                    <th class="col-md-1" scope="col"></th>
-                                    <th class="col-md-1" scope="col"></th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td scope="row">Expected</td>
-                                    <td>0.00987000 BTC</td>
-                                </tr>
-                                <tr>
-                                    <th scope="row">Recieved</th>
-                                    <th>0.00000000 BTC</th>
-                                </tr>
-                                <tr>
-                                    <td scope="row">Platform</td>
-                                    <td>0.00000000 BTC</td>
-                                </tr>
-                                <tr>
-                                    <th scope="row">Total</th>
-                                    <th>0.00000000 BTC</th>
-                                </tr>
-                            </tbody>
-                        </table>
 
-                        <hr />
-                        <div class="row">
-                            <div class="col-md-3">
-                                <p>BTC Address</p>
-                            </div>
-                            <div class="col-md-9">
-                                <p><a
-                                        href="https://www.blockchain.com/btc/address/3PMPdKEB7R7SpoKu8F9KPmivarCVyGUYso">3PMPdKEB7R7SpoKu8F9KPmivarCVyGUYso</a>
-                                </p>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-3">
-                                <b>Paid By</b>
-                            </div>
-                            <div class="col-md-9">
-                                <p><a href="">fsdfsdf</a></p>
+                        <?php if ($order['paymentGateway'] == "bitcoin") :
+                            $confirm = "?confirmations=6";
+                            $url = "https://blockchain.info/q/addressbalance/";
+                            // $address = $addres;
+                            $client = new \GuzzleHttp\Client();
+                            try {
+                                $response = $client->request('GET', $url . $order['btc_address'] . $confirm);
+                            } catch (\GuzzleHttp\Exception\BadResponseException $exception) {
+                                die($exception->getMessage());
+                            }
+
+                            $result = json_decode($response->getBody(), true);
+                        ?>
+
+                        <div>
+                            <table class="table">
+                                <thead class=" padd">
+                                    <tr>
+                                        <th class="col-md-1" scope="col"></th>
+                                        <th class="col-md-1" scope="col">Crypto Details</th>
+                                        <th class="col-md-1" scope="col"></th>
+                                        <th class="col-md-1" scope="col"></th>
+
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td></td>
+                                        <td scope="row">Expected</td>
+                                        <td> <?= $order['btcAmount'] ?? '0.00000000' ?> BTC</td>
+                                    </tr>
+                                    <tr>
+                                        <td></td>
+                                        <th scope="row">Recieved</th>
+                                        <th><?= $result ?> BTC</th>
+                                    </tr>
+
+                                    <tr>
+                                        <td></td>
+                                        <th scope="row">Total</th>
+                                        <th><?= $result ?> BTC</th>
+                                    </tr>
+                                </tbody>
+                            </table>
+
+                            <hr />
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <p>BTC Address</p>
+                                </div>
+                                <div class="col-md-9">
+                                    <p class="text-sm "><a
+                                            href="https://www.blockchain.com/btc/address/<?= $order['btc_address'] ?>">
+                                            <?= $order['btc_address'] ?></a>
+                                    </p>
+                                </div>
                             </div>
 
                         </div>
+                        <?php endif; ?>
                         <div class="note-wrapper warning-alert py-4 px-sm-3 px-lg-5">
                             <div class="alert">
                                 <h5 class="text-bold mb-15">Notes:</h5>

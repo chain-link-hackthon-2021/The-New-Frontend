@@ -83,12 +83,23 @@ class Orders extends BaseController
 
         $userRes = json_decode($response->getBody(), true);
 
-        // Get user details end
+        // Get user details 
+        $apiEndpoints = config('ApiEndpoints');
+        $oauthxTokenEndpoint = $apiEndpoints->baseUrl . 'api/v1/fetch/orderbyid';
+        $data["orderId"] = $order;
+        try {
+            $response = $this->client->request('GET', $oauthxTokenEndpoint, ['json' => $data]);
+        } catch (BadResponseException $exception) {
+            die($exception->getMessage());
+        }
+
+        $res  = json_decode($response->getBody(), true);
 
         return view('users/viewOrder', [
             'title' => "Order | " . $name,
             'user' => $userRes['user'],
             "name" => $name,
+            "order" => $res["orders"][0],
         ]);
     }
     public function recentOrders(string $name)

@@ -26,13 +26,22 @@ class Admin extends BaseController
 
     public function index()
     {
-        echo  view('admin/inc/header', [
-            'title' => 'AnyBuy',
-        ]);
+        echo  view('admin/inc/header', ['title' => 'AnyBuy',]);
         echo  view('admin/dashboard');
         echo  view('admin/inc/footer');
     }
-
+    public function shop()
+    {
+        echo  view('admin/inc/header', ['title' => 'Shop',]);
+        echo  view('admin/shop');
+        echo  view('admin/inc/footer');
+    }
+    public function users()
+    {
+        echo  view('admin/inc/header', ['title' => 'Users',]);
+        echo  view('admin/user');
+        echo  view('admin/inc/footer');
+    }
     public function fund()
     {
         $id = session()->id;
