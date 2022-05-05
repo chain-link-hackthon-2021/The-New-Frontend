@@ -42,6 +42,18 @@ class Admin extends BaseController
         echo  view('admin/user');
         echo  view('admin/inc/footer');
     }
+    public function addcredit()
+    {
+        echo  view('admin/inc/header', ['title' => 'Add Credit',]);
+        echo  view('admin/addcredit');
+        echo  view('admin/inc/footer');
+    }
+    public function ordercredit()
+    {
+        echo  view('admin/inc/header', ['title' => 'Order Credit',]);
+        echo  view('admin/ordercredit');
+        echo  view('admin/inc/footer');
+    }
     public function fund()
     {
         $id = session()->id;

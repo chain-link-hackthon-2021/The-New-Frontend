@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-    <title>Dashboard - NiceAdmin Bootstrap Template</title>
+    <title><?= $title ?> - Admin AnyBuy</title>
     <meta content="" name="description">
     <meta content="" name="keywords">
 
@@ -30,13 +30,6 @@
 
     <!-- Template Main CSS File -->
     <link href="/ssd/css/style.css" rel="stylesheet">
-
-    <!-- =======================================================
-  * Template Name: NiceAdmin - v2.2.2
-  * Template URL: https://bootstrapmade.com/nice-admin-bootstrap-admin-html-template/
-  * Author: BootstrapMade.com
-  * License: https://bootstrapmade.com/license/
-  ======================================================== -->
 </head>
 
 <body>
@@ -253,17 +246,36 @@
                 </a>
                 <ul id="icons-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
                     <li>
-                        <a href="icons-bootstrap.html">
+                        <a href="/backend/cashwithdraw">
                             <i class="bi bi-circle"></i><span>Cash</span>
                         </a>
                     </li>
                     <li>
-                        <a href="icons-remix.html">
+                        <a href="/backend/btcwithdraw">
                             <i class="bi bi-circle"></i><span>Bitcoin</span>
                         </a>
                     </li>
                 </ul>
             </li><!-- End Icons Nav -->
+
+            <li class="nav-item">
+                <a class="nav-link collapsed" data-bs-target="#credit" data-bs-toggle="collapse" href="#">
+                    <i class="bi bi-sliders"></i><span>Shop Credit</span><i class="bi bi-chevron-down ms-auto"></i>
+                </a>
+                <ul id="credit" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+                    <li>
+                        <a href="/backend/addcredit">
+                            <i class="bi bi-circle"></i><span>Add Credit</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/backend/ordercredit">
+                            <i class="bi bi-circle"></i><span>Order Credit</span>
+                        </a>
+                    </li>
+                </ul>
+            </li><!-- End Charts Nav -->
+
 
             <li class="nav-item">
                 <a class="nav-link collapsed" data-bs-target="#charts-nav" data-bs-toggle="collapse" href="#">
@@ -272,7 +284,7 @@
                 <ul id="charts-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
                     <li>
                         <a href="charts-chartjs.html">
-                            <i class="bi bi-circle"></i><span>Shop Percentage</span>
+                            <i class="bi bi-circle"></i><span>Shop Credit</span>
                         </a>
                     </li>
                     <li>

@@ -45,8 +45,7 @@
                     <div class="title d-flex align-items-center flex-wrap mb-30">
                         <ul class="buttons-group">
                             <li>
-                                <a href="/Shop/@<?= $name ?>/"
-                                    class="main-btn primary-btn square-btn btn-hover">Customer
+                                <a href="/Shop/<?= $name ?>" class="main-btn primary-btn square-btn btn-hover">Customer
                                     View</a>
                             </li>
                             <li>
@@ -104,11 +103,21 @@
                                 <p><span>Date Issued:</span>
                                     <?= date("Y-m-d H:i:s", strtotime($order['created_at'])); ?></p>
                                 <p><span>Payment Status:</span>
-                                    <span class=" success-btn">
-                                        <?= $order['orderStatus']; ?>
+                                    <span
+                                        class=" <?= ($order['admin_status'] == 1) ? 'success-btn' : 'warning-btn'; ?>">
+
+                                        <?php if ($order['orderStatus'] == "completed") {
+                                            return ($order['admin_status'] == 1) ? 'Completed' : 'Processing';
+                                        } ?>
                                     </span>
                                 </p>
                                 <p><span>Order ID:</span> <?= $order['orderId']; ?></p>
+                                <p><span>Customer Status:</span>
+                                    <span
+                                        class=" <?= ($order['orderStatus'] == "completed") ? 'success-btn' : 'warning-btn'; ?>">
+                                        <?= $order['orderStatus']; ?>
+                                    </span>
+                                </p>
                             </div>
                         </div>
                         <div class="table-responsive">
@@ -150,7 +159,7 @@
                                             <h6 class="text-sm text-medium">Discount</h6>
                                         </td>
                                         <td>
-                                            <h6 class="text-sm text-bold">0</h6>
+                                            <h6 class="text-sm text-bold"><?= $order['discount'] ?? 0; ?>%</h6>
                                         </td>
                                     </tr>
                                     <tr>

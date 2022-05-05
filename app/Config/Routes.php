@@ -50,6 +50,13 @@ $routes->get('/@(:segment)/CryptoPayment/(:segment)', 'Login::productorderbtc/$1
 
 // Post routes
 $routes->post('/Account/Login', 'Login::initiateLogin', ['filter' => 'noauth']);
+$routes->post('/Account/Manage', 'Settings::editUserProfile', ['filter' => 'auth']);
+
+
+
+
+
+$routes->get('/Account/Manage', 'Settings::Userprofile', ['filter' => 'auth']);
 
 
 /*			Shop Controller -> Related Routes			*/
@@ -193,6 +200,8 @@ $routes->group('/backend', function ($routes) {
 	$routes->add('', 'Admin::index');
 	$routes->add('shop', 'Admin::shop');
 	$routes->add('users', 'Admin::users');
+	$routes->add('addcredit', 'Admin::addcredit');
+	$routes->add('ordercredit', 'Admin::ordercredit');
 	//$routes->add('blog', 'Admin\Blog::index');
 });
 

@@ -14,16 +14,18 @@ use GuzzleHttp\Exception\BadResponseException;
 
 class Settings extends BaseController
 {
-	use ResponseTrait;
+    use ResponseTrait;
 
     public HTTPClient $client;
 
-    public function __construct(){
+    public function __construct()
+    {
         $this->client = new HTTPClient();
 
-        $apiEndpointsConfig = config('ApiEndpoints');		
+        $apiEndpointsConfig = config('ApiEndpoints');
     }
-    public function settings(string $name) {
+    public function settings(string $name)
+    {
         $data = [
             'email' => session()->email,
             'username' => session()->username,
@@ -60,31 +62,32 @@ class Settings extends BaseController
         ]);
     }
 
-    public function SaveSetings(string $name) {
+    public function SaveSetings(string $name)
+    {
         $newName = $this->request->getVar('NewShopName');
         $PayPalEnabled = $this->request->getVar('PayPalEnabled');
         $StripeEnabled = $this->request->getVar('StripeEnabled');
         $CoinbaseCommerceEnabled = $this->request->getVar('CoinbaseCommerceEnabled');
 
-        if($newName == $name){
+        if ($newName == $name) {
             $thename = $name;
         } else {
             $thename = $newName;
         }
 
-        if($PayPalEnabled == true){
+        if ($PayPalEnabled == true) {
             $PayPalEnabled = 1;
         } else {
             $PayPalEnabled = 0;
         }
 
-        if($StripeEnabled == true){
+        if ($StripeEnabled == true) {
             $StripeEnabled = 1;
         } else {
             $StripeEnabled = 0;
         }
 
-        if($CoinbaseCommerceEnabled == true){
+        if ($CoinbaseCommerceEnabled == true) {
             $CoinbaseCommerceEnabled = 1;
         } else {
             $CoinbaseCommerceEnabled = 0;
@@ -131,7 +134,8 @@ class Settings extends BaseController
         print_r($userRes);
     }
 
-    public function CryptoCurrencySettings(string $name) {
+    public function CryptoCurrencySettings(string $name)
+    {
         $data = [
             'email' => session()->email,
             'username' => session()->username,
@@ -168,7 +172,8 @@ class Settings extends BaseController
         ]);
     }
 
-    public function Design(string $name) {
+    public function Design(string $name)
+    {
         $data = [
             'email' => session()->email,
             'username' => session()->username,
@@ -186,7 +191,7 @@ class Settings extends BaseController
         }
 
         $userRes = json_decode($response->getBody(), true);
-        
+
         $oauthxTokenEndpoint = $apiEndpoints->baseUrl . 'api/v1/fetch/single/shop/name';
 
         try {
@@ -205,7 +210,8 @@ class Settings extends BaseController
         ]);
     }
 
-    public function DesignNow(string $name) {
+    public function DesignNow(string $name)
+    {
         helper(['form', 'url']);
 
         $showHelp = $this->request->getVar('ShowHelpDeskButton');
@@ -215,7 +221,7 @@ class Settings extends BaseController
         $oldImage = $this->request->getVar('oldImage');
 
 
-        if(empty($BannerImage->getName())){
+        if (empty($BannerImage->getName())) {
             $imageSrc = $oldImage;
         } else {
             $newName = $BannerImage->getRandomName();
@@ -223,24 +229,24 @@ class Settings extends BaseController
             $imageSrc = "/uploads/" . $BannerImage->getName();
         }
 
-        if($ShowBadges == true){
+        if ($ShowBadges == true) {
             $ShowBadges = 1;
         } else {
             $ShowBadges = 0;
         }
 
-        if($showHelp == true){
+        if ($showHelp == true) {
             $showHelp = 1;
         } else {
             $showHelp = 0;
         }
 
-        if($ShowProfileImage == true){
+        if ($ShowProfileImage == true) {
             $ShowProfileImage = 1;
         } else {
             $ShowProfileImage = 0;
         }
-        
+
         $data = [
             'email' => session()->email,
             'username' => session()->username,
@@ -262,12 +268,100 @@ class Settings extends BaseController
         }
 
         $updateRes = json_decode($response->getBody(), true);
-        
-        if($updateRes['status'] === "success"){
+
+        if ($updateRes['status'] === "success") {
             session()->setFlashdata('success', '<i class="lni lni-check"></i> <strong>Success!</strong> Updated. ');
         } else {
             session()->setFlashdata('error', '<i class="lni lni-ban"></i> <strong>Error!</strong> Not Updated. ');
         }
+        return redirect()->back();
+    }
+    public function Userprofile()
+    {
+        $data = [
+            'email' => session()->email,
+            'username' => session()->username,
+        ];
+
+        // Get user details
+        $apiEndpoints = config('ApiEndpoints');
+        $oauthxTokenEndpoint = $apiEndpoints->baseUrl . 'api/v1/fetch/single/user';
+
+        try {
+            $response = $this->client->request('GET', $oauthxTokenEndpoint, ['json' => $data]);
+        } catch (BadResponseException $exception) {
+            die($exception->getMessage());
+        }
+
+        $userRes = json_decode($response->getBody(), true);
+
+
+        return view('users/userprofile', [
+            'title' => "Settings | ",
+            'user' => $userRes['user'],
+
+        ]);
+    }
+    public function editUserProfile()
+    {
+        helper(['form', 'url']);
+        $username = $this->request->getVar('username');
+        $firstname = $this->request->getVar('firstname');
+        $lastname = $this->request->getVar('lastname');
+        $telephone = $this->request->getVar('telephone');
+        $discordlink = $this->request->getVar('discordlink');
+        if (empty($username)) {
+            session()->setFlashdata('error', '<i class="lni lni-ban"></i> <strong>Error!</strong> username is required ');
+            return redirect()->back();
+        }
+        if (empty($firstname)) {
+            session()->setFlashdata('error', '<i class="lni lni-ban"></i> <strong>Error!</strong>  firstname is required ');
+            return redirect()->back();
+        }
+        if (empty($lastname)) {
+            session()->setFlashdata('error', '<i class="lni lni-ban"></i> <strong>Error!</strong> lastname  is required ');
+            return redirect()->back();
+        }
+
+        $apiEndpoints = config('ApiEndpoints');
+        $userImage = $this->request->getFile('userImage');
+        $oldImage = $this->request->getVar('oldImage');
+
+        if (empty($userImage->getName())) {
+            $imageSrc = $oldImage;
+        } else {
+            $newName = $userImage->getRandomName();
+            $userImage->move(WRITEPATH . '../public/uploads/profile', $newName);
+            $imageSrc = "/uploads/profile/" . $userImage->getName();
+        }
+
+        $data = [
+            'email' =>  $this->request->getVar('email'),
+            'username' => $username,
+            'firstname' => $firstname,
+            'lastname' => $lastname,
+            'display_picture' => $imageSrc,
+            'telephone' => $telephone,
+            'DiscordLink' => $discordlink,
+        ];
+
+        $oauthxTokenEndpoint = $apiEndpoints->baseUrl . 'api/v1/update/single/user';
+
+        try {
+            $response = $this->client->request('POST', $oauthxTokenEndpoint, ['json' => $data]);
+        } catch (BadResponseException $exception) {
+            die($exception->getMessage());
+        }
+
+        $productRes = json_decode($response->getBody(), true);
+
+
+        if ($productRes['status'] == "success") {
+            session()->setFlashdata('success', '<i class="lni lni-check"></i> <strong>Success!</strong> Profile updated!');
+        } else {
+            session()->setFlashdata('error', '<i class="lni lni-ban"></i> <strong>Error!</strong> An error occurred ');
+        }
+
         return redirect()->back();
     }
 }

@@ -63,3 +63,26 @@ if (document.getElementById("userlist")) {
         },
     }).mount("#userlist");
 }
+if (document.getElementById("creditlist")) {
+    const app = Vue.createApp({
+        data() {
+            return {
+                creditlist: [],
+            };
+        },
+        mounted() {
+            this.loadorderCredit();
+        },
+        methods: {
+            async loadorderCredit() {
+                try {
+                    let res = await axios.get(
+                        baseUrl + "api/v1/admin/all/shop",
+                        config
+                    );
+                    this.creditlist = res.data.shops;
+                } catch (error) {}
+            },
+        },
+    }).mount("#creditlist");
+}

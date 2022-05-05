@@ -427,6 +427,8 @@ class Products extends BaseController
                         echo json_encode([
                             'status' => 'success',
                             'newPrice' => $new,
+                            "couponAmount" => $discountDigit,
+                            "discount" => $couponDiscount,
                             'couponID' => $couponRes['coupon'][0]['couponID'],
                             'couponUses' => $couponRes['coupon'][0]['couponUses'],
                         ]);

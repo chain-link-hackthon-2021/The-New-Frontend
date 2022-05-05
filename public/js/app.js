@@ -50,7 +50,8 @@ if (document.getElementById("loadpayment")) {
                 let totalPrice = this.$refs.price.value;
                 let productName = this.$refs.productName.value;
                 let productId = this.$refs.productId.value;
-
+                let discount = this.$refs.Camount.innerText;
+                Camount;
                 let res = await axios.get(
                     "https://blockchain.info/tobtc?currency=USD&value=" +
                     totalPrice
@@ -67,6 +68,7 @@ if (document.getElementById("loadpayment")) {
                         orderFrom: orderFrom,
                         paymentGateway: paymentGateway,
                         btcAmount: res.data,
+                        discount: discount,
                     };
                     //console.log(fm);
                     let ress = await axios.post(
