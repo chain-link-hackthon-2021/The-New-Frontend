@@ -14,17 +14,19 @@ use GuzzleHttp\Exception\BadResponseException;
 
 class Feedback extends BaseController
 {
-	use ResponseTrait;
+    use ResponseTrait;
 
     public HTTPClient $client;
 
-    public function __construct(){
+    public function __construct()
+    {
         $this->client = new HTTPClient();
 
-        $apiEndpointsConfig = config('ApiEndpoints');		
+        $apiEndpointsConfig = config('ApiEndpoints');
     }
-    
-    public function index(string $shopName) {
+
+    public function index(string $shopName)
+    {
         $data = [
             'email' => session()->email,
             'username' => session()->username,

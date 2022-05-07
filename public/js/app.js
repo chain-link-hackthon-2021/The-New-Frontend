@@ -547,8 +547,6 @@ if (document.getElementById("paycredit")) {
             };
         },
         mounted() {
-            console.dir(this.$refs.shopname.outerText);
-
             const script = document.createElement("script");
             script.src =
                 "https://www.paypal.com/sdk/js?client-id=AZ4nF2Gcr-Afy1P2zqp8MeUIQ7kSS-e9kvADv5ynLTtw4HC_jMucHIvHesgXLRx8ooWebaJffVKp0yNW";
@@ -562,12 +560,12 @@ if (document.getElementById("paycredit")) {
                 window.paypal
                     .Buttons({
                         createOrder: function(data, actions) {
-                            //actions.disable();
-
+                            //         //actions.disable();
                             var ddl = document.getElementById("check");
                             var selectedValue =
                                 ddl.options[ddl.selectedIndex].value;
                             this.selectedcredit = selectedValue;
+                            const myArray = selectedValue.split(",");
 
                             if (selectedValue == "") {
                                 alert("Please select a Credit type");
@@ -576,7 +574,7 @@ if (document.getElementById("paycredit")) {
                                     purchase_units: [{
                                         amount: {
                                             currency_code: "USD",
-                                            value: selectedValue,
+                                            value: myArray[0],
                                         },
                                     }, ],
                                 });
@@ -588,12 +586,14 @@ if (document.getElementById("paycredit")) {
                             if (order.status == "COMPLETED") {
                                 let shopname = this.$refs.shopname.outerText;
                                 let credit = this.selectedcredit;
+                                let ordercerdit = myArray[1];
 
                                 await axios
                                     .post(
                                         "/api/UpdateCredit", {
                                             shopName: shopname,
                                             credit: credit,
+                                            ordercerdit: ordercerdit,
                                         },
                                         config
                                     )
@@ -637,4 +637,113 @@ if (document.getElementById("paycredit")) {
             },
         },
     }).mount("#paycredit");
+}
+
+if (document.getElementById("dropFeedback")) {
+    const app = Vue.createApp({
+        data() {
+            return {
+                btnState: false,
+                feedmessage: "",
+            };
+        },
+        methods: {
+            async leavefeed() {
+                console.log(this.$refs.rate);
+                this.btnState = true;
+                let data = JSON.stringify({
+                    shopName: this.$refs.shopName.value,
+                    orderID: this.$refs.orderId.value,
+                    customerMessage: this.feedmessage,
+                    Type: this.$refs.rate.innerText,
+                });
+                if (this.message == "" || this.$refs.rate.value == "") {
+                    const Toast = Swal.mixin({
+                        toast: true,
+                        position: "top-end",
+                        showConfirmButton: false,
+                        timer: 4000,
+                        timerProgressBar: true,
+                        didOpen: (toast) => {
+                            toast.addEventListener(
+                                "mouseenter",
+                                Swal.stopTimer
+                            );
+                            toast.addEventListener(
+                                "mouseleave",
+                                Swal.resumeTimer
+                            );
+                        },
+                    });
+                    Toast.fire({
+                        icon: "error",
+                        title: "Empty Field!!",
+                    });
+                } else {
+                    let res = await axios.post(
+                        baseUrl + "api/v1/add/feedback",
+                        data,
+                        config
+                    );
+                    try {
+                        if (res.data.status == "success") {
+                            const Toast = Swal.mixin({
+                                toast: true,
+                                position: "top-end",
+                                showConfirmButton: false,
+                                timer: 4000,
+                                timerProgressBar: true,
+                                didOpen: (toast) => {
+                                    toast.addEventListener(
+                                        "mouseenter",
+                                        Swal.stopTimer
+                                    );
+                                    toast.addEventListener(
+                                        "mouseleave",
+                                        Swal.resumeTimer
+                                    );
+                                },
+                            });
+                            Toast.fire({
+                                icon: "success",
+                                title: "FeedBack Send Successfully!!",
+                            });
+                            setTimeout(() => {
+                                window.location.href =
+                                    "/@" + this.$refs.shopName.value;
+                            }, 3000);
+                        } else {
+                            const Toast = Swal.mixin({
+                                toast: true,
+                                position: "top-end",
+                                showConfirmButton: false,
+                                timer: 4000,
+                                timerProgressBar: true,
+                                didOpen: (toast) => {
+                                    toast.addEventListener(
+                                        "mouseenter",
+                                        Swal.stopTimer
+                                    );
+                                    toast.addEventListener(
+                                        "mouseleave",
+                                        Swal.resumeTimer
+                                    );
+                                },
+                            });
+                            Toast.fire({
+                                icon: "info",
+                                title: "FeedBack Send Already!!",
+                            });
+                            setTimeout(() => {
+                                window.location.href =
+                                    "/@" + this.$refs.shopName.value;
+                            }, 3000);
+                        }
+                    } catch (error) {
+                        this.btnState = false;
+                    }
+                }
+            },
+        },
+    }).mount("#dropFeedback");
 }

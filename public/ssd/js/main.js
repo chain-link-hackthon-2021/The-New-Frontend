@@ -310,12 +310,12 @@
     /**
      * Initiate Datatables
      */
-    const datatables = select(".datatable", true);
-    setTimeout(() => {
-        datatables.forEach((datatable) => {
-            new simpleDatatables.DataTable(datatable);
-        });
-    }, 3000);
+    // const datatables = select(".datatable", true);
+    // setTimeout(() => {
+    //     datatables.forEach((datatable) => {
+    //         new simpleDatatables.DataTable(datatable);
+    //     });
+    // }, 3000);
 
     /**
      * Autoresize echart charts

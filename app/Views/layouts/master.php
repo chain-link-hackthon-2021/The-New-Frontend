@@ -345,6 +345,7 @@
     <script src="/assets/js/world-merc.js"></script>
     <script src="/assets/js/polyfill.js"></script>
     <script src="/assets/js/main.js"></script>
+    <script src="/js/rater-js.js"></script>
     <script src="/js/vue3.tests.js"></script>
     <script src="/js/axios.min.js"></script>
     <script src="/js/app.js"></script>
@@ -873,6 +874,18 @@
     const app = initializeApp(firebaseConfig);
     const analytics = getAnalytics(app);
     </script>
+    <script>
+    function ratingfun(num) {
+        var starRating5 = raterJs({
+            starSize: 22,
+            rating: num,
+            readOnly: true,
+            element: document.querySelector("#rater"),
+
+        });
+    }
+    </script>
+
 </body>
 
 </html>

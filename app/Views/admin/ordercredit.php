@@ -15,7 +15,7 @@
         <div class="row">
             <div class="col-lg-12">
 
-                <div class="card" id="creditlist" v-cloak>
+                <div class="card" id="creditorder" v-cloak>
                     <div class="card-body">
                         <h5 class="card-title">All Users </h5>
 
@@ -27,6 +27,7 @@
                                     <th scope="col">Shop Name</th>
                                     <th scope="col">Shop Owner</th>
                                     <th scope="col">Credit Order </th>
+                                    <th scope="col">Credit Price </th>
                                     <th scope="col">Created At</th>
 
                                 </tr>
@@ -34,9 +35,10 @@
                             <tbody>
                                 <tr v-for="(item, index) in creditlist" :key="index">
                                     <th scope="row">{{index+1}}</th>
-                                    <td>{{ item.name }}</td>
-                                    <td>{{ item.owner }}</td>
-                                    <td>{{ item.owner }}</td>
+                                    <td>{{ item.shopName }}</td>
+                                    <td>{{ item.userName }}</td>
+                                    <td>{{ item.creditQuantity }}</td>
+                                    <td>${{ item.creditPrice }}</td>
                                     <td>{{ item.created_at }}</td>
 
                                 </tr>

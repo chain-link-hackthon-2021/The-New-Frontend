@@ -11,18 +11,19 @@
             </p>
 
             <div class="row" id="paycredit">
-
+                <!-- <option value="30">100 credits- $30.00</option>
+                                <option value="45">150 credits- $45.00</option>
+                                <option value="60">200 credits- $60.00</option> -->
                 <div class="col-12">
                     <div class="select-style-1">
-
                         <label>Select Credit</label>
                         <div class="select-position">
                             <select v-model="selectedcredit" id="check">
                                 <option value="">Select Credit</option>
-                                <option value="15">50 credits- $15.00</option>
-                                <option value="30">100 credits- $30.00</option>
-                                <option value="45">150 credits- $45.00</option>
-                                <option value="60">200 credits- $60.00</option>
+                                <?php foreach ($credit as $sme) : ?>
+                                <option value="<?= $sme["creditPrice"] ?>,<?= $sme["creditQuantity"] ?>">
+                                    <?= $sme["creditQuantity"] ?> credits- $<?= $sme["creditPrice"] ?></option>
+                                <?php endforeach; ?>
                             </select>
                         </div>
                     </div>
@@ -31,6 +32,7 @@
                 <!-- end col -->
                 <div class="col-12">
                     <span v-show="nff" ref="shopname"><?= $name ?></span>
+
                     <div ref="paypal"></div>
 
                 </div>

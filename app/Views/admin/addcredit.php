@@ -11,7 +11,7 @@
         </nav>
     </div><!-- End Page Title -->
 
-    <section class="section">
+    <section class="section" id="addcredit" v-cloak>
         <div class="row">
 
             <div class="col-lg-6 offset-3">
@@ -20,15 +20,18 @@
                     <div class="card-body">
                         <h5 class="card-title">Add New Credit </h5>
                         <div class="form-floating mb-3">
-                            <input type="number" class="form-control" id="floatingInput" placeholder="$200">
+                            <input type="number" class="form-control" id="floatingInput" placeholder="$200"
+                                v-model="amount">
                             <label for="floatingInput">Enter Amount(USD)</label>
                         </div>
                         <div class="form-floating mb-3">
-                            <input type="number" class="form-control" id="floatingPassword" placeholder="30000">
+                            <input type="number" class="form-control" id="floatingPassword" placeholder="30000"
+                                v-model="creditQ">
                             <label for="floatingPassword">Enter Credit Amount</label>
                         </div>
                         <div class="d-grid gap-2 mt-3">
-                            <button class="btn btn-primary btn-md" type="button">Add Credit</button>
+                            <button class="btn btn-primary" type="button" @click="addcredit()" v-html="btnValue"
+                                :disabled="btnState"></button>
                         </div>
                     </div>
                 </div><!-- End Default Badges -->
@@ -47,16 +50,17 @@
                                     <th scope="col">Amount (USD)</th>
                                     <th scope="col">Credit</th>
                                     <th scope="col">Created At</th>
-
+                                    <th scope="col">Action</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr v-for="(item, index) in creditlist" :key="index">
                                     <th scope="row">{{index+1}}</th>
-                                    <td>{{ item.name }}</td>
-                                    <td>{{ item.owner }}</td>
+                                    <td>${{ item.creditPrice }}</td>
+                                    <td>{{ item.creditQuantity }}</td>
                                     <td>{{ item.created_at }}</td>
-
+                                    <td><button type="button" class="btn btn-danger"
+                                            @click="deleteaddCredit(item.id)"><i class="fa bi-trash"></i></button></td>
                                 </tr>
                             </tbody>
                         </table>

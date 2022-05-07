@@ -1,4 +1,9 @@
 <!-- ======= Footer ======= -->
+<style>
+[v-cloak] {
+    display: none;
+}
+</style>
 <footer id="footer" class="footer">
     <div class="copyright">
         <input type="hidden" name="" value="<?= getenv("soapBaseUrl"); ?>" id="base_url">
