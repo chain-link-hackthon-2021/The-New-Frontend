@@ -63,11 +63,12 @@
                                         <?= $feedback['customerMessage']; ?>
                                     </td>
                                     <td>
-                                        <div id="rater"></div>
+                                        <div id="rater<?= $feedback["id"] ?>"></div>
                                         <script>
-                                        window.onload = function() {
-                                            ratingfun(<?= $feedback['Type']; ?>);
-                                        };
+                                        $(document).ready(function() {
+
+                                            ratingfun(<?= $feedback['Type']; ?>, <?= $feedback["id"] ?>);
+                                        });
                                         </script>
 
                                     </td>

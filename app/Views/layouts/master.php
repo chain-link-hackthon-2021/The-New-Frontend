@@ -875,12 +875,12 @@
     const analytics = getAnalytics(app);
     </script>
     <script>
-    function ratingfun(num) {
+    function ratingfun(num, id) {
         var starRating5 = raterJs({
             starSize: 22,
             rating: num,
             readOnly: true,
-            element: document.querySelector("#rater"),
+            element: document.querySelector("#rater" + id),
 
         });
     }
