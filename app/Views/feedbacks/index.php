@@ -66,7 +66,6 @@
                                         <div id="rater<?= $feedback["id"] ?>"></div>
                                         <script>
                                         $(document).ready(function() {
-
                                             ratingfun(<?= $feedback['Type']; ?>, <?= $feedback["id"] ?>);
                                         });
                                         </script>
