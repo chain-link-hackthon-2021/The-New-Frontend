@@ -626,7 +626,26 @@ class Settings extends BaseController
             die($exception->getMessage());
         }
         $productRes = json_decode($response->getBody(), true);
-        print_r($productRes);
-        //return redirect()->back();
+        //print_r($productRes);
+        return redirect()->back();
+    }
+    public function UpdateUserpayal()
+    {
+        helper(['form', 'url']);
+        $shopName = $this->request->getVar('shopName');
+        $data = [
+            "shopName" => $shopName,
+            'MerchantId' => "",
+            'TrackingId' => "",
+        ];
+        $apiEndpoints = config('ApiEndpoints');
+        $oauthxTokenEndpoint = $apiEndpoints->baseUrl . 'api/v1/update/shop/merchantid';
+
+        try {
+            $response = $this->client->request('POST', $oauthxTokenEndpoint, ['json' => $data]);
+        } catch (BadResponseException $exception) {
+            die($exception->getMessage());
+        }
+        return redirect()->back();
     }
 }

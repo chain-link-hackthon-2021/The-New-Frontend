@@ -180,6 +180,7 @@ $routes->get('/Shop/(:segment)/Design', 'Settings::Design/$1', ['filter' => 'aut
 // Post routes
 $routes->post('/Shop/(:segment)/Settings', 'Settings::SaveSetings/$1', ['filter' => 'auth', 'as' => 'savesettings']);
 $routes->post('/Shop/(:segment)/Design', 'Settings::DesignNow/$1', ['filter' => 'auth', 'as' => 'DesignNow']);
+$routes->post('/Shop/(:segment)/updatepaypal', 'Settings::UpdateUserpayal', ['filter' => 'auth', 'as' => 'updatepaypalsettings']);
 $routes->get('/Shop/(:segment)/paypal', 'Settings::storeUserpayal/$1', ['filter' => 'auth', 'as' => 'paypalsettings']);
 $routes->post('/Shop/(:segment)/btcsettings', 'Settings::storeUserbtc', ['filter' => 'auth', 'as' => 'btcsettings']);
 

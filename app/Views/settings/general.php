@@ -194,7 +194,7 @@
                             <?php if (empty($tokenget)) : ?>
                             <h3 class="text-center">Merchant Id:</h3>
                             <h4 class="text-center"><?= $shops[0]['MerchantId']; ?></h4>
-
+                            <?php  ?>
                             <?php endif ?>
                             <br>
                             <br>
@@ -245,6 +245,43 @@
                             document.getElementById("paydis").style.display = "block";
                             </script>
                             <?php endif ?>
+                            <script>
+                            var fm = new FormData();
+                            fm.append("shopName", '<?= $name ?>');
+
+                            $("#paydis").click(function() {
+                                Swal.fire({
+                                    title: 'Do you want to save the changes?',
+                                    icon: "warning",
+                                    showDenyButton: true,
+                                    showCancelButton: true,
+                                    confirmButtonText: 'Disconnect',
+                                    denyButtonText: `Don't save`,
+                                }).then((result) => {
+                                    /* Read more about isConfirmed, isDenied below */
+                                    if (result.isConfirmed) {
+                                        var res = axios.post("/Shop/<?= $name ?>/updatepaypal", fm);
+                                        try {
+
+                                            if (res.data == 1) {
+                                                Swal.fire('Saved!', '', 'success');
+                                                setTimeout(() => {
+                                                    window.location.href = "";
+                                                }, 3000);
+                                            } else {
+
+                                            }
+                                        } catch (error) {
+
+                                        }
+
+                                    } else if (result.isDenied) {
+                                        Swal.fire('Changes are not saved', '', 'info')
+                                    }
+                                })
+
+                            });
+                            </script>
                         </div>
 
 
@@ -285,7 +322,7 @@ justify-content: center;">
                         <form action="/Shop/<?= $name; ?>/Settings" method="POST" class="card-style">
                             <div class="title d-flex flex-wrap justify-content-between">
                                 <div class="left">
-                                    <h4 class="text-bold">Shop Settings</h4>
+                                    <h4 class="text-bold">Stripe Settings</h4>
                                 </div>
                                 <div class="right">
                                     <button type="submit" class="btn btn-primary">Save</button>

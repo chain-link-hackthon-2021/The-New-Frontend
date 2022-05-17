@@ -300,7 +300,7 @@ class Login extends BaseController
     {
         $data = [
 
-
+            'shopName' => $shopName,
             'orderId' => $orderId,
 
         ];
@@ -314,19 +314,71 @@ class Login extends BaseController
         }
 
         $userRes = json_decode($response->getBody(), true);
+        $oauthxTokenEndpoint = $apiEndpoints->baseUrl . 'api/v1/fetch/single/shop/name';
 
+        try {
+            $response = $this->client->request('GET', $oauthxTokenEndpoint, ['json' => $data]);
+        } catch (BadResponseException $exception) {
+            die($exception->getMessage());
+        }
+
+        $shopRes = json_decode($response->getBody(), true);
         if ($userRes["status"]  == "error") {
             return redirect()->to('/@' . $shopName);
             //redirect();
         } else {
+            $curl = curl_init();
 
+            curl_setopt_array($curl, array(
+                CURLOPT_URL => 'https://api-m.sandbox.paypal.com/v1/oauth2/token',
+                CURLOPT_RETURNTRANSFER => true,
+                CURLOPT_ENCODING => '',
+                CURLOPT_MAXREDIRS => 10,
+                CURLOPT_TIMEOUT => 0,
+                CURLOPT_FOLLOWLOCATION => true,
+                CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+                CURLOPT_CUSTOMREQUEST => 'POST',
+                CURLOPT_POSTFIELDS => 'grant_type=client_credentials&ignoreCache=true&return_authn_schemes=true&return_client_metadata=true&return_unconsented_scopes=true',
+                CURLOPT_HTTPHEADER => array(
+                    'Authorization: Basic QWY5OWNYZHB6bzZhNElnMnhyREZINkxBcm43UktzTV9qbHFMZ05FQmJ4WVhZNDNMdmNVWnkwck5zMVYtWWthM19maGZkbWlYQjZPRDNpNmE6RUJRaU5TMXhyVjRxblZQblhpLVVybF84Q3dEdE0ySG4zSmtwYmp3dlJOWmh5cUdwMGpiRG5lX0dWbUZub3c3NnB3TGU3RllrUnlUVWdPaGg=',
+                    'Content-Type: application/x-www-form-urlencoded'
+                ),
+            ));
+
+            $response = curl_exec($curl);
+
+            curl_close($curl);
+            $tokenpp = json_decode($response);
+            if ($tokenpp->access_token) {
+                $curl = curl_init();
+
+                curl_setopt_array($curl, array(
+                    CURLOPT_URL => 'https://api-m.sandbox.paypal.com/v1/customer/partners/CALDATTYR5AJE/merchant-integrations/' . $shopRes['shops'][0]['MerchantId'],
+                    CURLOPT_RETURNTRANSFER => true,
+                    CURLOPT_ENCODING => '',
+                    CURLOPT_MAXREDIRS => 10,
+                    CURLOPT_TIMEOUT => 0,
+                    CURLOPT_FOLLOWLOCATION => true,
+                    CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+                    CURLOPT_CUSTOMREQUEST => 'GET',
+
+                    CURLOPT_HTTPHEADER => array(
+                        'Authorization: Bearer ' . $tokenpp->access_token
+                    ),
+                ));
+                $response = curl_exec($curl);
+
+                curl_close($curl);
+                $res = json_decode($response, true);
+            }
             return view('account/productOrder', [
                 'title' => "Products | " . $shopName,
-
+                'shops' => $shopRes['shops'],
                 "name" => $shopName,
                 'OrderId' => $orderId,
                 'orders' => $userRes["orders"][0],
                 "url" => $apiEndpoints->baseUrl,
+                "partner_client_id" => $res["oauth_integrations"][0]["oauth_third_party"][0]["partner_client_id"]
             ]);
         }
     }

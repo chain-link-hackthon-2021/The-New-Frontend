@@ -154,6 +154,8 @@ if (document.getElementById("loadpayment")) {
     }).mount("#loadpayment");
 }
 if (document.getElementById("payment")) {
+    var merchantId = document.getElementById("merchantID").value;
+    var partner_client_id = document.getElementById("partner_client_id").value;
     const app = Vue.createApp({
         data() {
             return {
@@ -166,7 +168,11 @@ if (document.getElementById("payment")) {
         mounted() {
             const script = document.createElement("script");
             script.src =
-                "https://www.paypal.com/sdk/js?client-id=AZ4nF2Gcr-Afy1P2zqp8MeUIQ7kSS-e9kvADv5ynLTtw4HC_jMucHIvHesgXLRx8ooWebaJffVKp0yNW";
+                "https://www.paypal.com/sdk/js?&client-id=" +
+                partner_client_id +
+                "&merchant-id=" +
+                merchantId +
+                "&currency=USD";
             script.addEventListener("load", this.setLoaded);
             document.body.appendChild(script);
         },

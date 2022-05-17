@@ -169,6 +169,8 @@ input::-webkit-inner-spin-button {
 
                     </div>
                     <br>
+
+
                     <p>
                         Seller: <a href="/@<?= $name; ?>"><?= $name; ?></a>
                     </p>
