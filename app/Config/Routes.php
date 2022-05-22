@@ -196,6 +196,7 @@ $routes->post('/Shop/(:segment)/ApplyCoupon', 'Products::ApplyCoupon/$1', ['filt
 $routes->post('/api/getDepositBalance', 'Login::getDepositBalance');
 $routes->post('/api/UpdateBtcOrder', 'Login::UpdateBtcOrder');
 $routes->post('/api/UpdateCredit', 'Shop::UpdateCredit');
+$routes->post('/api/cryptoCharge', 'Settings::removecrypto');
 
 
 

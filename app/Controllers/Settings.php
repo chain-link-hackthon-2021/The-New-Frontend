@@ -24,171 +24,7 @@ class Settings extends BaseController
 
         $apiEndpointsConfig = config('ApiEndpoints');
     }
-    // $curl = curl_init();
 
-    // curl_setopt_array($curl, array(
-    //     CURLOPT_URL => 'https://api-m.sandbox.paypal.com/v1/customer/partners/CALDATTYR5AJE/merchant-integrations/credentials/ ',
-    //     CURLOPT_RETURNTRANSFER => true,
-    //     CURLOPT_ENCODING => '',
-    //     CURLOPT_MAXREDIRS => 10,
-    //     CURLOPT_TIMEOUT => 0,
-    //     CURLOPT_FOLLOWLOCATION => true,
-    //     CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-    //     CURLOPT_CUSTOMREQUEST => 'GET',
-    //     CURLOPT_HTTPHEADER => array(
-    //         'Authorization: Bearer A21AALiOyR8vkWoUAkwxOYbscIg8rx5zCiKQ_sTH8NVqQuNqZcDBsMWFDs_CXYTVYrc6rrIo8LXn-F4PpUEw_wFCNPW4XUIkA'
-    //     ),
-    // ));
-
-    // $response = curl_exec($curl);
-
-    // curl_close($curl);
-    // $res = json_decode($response);
-    // print_r($res);
-    // $curl = curl_init();
-
-    // curl_setopt_array($curl, array(
-    //     CURLOPT_URL => 'https://api-m.sandbox.paypal.com/v1/customer/partners/CALDATTYR5AJE/merchant-integrations/UYD2VPYFKAZSS',
-    //     CURLOPT_RETURNTRANSFER => true,
-    //     CURLOPT_ENCODING => '',
-    //     CURLOPT_MAXREDIRS => 10,
-    //     CURLOPT_TIMEOUT => 0,
-    //     CURLOPT_FOLLOWLOCATION => true,
-    //     CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-    //     CURLOPT_CUSTOMREQUEST => 'GET',
-    //     CURLOPT_HTTPHEADER => array(
-    //         'Authorization: Bearer A21AALiOyR8vkWoUAkwxOYbscIg8rx5zCiKQ_sTH8NVqQuNqZcDBsMWFDs_CXYTVYrc6rrIo8LXn-F4PpUEw_wFCNPW4XUIkA'
-    //     ),
-    // ));
-
-    // $response = curl_exec($curl);
-
-    // curl_close($curl);
-    // $res = json_decode($response);
-    // print_r($res);
-
-
-    // $curl = curl_init();
-
-    // curl_setopt_array($curl, array(
-    //     CURLOPT_URL => 'https://api.sandbox.paypal.com/v1/customer/partners/CALDATTYR5AJE/merchant-integrations?tracking_id=10000009',
-    //     CURLOPT_RETURNTRANSFER => true,
-    //     CURLOPT_ENCODING => '',
-    //     CURLOPT_MAXREDIRS => 10,
-    //     CURLOPT_TIMEOUT => 0,
-    //     CURLOPT_FOLLOWLOCATION => true,
-    //     CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-    //     CURLOPT_CUSTOMREQUEST => 'GET',
-    //     CURLOPT_HTTPHEADER => array(
-    //         'Authorization: Bearer A21AALiOyR8vkWoUAkwxOYbscIg8rx5zCiKQ_sTH8NVqQuNqZcDBsMWFDs_CXYTVYrc6rrIo8LXn-F4PpUEw_wFCNPW4XUIkA'
-    //     ),
-    // ));
-
-    // $response = curl_exec($curl);
-
-    // curl_close($curl);
-    // $res = json_decode($response);
-    // print_r($res);
-
-    //     echo '<div dir="ltr" style="text-align: left;" trbidi="on">
-    //   <script>
-    //     (function(d, s, id) {
-    //       var js, ref = d.getElementsByTagName(s)[0];
-    //       if (!d.getElementById(id)) {
-    //         js = d.createElement(s);
-    //         js.id = id;
-    //         js.async = true;
-    //         js.src = "https://www.paypal.com/webapps/merchantboarding/js/lib/lightbox/partner.js";
-    //         ref.parentNode.insertBefore(js, ref);
-    //       }
-    //     }(document, "script", "paypal-js"));
-
-    //   </script>
-    //   <a data-paypal-button="true" href="' . $res->links[1]->href . '&displayMode=minibrowser" target="PPFrame">Sign up for PayPal</a>
-    // </div>';
-    // $curl = curl_init();
-
-    // curl_setopt_array($curl, array(
-    //     CURLOPT_URL => 'https://api.sandbox.paypal.com/v2/customer/partner-referrals/ZjIxM2NmOWUtMTFjNS00NWRhLThjYWItZTc4YTc1ZWU3MjVlWHN2d3oveC8ydUhkbUJKd0VYcXkxelI1VUJzaUZkcStvOXpxalpHYjQyQT12Mg==',
-    //     CURLOPT_RETURNTRANSFER => true,
-    //     CURLOPT_ENCODING => '',
-    //     CURLOPT_MAXREDIRS => 10,
-    //     CURLOPT_TIMEOUT => 0,
-    //     CURLOPT_FOLLOWLOCATION => true,
-    //     CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-    //     CURLOPT_CUSTOMREQUEST => 'GET',
-    //     CURLOPT_HTTPHEADER => array(
-    //         'Authorization: Bearer A21AAKbdcf_n6BtTIFmj3dnG6NZcAF36w_oD-hACGG3rGmXLpEZAGl1OpJsEEsRylp9Q8kGyqfAvnU9ObnRaMYTBDDYiHflXw'
-    //     ),
-    // ));
-
-    // $response = curl_exec($curl);
-
-    // curl_close($curl);
-    // var_dump($response);
-    // $dataa = " {\n    \"tracking_id\": \"10000009\",\n    \"partner_config_override\":  {\n \"return_url\": \"https://testenterprises.com/merchantonboarded\"} ,\n    \"operations\": [\n      {\n        \"operation\": \"API_INTEGRATION\",\n        \"api_integration_preference\": {\n          \"rest_api_integration\": {\n            \"integration_method\": \"PAYPAL\",\n            \"integration_type\": \"THIRD_PARTY\",\n            \"third_party_details\": {\n              \"features\": [\n                \"PAYMENT\",\n                \"REFUND\"\n             ]\n            }\n          }\n        }\n      }\n    ],\n    \"products\": [\n      \"PPCP\"\n    ],\n    \"legal_consents\": [\n      {\n        \"type\": \"SHARE_DATA_CONSENT\",\n        \"granted\": true\n      }\n    ]\n}";
-
-    // $dd = json_decode($dataa, true);
-    // //print_r(json_decode($dataa, true));
-    // $ch = curl_init();
-
-    // curl_setopt($ch, CURLOPT_URL, 'https://api-m.sandbox.paypal.com/v2/customer/partner-referrals');
-    // curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-    // curl_setopt($ch, CURLOPT_POST, 1);
-    // curl_setopt($ch, CURLOPT_POSTFIELDS, $dataa);
-
-    // $headers = array();
-    // $headers[] = 'Content-Type: application/json';
-    // $headers[] = 'Authorization: Bearer A21AALiOyR8vkWoUAkwxOYbscIg8rx5zCiKQ_sTH8NVqQuNqZcDBsMWFDs_CXYTVYrc6rrIo8LXn-F4PpUEw_wFCNPW4XUIkA';
-    // curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-
-    // $result = json_decode(curl_exec($ch));
-    // if (curl_errno($ch)) {
-    //     echo 'Error:' . curl_error($ch);
-    // }
-    // curl_close($ch);
-    // print_r($result);
-    // //echo $result;
-
-
-    // echo '<div dir="ltr" style="text-align: left;" trbidi="on">
-    //   <script>
-    //     (function(d, s, id) {
-    //       var js, ref = d.getElementsByTagName(s)[0];
-    //       if (!d.getElementById(id)) {
-    //         js = d.createElement(s);
-    //         js.id = id;
-    //         js.async = true;
-    //         js.src = "https://www.paypal.com/webapps/merchantboarding/js/lib/lightbox/partner.js";
-    //         ref.parentNode.insertBefore(js, ref);
-    //       }
-    //     }(document, "script", "paypal-js"));
-
-    //   </script>
-    //   <a data-paypal-button="true" rel="action_url" href="' . $result->links[1]->href . '&displayMode=minibrowser" target="PPFrame">Sign up for PayPal</a>
-    // </div>';
-    // $curl = curl_init();
-
-    // curl_setopt_array($curl, array(
-    //     CURLOPT_URL => 'https://api-m.sandbox.paypal.com/v1/oauth2/token',
-    //     CURLOPT_RETURNTRANSFER => true,
-    //     CURLOPT_ENCODING => '',
-    //     CURLOPT_MAXREDIRS => 10,
-    //     CURLOPT_TIMEOUT => 0,
-    //     CURLOPT_FOLLOWLOCATION => true,
-    //     CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-    //     CURLOPT_CUSTOMREQUEST => 'POST',
-    //     CURLOPT_POSTFIELDS => 'grant_type=client_credentials&ignoreCache=true&return_authn_schemes=true&return_client_metadata=true&return_unconsented_scopes=true',
-    //     CURLOPT_HTTPHEADER => array(
-    //         'Authorization: Basic QWY5OWNYZHB6bzZhNElnMnhyREZINkxBcm43UktzTV9qbHFMZ05FQmJ4WVhZNDNMdmNVWnkwck5zMVYtWWthM19maGZkbWlYQjZPRDNpNmE6RUJRaU5TMXhyVjRxblZQblhpLVVybF84Q3dEdE0ySG4zSmtwYmp3dlJOWmh5cUdwMGpiRG5lX0dWbUZub3c3NnB3TGU3RllrUnlUVWdPaGg=',
-    //         'Content-Type: application/x-www-form-urlencoded'
-    //     ),
-    // ));
-
-    // $response = curl_exec($curl);
-
-    // curl_close($curl);
-    // echo $response;
 
     public function paypalOnbroad($id, $shopname)
     {
@@ -647,5 +483,60 @@ class Settings extends BaseController
             die($exception->getMessage());
         }
         return redirect()->back();
+    }
+    public function removecrypto()
+    {
+        $walletadd = $this->request->getVar('walletadd');
+        $amount = $this->request->getVar('amount');
+        $shopName = $this->request->getVar('shopName');
+        $apiEndpoints = config('ApiEndpoints');
+        $data = [
+            "shopName" => $shopName,
+        ];
+        $oauthxTokenEndpoint = $apiEndpoints->baseUrl . 'api/v1/fetch/single/shop/name';
+
+        try {
+            $response = $this->client->request('GET', $oauthxTokenEndpoint, ['json' => $data]);
+        } catch (BadResponseException $exception) {
+            die($exception->getMessage());
+        }
+
+
+        $shopRes = json_decode($response->getBody(), true);
+        if ($amount > $shopRes["shops"][0]['bitcoin']) {
+            //more than
+            echo 2;
+        } else {
+
+            $owner = $shopRes["shops"][0]['owner'];
+            $oauthxTokenEndpoint = $apiEndpoints->baseUrl . "api/v1/add/shop/bitcoin";
+            $datas = [
+                "name" => $shopName,
+                "bitcoin" => $shopRes["shops"][0]['bitcoin'] - $amount,
+            ];
+            try {
+                $response = $this->client->request('POST', $oauthxTokenEndpoint, ['json' => $datas]);
+            } catch (BadResponseException $exception) {
+                die($exception->getMessage());
+            }
+            $shopRes = json_decode($response->getBody(), true);
+
+            $oauthxTokenEndpoint = $apiEndpoints->baseUrl . "api/v1/shop/withdraw/bitcoin";
+            $datas = [
+                "shopOwner" => $owner,
+                "shopName" => $shopName,
+                "btcAddress" => $walletadd,
+                "amount" => $amount,
+                "status" => "pending"
+            ];
+            try {
+                $response = $this->client->request('POST', $oauthxTokenEndpoint, ['json' => $datas]);
+            } catch (BadResponseException $exception) {
+                die($exception->getMessage());
+            }
+            $shopRes = json_decode($response->getBody(), true);
+            // Generic response method
+            return $this->respond(['status' => $shopRes['status']], 200);
+        }
     }
 }

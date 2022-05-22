@@ -753,7 +753,7 @@
             if (result.isConfirmed) {
                 try {
                     const res = await axios.post("<?= $url ?>api/v1/delete/shop", JSON.stringify({
-                        "username": username,
+                        "shopName": username,
                         "id": id
                     }), {
                         headers: {

@@ -5,7 +5,18 @@ if (document.getElementById("base_url")) {
 if (document.getElementById("site_url")) {
     siteUrl = document.getElementById("site_url").value;
 }
-
+// const Toast = Swal.mixin({
+//     toast: true,
+//     position: "top-right",
+//     iconColor: "white",
+//     didOpen: (toast) => {
+//         toast.addEventListener("mouseenter", Swal.stopTimer);
+//         toast.addEventListener("mouseleave", Swal.resumeTimer);
+//     },
+//     showConfirmButton: false,
+//     timer: 2500,
+//     timerProgressBar: true,
+// });
 var config = {
     headers: {
         "Access-Control-Allow-Origin": "*",
@@ -752,4 +763,111 @@ if (document.getElementById("dropFeedback")) {
             },
         },
     }).mount("#dropFeedback");
+}
+if (document.getElementById("withdrawcrypto")) {
+    const app = Vue.createApp({
+        data() {
+            return {
+                btnState: false,
+                amount: "",
+            };
+        },
+        methods: {
+            async withdrawcrypto() {
+                this.btnState = true;
+                let data = JSON.stringify({
+                    walletadd: this.$refs.walletadd.value,
+                    amount: this.amount,
+                    shopName: this.$refs.shopName.value,
+                });
+                if (this.amount == "" || this.$refs.walletadd.value == "") {
+                    const Toast = Swal.mixin({
+                        toast: true,
+                        position: "top-end",
+                        showConfirmButton: false,
+                        timer: 4000,
+                        timerProgressBar: true,
+                        didOpen: (toast) => {
+                            toast.addEventListener(
+                                "mouseenter",
+                                Swal.stopTimer
+                            );
+                            toast.addEventListener(
+                                "mouseleave",
+                                Swal.resumeTimer
+                            );
+                        },
+                    });
+                    Toast.fire({
+                        icon: "error",
+                        title: "Empty Field!!",
+                    });
+                } else {
+                    const res = await axios.post(
+                        "/api/cryptoCharge",
+                        data,
+                        config
+                    );
+                    try {
+                        console.log(res.data.status);
+                        if (res.data.status === "success") {
+                            const Toast = Swal.mixin({
+                                toast: true,
+                                position: "top-end",
+                                showConfirmButton: false,
+                                timer: 4000,
+                                timerProgressBar: true,
+                                didOpen: (toast) => {
+                                    toast.addEventListener(
+                                        "mouseenter",
+                                        Swal.stopTimer
+                                    );
+                                    toast.addEventListener(
+                                        "mouseleave",
+                                        Swal.resumeTimer
+                                    );
+                                },
+                            });
+                            Toast.fire({
+                                icon: "success",
+                                title: "Coin Withdraw Successfully!!",
+                            });
+                            setTimeout(() => {
+                                window.location.href = "";
+                            }, 3000);
+                        } else if (res.data == 2) {
+                            const Toast = Swal.mixin({
+                                toast: true,
+                                position: "top-end",
+                                showConfirmButton: false,
+                                timer: 4000,
+                                timerProgressBar: true,
+                                didOpen: (toast) => {
+                                    toast.addEventListener(
+                                        "mouseenter",
+                                        Swal.stopTimer
+                                    );
+                                    toast.addEventListener(
+                                        "mouseleave",
+                                        Swal.resumeTimer
+                                    );
+                                },
+                            });
+                            Toast.fire({
+                                icon: "info",
+                                title: "Low Coin To Withdraw!!",
+                            });
+
+                            this.btnState = false;
+                            setTimeout(() => {
+                                window.location.href = "";
+                            }, 3000);
+                        }
+                    } catch (error) {
+                        this.btnState = false;
+                    }
+                }
+            },
+        },
+    }).mount("#withdrawcrypto");
 }

@@ -188,15 +188,18 @@ input::-webkit-inner-spin-button {
                     </div>
 
                     <div id="hidden" style="display:none; ">
+                        <?php if (!empty($shops[0]['SellerBtc'])) : ?>
                         <button class="btn btn-primary  payment-btn" @click="paycheckout('bitcoin')"
                             v-html="btntwoValue" :disabled="btnState">
 
                         </button>
+                        <?php endif; ?>
+                        <?php if (!empty($shops[0]['MerchantId'])) : ?>
                         <button class="btn btn-warning  payment-btn" @click="paycheckout('paypal')" v-html="btnoneValue"
                             :disabled="btnState">
 
                         </button>
-                        <!-- <div ref="paypal"></div> -->
+                        <?php endif; ?>
                     </div>
 
                 </div>
@@ -249,8 +252,6 @@ input::-webkit-inner-spin-button {
     <script src="/js/axios.min.js"></script>
     <script src="/js/app.js"></script>
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <!-- <script src="https://www.paypal.com/sdk/js?client-id=&currency=USD&intent=capture" data-sdk-integration-source="button-factory">
-    </script> -->
 
     <script>
     newpriceme = 0;
@@ -276,6 +277,7 @@ input::-webkit-inner-spin-button {
                 title: ' Empty Field Data'
             })
         } else {
+            $("#placeOrder").prop("disabled", true);
             axios.post("<?= $url ?>api/v1/fetch/single/blacklist", JSON.stringify({
                 shopName: "<?= $name; ?>",
                 "BlockedData": "" + email
@@ -307,12 +309,14 @@ input::-webkit-inner-spin-button {
                         title: ' Your Email Address Has Been Blocked.'
                     });
                 } else {
+                    $("#placeOrder").prop("disabled", false);
                     var newpriceme = newPrice;
                     $("#hidden").show();
                     $("#hid").hide();
 
                 }
             }).catch(error => {
+                $("#placeOrder").prop("disabled", false);
                 console.log(error);
             });
 
