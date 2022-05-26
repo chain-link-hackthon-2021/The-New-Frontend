@@ -221,11 +221,21 @@ class Settings extends BaseController
         }
 
         $shopRes = json_decode($response->getBody(), true);
+        $oauthxTokenEnzdpoint = $apiEndpoints->baseUrl . 'api/v1/shop/bitcoin/withdraw';
+
+        try {
+            $response = $this->client->request('POST', $oauthxTokenEnzdpoint, ['json' => $data]);
+        } catch (BadResponseException $exception) {
+            die($exception->getMessage());
+        }
+
+        $withdraw = json_decode($response->getBody(), true);
 
         return view('settings/crypto', [
             'title' => "CryptoCurrency | " . $name,
             'user' => $userRes['user'],
             'shops' => $shopRes['shops'],
+            'withdraw' => $withdraw['shopWithdrawals'],
             'name' => $name,
         ]);
     }

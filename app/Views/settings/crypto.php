@@ -116,24 +116,33 @@
                             <table class="table" style="text-align: center;">
                                 <thead>
                                     <tr>
-                                        <th>Coin</th>
-                                        <th>Balance</th>
+                                        <th>Id</th>
+                                        <th>Amount</th>
+                                        <th>address</th>
+                                        <th>Request Date</th>
                                         <th>Status</th>
                                     </tr>
                                 </thead>
                                 <tbody>
+                                    <?php foreach ($withdraw as $value) : ?>
                                     <tr>
                                         <td>
-                                            Bitcoin
+                                            <?= $value['withdrawId']; ?>
                                         </td>
                                         <td>
-                                            <?= $shops[0]['bitcoin']; ?>
+                                            <?= $value['amount']; ?>
                                         </td>
                                         <td>
-                                            <?= $shops[0]['bitcoin']; ?>
+                                            <?= $value['btc_address']; ?>
+                                        </td>
+                                        <td>
+                                            <?= $value['created_at']; ?>
+                                        </td>
+                                        <td>
+                                            <?= $value['status']; ?>
                                         </td>
                                     </tr>
-
+                                    <?php endforeach; ?>
                                 </tbody>
                             </table>
                         </div>
