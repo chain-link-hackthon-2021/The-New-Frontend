@@ -206,6 +206,7 @@ $routes->group('/backend', function ($routes) {
 	$routes->add('users', 'Admin::users');
 	$routes->add('addcredit', 'Admin::addcredit');
 	$routes->add('ordercredit', 'Admin::ordercredit');
+	$routes->add('notification', 'Admin::notification');
 	//$routes->add('blog', 'Admin\Blog::index');
 });
 

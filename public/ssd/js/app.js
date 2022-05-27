@@ -10,6 +10,7 @@ var config = {
         "Access-Control-Allow-Headers": "Origin, Content-Type, X-Auth-Token",
         "content-type": "application/json",
         "Access-Control-Allow-Methods": " GET, POST, PUT, DELETE",
+        "Content-Type": "application/x-www-form-urlencoded",
     },
 };
 
@@ -289,4 +290,124 @@ if (document.getElementById("creditorder")) {
             },
         },
     }).mount("#creditorder");
+}
+if (document.getElementById("notification")) {
+    const app = Vue.createApp({
+        data() {
+            return {
+                notlist: [],
+                msg: "",
+                subject: "",
+                btnState: false,
+            };
+        },
+        mounted() {
+            this.loadNotification();
+        },
+        methods: {
+            async btnNotification() {
+                if (
+                    this.msg == "" ||
+                    this.$refs.msgto.value == "" ||
+                    this.subject == ""
+                ) {
+                    alert("Empty Data");
+                } else {
+                    this.btnState = true;
+                    let fm = {
+                        msg_type: this.$refs.msgto.value == "all" ?
+                            "all" :
+                            "personal",
+                        shopname: this.$refs.msgto.value,
+                        subject: this.subject,
+                        message: this.msg,
+                    };
+                    const res = await axios.post(
+                        baseUrl + "api/v1/add/notifications",
+                        fm,
+                        config
+                    );
+                    try {
+                        if (res.data.status == "success") {
+                            alert("Message Sent Successfully");
+                            setTimeout(() => {
+                                window.location.href = "";
+                            }, 2000);
+                        } else {
+                            this.btnState = false;
+                        }
+                    } catch (error) {
+                        this.btnState = false;
+                    }
+                }
+            },
+            async loadNotification() {
+                try {
+                    let res = await axios.get(
+                        baseUrl + "api/v1/all/admin/notifications",
+                        config
+                    );
+                    if (res.data.status == "success") {}
+                    this.notlist = res.data.notifications;
+                } catch (error) {}
+            },
+            delnotification(id) {
+                const swalWithBootstrapButtons = Swal.mixin({
+                    customClass: {
+                        confirmButton: "btn btn-success",
+                        cancelButton: "btn btn-danger",
+                    },
+                    buttonsStyling: false,
+                });
+
+                swalWithBootstrapButtons
+                    .fire({
+                        title: "Are you sure?",
+                        text: "You won't be able to revert this!",
+                        icon: "warning",
+                        showCancelButton: true,
+                        confirmButtonText: "Yes, delete it!",
+                        cancelButtonText: "No, cancel!",
+                        reverseButtons: true,
+                    })
+                    .then(async(result) => {
+                        if (result.isConfirmed) {
+                            let fm = {
+                                id: id,
+                            };
+                            const res = await axios.post(
+                                baseUrl + "api/v1/notifications/delete/id",
+                                fm,
+                                config
+                            );
+                            try {
+                                if (res.data.status == "success") {
+                                    swalWithBootstrapButtons.fire(
+                                        "Deleted!",
+                                        "Your file has been deleted.",
+                                        "success"
+                                    );
+                                    setTimeout(() => {
+                                        window.location.href = "";
+                                    }, 2000);
+                                } else {
+                                    this.btnState = false;
+                                }
+                            } catch (error) {
+                                this.btnState = false;
+                            }
+                        } else if (
+                            /* Read more about handling dismissals below */
+                            result.dismiss === Swal.DismissReason.cancel
+                        ) {
+                            swalWithBootstrapButtons.fire(
+                                "Cancelled",
+                                "Your imaginary file is safe :)",
+                                "error"
+                            );
+                        }
+                    });
+            },
+        },
+    }).mount("#notification");
 }

@@ -26,7 +26,7 @@ class Admin extends BaseController
 
     public function index()
     {
-      
+
         echo  view('admin/inc/header', ['title' => 'AnyBuy',]);
         echo  view('admin/dashboard');
         echo  view('admin/inc/footer');
@@ -53,6 +53,23 @@ class Admin extends BaseController
     {
         echo  view('admin/inc/header', ['title' => 'Order Credit',]);
         echo  view('admin/ordercredit');
+        echo  view('admin/inc/footer');
+    }
+    public function notification()
+    {
+        $apiEndpoints = config('ApiEndpoints');
+        $oauthxTokenEndpoint = $apiEndpoints->baseUrl . 'api/v1/admin/all/shop';
+
+        try {
+            $response = $this->client->request('GET', $oauthxTokenEndpoint);
+        } catch (BadResponseException $exception) {
+            die($exception->getMessage());
+        }
+
+        $shops = json_decode($response->getBody(), true);
+        // print_r($shops);
+        echo  view('admin/inc/header', ['title' => 'Notification',]);
+        echo  view('admin/notification', ["shops" => $shops["shops"]]);
         echo  view('admin/inc/footer');
     }
     public function fund()

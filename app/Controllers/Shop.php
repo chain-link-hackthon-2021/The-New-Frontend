@@ -89,12 +89,34 @@ class Shop extends BaseController
 
         $userRes = json_decode($response->getBody(), true);
 
+        $oauthxTokenEndpoint = $apiEndpoints->baseUrl . 'api/v1/notifications/all';
+
+        try {
+            $responsenot = $this->client->request('GET', $oauthxTokenEndpoint);
+        } catch (BadResponseException $exception) {
+            die($exception->getMessage());
+        }
+
+        $noteall = json_decode($responsenot->getBody(), true);
+
+        $oauthxTokenEndpoint = $apiEndpoints->baseUrl . 'api/v1/notifications/shopName';
+
+        try {
+            $responses = $this->client->request('POST', $oauthxTokenEndpoint, ['json' => ["shopname" => $name]]);
+        } catch (BadResponseException $exception) {
+            die($exception->getMessage());
+        }
+
+        $notsingle = json_decode($responses->getBody(), true);
+
         // Get user details end
 
         return view('users/dashboard', [
             'title' => "Dashboard | " . $name,
             'user' => $userRes['user'],
             "name" => $name,
+            "noteall" => $noteall["notifications"],
+            "notsingle" => $notsingle["notifications"]
         ]);
     }
 
