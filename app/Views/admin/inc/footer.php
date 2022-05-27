@@ -19,20 +19,20 @@
         class="bi bi-arrow-up-short"></i></a>
 
 <!-- Vendor JS Files -->
-<script src="<?= base_url() ?>/ssd/vendor/apexcharts/apexcharts.min.js"></script>
-<script src="<?= base_url() ?>/ssd/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-<script src="<?= base_url() ?>/ssd/vendor/chart.js/chart.min.js"></script>
-<script src="<?= base_url() ?>/ssd/vendor/echarts/echarts.min.js"></script>
-<script src="<?= base_url() ?>/ssd/vendor/quill/quill.min.js"></script>
-<script src="<?= base_url() ?>/ssd/vendor/simple-datatables/simple-datatables.js"></script>
-<script src="<?= base_url() ?>/ssd/vendor/tinymce/tinymce.min.js"></script>
-<script src="<?= base_url() ?>/ssd/vendor/php-email-form/validate.js"></script>
+<script src="<?= base_url() ?>/front/vendor/apexcharts/apexcharts.min.js"></script>
+<script src="<?= base_url() ?>/front/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="<?= base_url() ?>/front/vendor/chart.js/chart.min.js"></script>
+<script src="<?= base_url() ?>/front/vendor/echarts/echarts.min.js"></script>
+<script src="<?= base_url() ?>/front/vendor/quill/quill.min.js"></script>
+<script src="<?= base_url() ?>/front/vendor/simple-datatables/simple-datatables.js"></script>
+<script src="<?= base_url() ?>/front/vendor/tinymce/tinymce.min.js"></script>
+<script src="<?= base_url() ?>/front/vendor/php-email-form/validate.js"></script>
 <script src="/js/vue3.tests.js"></script>
 <script src="/js/axios.min.js"></script>
-<script src="<?= base_url() ?>/ssd/js/app.js"></script>
+<script src="<?= base_url() ?>/front/js/app.js"></script>
 <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <!-- Template Main JS File -->
-<script src="<?= base_url() ?>/ssd/js/main.js"></script>
+<script src="<?= base_url() ?>/front/js/main.js"></script>
 
 </body>
 

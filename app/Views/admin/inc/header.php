@@ -20,18 +20,18 @@
         rel="stylesheet">
 
     <!-- Vendor CSS Files -->
-    <link href="<?= base_url() ?>/ssd/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-    <link href="/ssd/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
-    <link href="/ssd/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
-    <link href="/ssd/vendor/quill/quill.snow.css" rel="stylesheet">
-    <link href="/ssd/vendor/quill/quill.bubble.css" rel="stylesheet">
-    <link href="/ssd/vendor/remixicon/remixicon.css" rel="stylesheet">
-    <link href="/ssd/vendor/simple-datatables/style.css" rel="stylesheet">
+    <link href="<?= base_url() ?>/front/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="<?= base_url() ?>/front/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+    <link href="<?= base_url() ?>/front/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
+    <link href="<?= base_url() ?>/front/vendor/quill/quill.snow.css" rel="stylesheet">
+    <link href="<?= base_url() ?>/front/vendor/quill/quill.bubble.css" rel="stylesheet">
+    <link href="<?= base_url() ?>/front/vendor/remixicon/remixicon.css" rel="stylesheet">
+    <link href="<?= base_url() ?>/front/vendor/simple-datatables/style.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"
         integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
     <!-- Template Main CSS File -->
-    <link href="/ssd/css/style.css" rel="stylesheet">
+    <link href="<?= base_url() ?>/front/css/style.css" rel="stylesheet">
 </head>
 
 <body>
@@ -60,7 +60,7 @@
                 <li class="nav-item dropdown pe-3">
 
                     <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
-                        <img src="/ssd/img/profile-img.jpg" alt="Profile" class="rounded-circle">
+                        <img src="<?= base_url() ?>/front/img/profile-img.jpg" alt="Profile" class="rounded-circle">
                         <span class="d-none d-md-block dropdown-toggle ps-2">K. Anderson</span>
                     </a><!-- End Profile Iamge Icon -->
 
