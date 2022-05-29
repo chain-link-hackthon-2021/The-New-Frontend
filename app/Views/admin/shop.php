@@ -19,29 +19,37 @@
                     <div class="card-body">
                         <h5 class="card-title">All Shop </h5>
 
-                        <!-- Table with stripped rows -->
-                        <table class="table datatable">
-                            <thead>
-                                <tr>
-                                    <th scope="col">#</th>
-                                    <th scope="col">Shop Name</th>
-                                    <th scope="col">Shop Owner</th>
-                                    <th scope="col">Created At</th>
+                        <div class="table-responsive">
+                            <!-- Table with stripped rows -->
+                            <table class="table datatable" id="myTable">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">#</th>
+                                        <th scope="col">Shop Owner</th>
+                                        <th scope="col">Shop Name</th>
+                                        <th scope="col">Total Order</th>
+                                        <th scope="col">Total Earn</th>
+                                        <th scope="col">Total Credit</th>
+                                        <th scope="col">Created At</th>
+                                        <th scope="col">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr v-for="(item, index) in shoplist" :key="index">
+                                        <th scope="row">{{index+1}}</th>
+                                        <td>{{ item.owner }}</td>
+                                        <td>{{ item.name }}</td>
+                                        <td>{{ item.owner }}</td>
+                                        <td>{{ item.name }}</td>
+                                        <td>{{ item.owner }}</td>
+                                        <td>{{ item.created_at }}</td>
+                                        <td><button class="btn btn-secondary"><i class="fa fa-edit"></i></button></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <!-- End Table with stripped rows -->
 
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr v-for="(item, index) in shoplist" :key="index">
-                                    <th scope="row">{{index+1}}</th>
-                                    <td>{{ item.name }}</td>
-                                    <td>{{ item.owner }}</td>
-                                    <td>{{ item.created_at }}</td>
-
-                                </tr>
-                            </tbody>
-                        </table>
-                        <!-- End Table with stripped rows -->
-
+                        </div>
                     </div>
                 </div>
 

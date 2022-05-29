@@ -55,34 +55,36 @@
                         <h5 class="card-title">All Users </h5>
 
                         <!-- Table with stripped rows -->
-                        <table class="table datatable">
-                            <thead>
-                                <tr>
-                                    <th scope="col">#</th>
-                                    <th scope="col">Message Type</th>
-                                    <th scope="col">Shop Name</th>
-                                    <th scope="col">Subject </th>
-                                    <th scope="col">Message</th>
-                                    <th scope="col">Created At</th>
-                                    <th scope="col">Status</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr v-for="(item, index) in notlist" :key="index">
-                                    <th scope="row">{{index+1}}</th>
-                                    <td>{{ item.msg_type }}</td>
-                                    <td>{{ item.shopName }}</td>
-                                    <td>{{ item.subject }}</td>
-                                    <td>{{ item.message }}</td>
-                                    <td>{{ item.created_at }}</td>
-                                    <td>
-                                        <button class="btn btn-danger" @click="delnotification(item.id)">
-                                            <i class="fa fa-trash"></i>
-                                        </button>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
+                        <div class="table-responsive">
+                            <table class="table datatable">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">#</th>
+                                        <th scope="col">Message Type</th>
+                                        <th scope="col">Shop Name</th>
+                                        <th scope="col">Subject </th>
+                                        <th scope="col">Message</th>
+                                        <th scope="col">Created At</th>
+                                        <th scope="col">Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr v-for="(item, index) in notlist" :key="index">
+                                        <th scope="row">{{index+1}}</th>
+                                        <td>{{ item.msg_type }}</td>
+                                        <td>{{ item.shopName }}</td>
+                                        <td>{{ item.subject }}</td>
+                                        <td>{{ item.message }}</td>
+                                        <td>{{ item.created_at }}</td>
+                                        <td>
+                                            <button class="btn btn-danger" @click="delnotification(item.id)">
+                                                <i class="fa fa-trash"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
                         <!-- End Table with stripped rows -->
 
                     </div>

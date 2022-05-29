@@ -36,6 +36,10 @@ if (document.getElementById("shoplist")) {
                         config
                     );
                     this.shoplist = res.data.shops;
+                    setTimeout(() => {
+                        var myTable = document.querySelector("#myTable");
+                        var dataTable = new DataTable(myTable);
+                    }, 1200);
                 } catch (error) {}
             },
         },

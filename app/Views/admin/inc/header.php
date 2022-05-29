@@ -30,6 +30,10 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"
         integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link href="https://cdn.jsdelivr.net/npm/vanilla-datatables@latest/dist/vanilla-dataTables.min.css" rel="stylesheet"
+        type="text/css">
+    <script src="https://cdn.jsdelivr.net/npm/vanilla-datatables@latest/dist/vanilla-dataTables.min.js"
+        type="text/javascript"></script>
     <!-- Template Main CSS File -->
     <link href="<?= base_url() ?>/front/css/style.css" rel="stylesheet">
 </head>
@@ -137,7 +141,23 @@
                 </ul>
             </li><!-- End Charts Nav -->
 
-
+            <li class="nav-item">
+                <a class="nav-link collapsed" data-bs-target="#shopmad" data-bs-toggle="collapse" href="#">
+                    <i class="bi bi-sliders"></i><span>Manage Shop</span><i class="bi bi-chevron-down ms-auto"></i>
+                </a>
+                <ul id="shopmad" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+                    <li>
+                        <a href="/backend/addcredit">
+                            <i class="bi bi-circle"></i><span>Add Credit</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/backend/ordercredit">
+                            <i class="bi bi-circle"></i><span>Order Credit</span>
+                        </a>
+                    </li>
+                </ul>
+            </li>
             <li class="nav-item">
                 <a class="nav-link collapsed" data-bs-target="#charts-nav" data-bs-toggle="collapse" href="#">
                     <i class="bi bi-sliders"></i><span>Settings</span><i class="bi bi-chevron-down ms-auto"></i>

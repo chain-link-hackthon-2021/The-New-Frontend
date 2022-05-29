@@ -1,6 +1,7 @@
 <?= $this->extend('layouts/master') ?>
-<link href="https://fonts.googleapis.com/css?family=Lato|Open+Sans|Source+Sans+Pro&display=swap" rel="stylesheet">
+
 <?= $this->section('content') ?>
+<link href="https://fonts.googleapis.com/css?family=Lato|Open+Sans|Source+Sans+Pro&display=swap" rel="stylesheet">
 <style>
 
 </style>
@@ -102,15 +103,16 @@
                             <div class="invoice-date">
                                 <p><span>Date Issued:</span>
                                     <?= date("Y-m-d H:i:s", strtotime($order['created_at'])); ?></p>
-                                <p><span>Payment Status:</span>
+                                <!-- <p><span>Payment Status:</span>
                                     <span
-                                        class=" <?= ($order['admin_status'] == 1) ? 'success-btn' : 'warning-btn'; ?>">
+                                        class=" <?php //($order['admin_status'] == 1) ? 'success-btn' : 'warning-btn'; 
+                                                ?>">
 
                                         <?php if ($order['orderStatus'] == "completed") {
-                                            return ($order['admin_status'] == 1) ? 'Completed' : 'Processing';
+                                            // echo ($order['admin_status'] == 1) ? 'Completed' : 'Processing';
                                         } ?>
                                     </span>
-                                </p>
+                                </p> -->
                                 <p><span>Order ID:</span> <?= $order['orderId']; ?></p>
                                 <p><span>Customer Status:</span>
                                     <span

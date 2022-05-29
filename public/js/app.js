@@ -46,7 +46,7 @@ if (document.getElementById("loadpayment")) {
         methods: {
             async paycheckout(paymethod) {
                 //alert(process.env);
-                if (paymethod == "paypal") {
+                if (paymethod == "bitcoin") {
                     this.btntwoValue = loading;
                 } else {
                     this.btnoneValue = loading;
