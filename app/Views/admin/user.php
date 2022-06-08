@@ -20,26 +20,35 @@
                         <h5 class="card-title">All Users </h5>
 
                         <!-- Table with stripped rows -->
-                        <table class="table datatable">
-                            <thead>
-                                <tr>
-                                    <th scope="col">#</th>
-                                    <th scope="col">Shop Name</th>
-                                    <th scope="col">Shop Owner</th>
-                                    <th scope="col">Created At</th>
+                        <div class="table-responsive">
+                            <table class="table datatable" id="myTable">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">#</th>
+                                        <th scope="col">Full Name</th>
+                                        <th scope="col">Username</th>
+                                        <th scope="col">Email Address</th>
+                                        <th scope="col">Created At</th>
+                                        <th scope="col">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
 
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr v-for="(item, index) in userlist" :key="index">
-                                    <th scope="row">{{index+1}}</th>
-                                    <td>{{ item.name }}</td>
-                                    <td>{{ item.owner }}</td>
-                                    <td>{{ item.created_at }}</td>
-
-                                </tr>
-                            </tbody>
-                        </table>
+                                    <tr v-for="(item, index) in userlist" :key="userlist.index">
+                                        <th scope="row">{{index+1}}</th>
+                                        <td>{{ item.firstname }} {{ item.lastname }}</td>
+                                        <td>{{ item.username }}</td>
+                                        <td>{{ item.email }}</td>
+                                        <td>{{ item.created_at }}</td>
+                                        <td>
+                                            <button class="btn btn-danger"
+                                                v-on:click.prevent="deleteUser(item.id,item.username)">
+                                                <i class="fa fa-trash"></i></button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
                         <!-- End Table with stripped rows -->
 
                     </div>

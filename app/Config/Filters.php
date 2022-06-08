@@ -4,6 +4,7 @@ namespace Config;
 
 use App\Filters\EnsureAuthenticated;
 use App\Filters\NotAuthenticated;
+use App\Filters\AuthAdmin;
 use CodeIgniter\Config\BaseConfig;
 use CodeIgniter\Filters\CSRF;
 use CodeIgniter\Filters\DebugToolbar;
@@ -22,6 +23,7 @@ class Filters extends BaseConfig
 		'toolbar'  => DebugToolbar::class,
 		'honeypot' => Honeypot::class,
 		'auth'	   => EnsureAuthenticated::class,
+		'adminauth'	   => AuthAdmin::class,
 		'noauth'   => NotAuthenticated::class,
 	];
 

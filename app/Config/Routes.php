@@ -197,16 +197,21 @@ $routes->post('/api/getDepositBalance', 'Login::getDepositBalance');
 $routes->post('/api/UpdateBtcOrder', 'Login::UpdateBtcOrder');
 $routes->post('/api/UpdateCredit', 'Shop::UpdateCredit');
 $routes->post('/api/cryptoCharge', 'Settings::removecrypto');
+$routes->post('/api/deleteUser', "Admin::deleteUser");
+$routes->post('/api/adminLogin', "Admin::adminLogin");
+
 
 
 
 $routes->group('/backend', function ($routes) {
-	$routes->add('', 'Admin::index');
-	$routes->add('shop', 'Admin::shop');
-	$routes->add('users', 'Admin::users');
-	$routes->add('addcredit', 'Admin::addcredit');
-	$routes->add('ordercredit', 'Admin::ordercredit');
-	$routes->add('notification', 'Admin::notification');
+	$routes->add('auth', 'Admin::auth');
+	$routes->add('auth/(:any)', 'Admin::authverify/$1');
+	$routes->add('/', 'Admin::index', ['filter' => 'adminauth']);
+	$routes->add('shop', 'Admin::shop', ['filter' => 'adminauth']);
+	$routes->add('users', 'Admin::users', ['filter' => 'adminauth']);
+	$routes->add('addcredit', 'Admin::addcredit', ['filter' => 'adminauth']);
+	$routes->add('ordercredit', 'Admin::ordercredit', ['filter' => 'adminauth']);
+	$routes->add('notification', 'Admin::notification', ['filter' => 'adminauth']);
 	//$routes->add('blog', 'Admin\Blog::index');
 });
 

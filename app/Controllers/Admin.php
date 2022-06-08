@@ -31,6 +31,11 @@ class Admin extends BaseController
         echo  view('admin/dashboard');
         echo  view('admin/inc/footer');
     }
+    public function auth()
+    {
+
+        echo  view('admin/auth', ['title' => 'Login',]);
+    }
     public function shop()
     {
         echo  view('admin/inc/header', ['title' => 'Shop',]);
@@ -106,5 +111,80 @@ class Admin extends BaseController
             return redirect()->route('home');
             // echo "Error";
         }
+    }
+    public function deleteUser()
+    {
+        $password = $this->request->getVar("password");
+        $authuser = $this->request->getVar("authuser");
+        $username = $this->request->getVar("username");
+        $id = $this->request->getVar("id");
+        if ($authuser == "femi" && $password == "femi") {
+            $apiEndpoints = config('ApiEndpoints');
+            $oauthxTokenEndpoint = $apiEndpoints->baseUrl . 'api/v1/delete/user';
+            $data = [
+                'id' => $id,
+                "username" => $username
+            ];
+            try {
+                $response = $this->client->request('POST', $oauthxTokenEndpoint, ['json' => $data]);
+            } catch (BadResponseException $exception) {
+                die($exception->getMessage());
+            }
+
+            $responseData = json_decode($response->getBody());
+
+            // print_r($responseData);
+
+            $status = $responseData->status;
+            if ($status == "success") {
+                return $this->respond(2, 200);
+            } else {
+                return $this->respond(0, 200);
+            }
+        } else {
+            return $this->respond(2, 200);
+        }
+
+        //print_r();
+    }
+    public function authverify($token)
+    {
+        echo  view('admin/authverify', ['title' => $token]);
+    }
+    public function adminLogin()
+    {
+        $token = $this->request->getVar("token");
+
+        $adminID = $this->request->getVar("adminID");
+        $apiEndpoints = config('ApiEndpoints');
+        $oauthxTokenEndpoint = $apiEndpoints->baseUrl . 'api/v1/admin/verify/key';
+        $data = [
+            'adminID' => $adminID,
+            "token" => $token
+        ];
+        // print_r($data);
+        try {
+            $response = $this->client->request('POST', $oauthxTokenEndpoint, ['json' => $data]);
+        } catch (BadResponseException $exception) {
+            die($exception->getMessage());
+        }
+
+        $responseData = json_decode($response->getBody());
+
+        // print_r($responseData);
+
+        $status = $responseData->status;
+
+        if ($status === "success") {
+            Services::session()->set([
+                'AdminId' =>  $adminID,
+
+            ]);
+            return $this->respond(1, 200);
+        } else {
+            return $this->respond($status);
+        }
+
+        //print_r();
     }
 }

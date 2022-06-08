@@ -36,6 +36,7 @@ if (document.getElementById("shoplist")) {
                         config
                     );
                     this.shoplist = res.data.shops;
+                    console.log(res.data);
                     setTimeout(() => {
                         var myTable = document.querySelector("#myTable");
                         var dataTable = new DataTable(myTable);
@@ -52,6 +53,7 @@ if (document.getElementById("userlist")) {
                 userlist: [],
             };
         },
+        created() {},
         mounted() {
             this.loadshop();
         },
@@ -59,11 +61,99 @@ if (document.getElementById("userlist")) {
             async loadshop() {
                 try {
                     let res = await axios.get(
-                        baseUrl + "api/v1/admin/all/shop",
+                        baseUrl + "api/v1/fetch/all/users",
                         config
                     );
-                    this.userlist = res.data.shops;
+                    this.userlist = res.data;
+                    if (res.status == 200) {
+                        setTimeout(() => {
+                            var myTable = document.querySelector("#myTable");
+                            var dataTable = new DataTable(myTable);
+                        }, 2200);
+                    }
+                    console.log(res);
                 } catch (error) {}
+            },
+            deleteUser(id, shopname) {
+                const swalWithBootstrapButtons = Swal.mixin({
+                    customClass: {
+                        confirmButton: "btn btn-success",
+                        cancelButton: "btn btn-danger",
+                    },
+                    buttonsStyling: false,
+                });
+
+                swalWithBootstrapButtons
+                    .fire({
+                        title: "Are you sure?",
+                        text: "You won't be able to revert this!",
+                        icon: "warning",
+                        showCancelButton: true,
+                        confirmButtonText: "Yes, delete it!",
+                        cancelButtonText: "No, cancel!",
+                        reverseButtons: true,
+                    })
+                    .then((result) => {
+                        if (result.isConfirmed) {
+                            Swal.fire({
+                                icon: "warning",
+                                title: "Enter Your Password",
+                                input: "text",
+                                inputAttributes: {
+                                    autocapitalize: "off",
+                                },
+                                showCancelButton: true,
+                                confirmButtonText: "Delete it",
+                                showLoaderOnConfirm: true,
+                                preConfirm: (login) => {
+                                    let fm = {
+                                        password: login,
+                                        authuser: "femi",
+                                        username: shopname,
+                                        id: id,
+                                    };
+                                    axios
+                                        .post("/api/deleteUser", fm)
+                                        .then((response) => {
+                                            if (response.data == 1) {
+                                                swalWithBootstrapButtons.fire(
+                                                    "Deleted!",
+                                                    "Your file has been deleted.",
+                                                    "success"
+                                                );
+                                                setTimeout(() => {
+                                                    window.location.href = "";
+                                                }, 1200);
+                                            } else if (response.data == 2) {
+                                                swalWithBootstrapButtons.fire(
+                                                    "Not Deleted!",
+                                                    "Invalid Password Provided.",
+                                                    "error"
+                                                );
+                                                setTimeout(() => {
+                                                    window.location.href = "";
+                                                }, 1200);
+                                            } else {}
+                                        })
+                                        .catch((error) => {
+                                            Swal.showValidationMessage(
+                                                `Request failed: ${error}`
+                                            );
+                                        });
+                                },
+                                allowOutsideClick: () => !Swal.isLoading(),
+                            });
+                        } else if (
+                            /* Read more about handling dismissals below */
+                            result.dismiss === Swal.DismissReason.cancel
+                        ) {
+                            swalWithBootstrapButtons.fire(
+                                "Cancelled",
+                                "Your imaginary file is safe :)",
+                                "error"
+                            );
+                        }
+                    });
             },
         },
     }).mount("#userlist");
@@ -414,4 +504,197 @@ if (document.getElementById("notification")) {
             },
         },
     }).mount("#notification");
+}
+if (document.getElementById("adminlogin")) {
+    const app = Vue.createApp({
+        data() {
+            return {
+                username: "",
+                password: "",
+                token: "",
+                btnState: false,
+            };
+        },
+
+        methods: {
+            async BtnLogin() {
+                if (this.username == "" || this.password == "") {
+                    const Toast = Swal.mixin({
+                        toast: true,
+                        position: "top-end",
+                        showConfirmButton: false,
+                        timer: 4000,
+                        timerProgressBar: true,
+                        didOpen: (toast) => {
+                            toast.addEventListener(
+                                "mouseenter",
+                                Swal.stopTimer
+                            );
+                            toast.addEventListener(
+                                "mouseleave",
+                                Swal.resumeTimer
+                            );
+                        },
+                    });
+                    Toast.fire({
+                        icon: "error",
+                        title: "Empty Data",
+                    });
+                } else {
+                    this.btnState = true;
+                    let fm = {
+                        email: this.username,
+                        pass: this.password,
+                    };
+                    const res = await axios.post(
+                        baseUrl + "api/v1/admin/login",
+                        fm,
+                        config
+                    );
+
+                    try {
+                        if (res.data.status === "success") {
+                            const Toast = Swal.mixin({
+                                toast: true,
+                                position: "top-end",
+                                showConfirmButton: false,
+                                timer: 4000,
+                                timerProgressBar: true,
+                                didOpen: (toast) => {
+                                    toast.addEventListener(
+                                        "mouseenter",
+                                        Swal.stopTimer
+                                    );
+                                    toast.addEventListener(
+                                        "mouseleave",
+                                        Swal.resumeTimer
+                                    );
+                                },
+                            });
+                            Toast.fire({
+                                icon: "success",
+                                title: "Token Sent Please Check Your Mail",
+                            });
+                            setTimeout(() => {
+                                window.location.href =
+                                    "/backend/auth/" + res.data.adminID;
+                            }, 2000);
+                        } else {
+                            const Toast = Swal.mixin({
+                                toast: true,
+                                position: "top-end",
+                                showConfirmButton: false,
+                                timer: 4000,
+                                timerProgressBar: true,
+                                didOpen: (toast) => {
+                                    toast.addEventListener(
+                                        "mouseenter",
+                                        Swal.stopTimer
+                                    );
+                                    toast.addEventListener(
+                                        "mouseleave",
+                                        Swal.resumeTimer
+                                    );
+                                },
+                            });
+                            Toast.fire({
+                                icon: "error",
+                                title: "Invaild Username OR Password",
+                            });
+
+                            this.btnState = false;
+                        }
+                    } catch (error) {
+                        this.btnState = false;
+                    }
+                }
+            },
+            async BtnLoginVerify(id) {
+                if (this.token === "" || id === "") {
+                    const Toast = Swal.mixin({
+                        toast: true,
+                        position: "top-end",
+                        showConfirmButton: false,
+                        timer: 4000,
+                        timerProgressBar: true,
+                        didOpen: (toast) => {
+                            toast.addEventListener(
+                                "mouseenter",
+                                Swal.stopTimer
+                            );
+                            toast.addEventListener(
+                                "mouseleave",
+                                Swal.resumeTimer
+                            );
+                        },
+                    });
+                    Toast.fire({
+                        icon: "error",
+                        title: "Empty Data",
+                    });
+                } else {
+                    this.btnState = true;
+                    let fm = {
+                        token: this.token,
+                        adminID: id,
+                    };
+                    const res = await axios.post("/api/adminLogin", fm, config);
+                    try {
+                        if (res.data == 1) {
+                            const Toast = Swal.mixin({
+                                toast: true,
+                                position: "top-end",
+                                showConfirmButton: false,
+                                timer: 4000,
+                                timerProgressBar: true,
+                                didOpen: (toast) => {
+                                    toast.addEventListener(
+                                        "mouseenter",
+                                        Swal.stopTimer
+                                    );
+                                    toast.addEventListener(
+                                        "mouseleave",
+                                        Swal.resumeTimer
+                                    );
+                                },
+                            });
+                            Toast.fire({
+                                icon: "success",
+                                title: "Login Was Successfully",
+                            });
+                            setTimeout(() => {
+                                window.location.href = "/backend";
+                            }, 2000);
+                        } else {
+                            const Toast = Swal.mixin({
+                                toast: true,
+                                position: "top-end",
+                                showConfirmButton: false,
+                                timer: 4000,
+                                timerProgressBar: true,
+                                didOpen: (toast) => {
+                                    toast.addEventListener(
+                                        "mouseenter",
+                                        Swal.stopTimer
+                                    );
+                                    toast.addEventListener(
+                                        "mouseleave",
+                                        Swal.resumeTimer
+                                    );
+                                },
+                            });
+                            Toast.fire({
+                                icon: "error",
+                                title: "Invaild Token",
+                            });
+
+                            this.btnState = false;
+                        }
+                    } catch (error) {
+                        this.btnState = false;
+                    }
+                }
+            },
+        },
+    }).mount("#adminlogin");
 }
