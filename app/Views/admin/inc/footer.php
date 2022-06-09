@@ -33,7 +33,10 @@
 <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <!-- Template Main JS File -->
 <script src="<?= base_url() ?>/front/js/main.js"></script>
-
+<script>
+var myTable = document.querySelector("#admintable");
+new DataTable(myTable);
+</script>
 </body>
 
 </html>

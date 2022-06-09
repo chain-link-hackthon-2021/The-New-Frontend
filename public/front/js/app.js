@@ -22,7 +22,7 @@ if (document.getElementById("shoplist")) {
     const app = Vue.createApp({
         data() {
             return {
-                shoplist: [],
+                shoplists: [],
             };
         },
         mounted() {
@@ -30,18 +30,20 @@ if (document.getElementById("shoplist")) {
         },
         methods: {
             async loadshop() {
+                const res = await axios.get(
+                    baseUrl + "api/v1/shops/details",
+                    config
+                );
                 try {
-                    let res = await axios.get(
-                        baseUrl + "api/v1/admin/all/shop",
-                        config
-                    );
-                    this.shoplist = res.data.shops;
-                    console.log(res.data);
+                    this.shoplists = res.data.shops.result;
+
                     setTimeout(() => {
                         var myTable = document.querySelector("#myTable");
                         var dataTable = new DataTable(myTable);
                     }, 1200);
-                } catch (error) {}
+                } catch (error) {
+                    console.log(error);
+                }
             },
         },
     }).mount("#shoplist");

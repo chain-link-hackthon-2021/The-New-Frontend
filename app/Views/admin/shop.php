@@ -15,7 +15,7 @@
         <div class="row">
             <div class="col-lg-12">
 
-                <div class="card" id="shoplist" v-cloak>
+                <div class="card" id="shoplist">
                     <div class="card-body">
                         <h5 class="card-title">All Shop </h5>
 
@@ -31,19 +31,20 @@
                                         <th scope="col">Total Earn</th>
                                         <th scope="col">Total Credit</th>
                                         <th scope="col">Created At</th>
-                                        <th scope="col">Action</th>
+                                        <!-- <th scope="col">Action</th> -->
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr v-for="(item, index) in shoplist" :key="index">
+
+                                    <tr v-for="(item, index) in shoplists" :key="index">
                                         <th scope="row">{{index+1}}</th>
                                         <td>{{ item.owner }}</td>
                                         <td>{{ item.name }}</td>
-                                        <td>{{ item.owner }}</td>
-                                        <td>{{ item.name }}</td>
-                                        <td>{{ item.owner }}</td>
+                                        <td>{{ item.orderslength }}</td>
+                                        <td>{{ item.sales }}</td>
+                                        <td>{{ item.shopCredit }}</td>
                                         <td>{{ item.created_at }}</td>
-                                        <td><button class="btn btn-secondary"><i class="fa fa-edit"></i></button></td>
+                                        <!-- <td><button class="btn btn-secondary"><i class="fa fa-edit"></i></button></td> -->
                                     </tr>
                                 </tbody>
                             </table>

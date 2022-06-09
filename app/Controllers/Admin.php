@@ -60,6 +60,24 @@ class Admin extends BaseController
         echo  view('admin/ordercredit');
         echo  view('admin/inc/footer');
     }
+    public function vendororder()
+    {
+        $apiEndpoints = config('ApiEndpoints');
+        $oauthxTokenEndpoint = $apiEndpoints->baseUrl . 'api/v1/admin/all/orders';
+
+        // print_r($data);
+        try {
+            $response = $this->client->request('GET', $oauthxTokenEndpoint);
+        } catch (BadResponseException $exception) {
+            die($exception->getMessage());
+        }
+
+        $responseData = json_decode($response->getBody());
+        //print_r($responseData->orders[0]);
+        echo  view('admin/inc/header', ['title' => 'Vendor Order',]);
+        echo  view('admin/vendororder', ["orders" => $responseData->orders]);
+        echo  view('admin/inc/footer');
+    }
     public function notification()
     {
         $apiEndpoints = config('ApiEndpoints');

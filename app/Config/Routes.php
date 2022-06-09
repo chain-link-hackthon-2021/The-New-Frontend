@@ -212,6 +212,7 @@ $routes->group('/backend', function ($routes) {
 	$routes->add('addcredit', 'Admin::addcredit', ['filter' => 'adminauth']);
 	$routes->add('ordercredit', 'Admin::ordercredit', ['filter' => 'adminauth']);
 	$routes->add('notification', 'Admin::notification', ['filter' => 'adminauth']);
+	$routes->add('vendororder', 'Admin::vendororder', ['filter' => 'adminauth']);
 	//$routes->add('blog', 'Admin\Blog::index');
 });
 

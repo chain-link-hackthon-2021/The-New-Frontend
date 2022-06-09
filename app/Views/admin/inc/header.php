@@ -147,6 +147,16 @@
                 </a>
                 <ul id="shopmad" class="nav-content collapse " data-bs-parent="#sidebar-nav">
                     <li>
+                        <a href="/backend/shop">
+                            <i class="bi bi-circle"></i><span>View Shops</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/backend/vendororder">
+                            <i class="bi bi-circle"></i><span>Manage Vendor Order</span>
+                        </a>
+                    </li>
+                    <li>
                         <a href="/backend/addcredit">
                             <i class="bi bi-circle"></i><span>Add Credit</span>
                         </a>
@@ -188,12 +198,12 @@
                     <span>Notification </span>
                 </a>
             </li><!-- End Profile Page Nav -->
-            <li class="nav-item">
+            <!-- <li class="nav-item">
                 <a class="nav-link collapsed" href="/backend/shop">
                     <i class="bi bi-people-fill"></i>
                     <span>Shops</span>
                 </a>
-            </li><!-- End Profile Page Nav -->
+            </li>End Profile Page Nav -->
 
             <li class="nav-item">
                 <a class="nav-link collapsed" href="/backend/users">
