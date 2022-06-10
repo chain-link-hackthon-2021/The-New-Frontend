@@ -26,9 +26,68 @@ class Admin extends BaseController
 
     public function index()
     {
+        //get Top product sold
+        $apiEndpoints = config('ApiEndpoints');
+        $oauthxTokenEndpoint = $apiEndpoints->baseUrl . 'api/v1/admin/products/sold';
+        try {
+            $response = $this->client->request('GET', $oauthxTokenEndpoint);
+        } catch (BadResponseException $exception) {
+            die($exception->getMessage());
+        }
+
+        $responseData = json_decode($response->getBody());
+        //end Top product sold
+
+        //get Daily product sold
+        $apiEndpoints = config('ApiEndpoints');
+        $oauthxTokenEndpoint = $apiEndpoints->baseUrl . 'api/v1/admin/all/sales';
+        try {
+            $response = $this->client->request('GET', $oauthxTokenEndpoint);
+        } catch (BadResponseException $exception) {
+            die($exception->getMessage());
+        }
+
+        $dailysale = json_decode($response->getBody());
+        $apiEndpoints = config('ApiEndpoints');
+        $oauthxTokenEndpoint = $apiEndpoints->baseUrl . 'api/v1/admin/daily/product/count';
+        try {
+            $response = $this->client->request('GET', $oauthxTokenEndpoint);
+        } catch (BadResponseException $exception) {
+            die($exception->getMessage());
+        }
+
+        $dailysalecount = json_decode($response->getBody());
+        //end Daily product sold
+
+        //get Total User
+        $apiEndpoints = config('ApiEndpoints');
+        $oauthxTokenEndpoint = $apiEndpoints->baseUrl . 'api/v1/admin/users/count';
+        try {
+            $response = $this->client->request('GET', $oauthxTokenEndpoint);
+        } catch (BadResponseException $exception) {
+            die($exception->getMessage());
+        }
+
+        $totaluser = json_decode($response->getBody());
+        //end  Total User
+
+        //get Monthly Sales 
+        $apiEndpoints = config('ApiEndpoints');
+        $oauthxTokenEndpoint = $apiEndpoints->baseUrl . 'api/v1/admin/monthly/sales';
+        try {
+            $response = $this->client->request('GET', $oauthxTokenEndpoint);
+        } catch (BadResponseException $exception) {
+            die($exception->getMessage());
+        }
+
+        $monthlysales = json_decode($response->getBody());
+        //end  Monthly Sales 
 
         echo  view('admin/inc/header', ['title' => 'AnyBuy',]);
-        echo  view('admin/dashboard');
+        echo  view(
+            'admin/dashboard',
+            ["products" => $responseData->products, "dailysale" => $dailysale->salesPerDay->sales, 'totaluser' => $totaluser->products->numberOfUsers, 'dailysalecount' => $dailysalecount->productCount->productCount, "monthlySales" => $monthlysales->monthlySales->monthlySales]
+        );
         echo  view('admin/inc/footer');
     }
     public function auth()
