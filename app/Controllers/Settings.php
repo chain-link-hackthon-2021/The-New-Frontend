@@ -106,13 +106,35 @@ class Settings extends BaseController
 
 
         $shopRes = json_decode($response->getBody(), true);
+
+
         $sendview = [
             'title' => "Settings | " . $name,
             'user' => $userRes['user'],
             'shops' => $shopRes['shops'],
             'name' => $name,
-            "tokenget" => ''
+            "tokenget" => '',
+            'stripeID' => "",
+            "stripcon" => ''
+
         ];
+        if (empty($shopRes['shops'][0]["stripeID"])) {
+            // Get user details
+            $apiEndpoints = config('ApiEndpoints');
+            $oauthxTokenEndpoint = $apiEndpoints->baseUrl . 'api/v1/vendor/stripe/onboard';
+
+            try {
+                $response = $this->client->request('POST', $oauthxTokenEndpoint, ['json' => ['shopname' => $name]]);
+            } catch (BadResponseException $exception) {
+                die($exception->getMessage());
+            }
+
+            $stripcon = json_decode($response->getBody(), true);
+            $sendview["stripcon"] = $stripcon;
+        } else {
+            $sendview["stripeID"] = $shopRes['shops'][0]["stripeID"];
+        }
+        // print_r($stripcon);
         if (empty($shopRes['shops'][0]["MerchantId"]) || empty($shopRes['shops'][0]["TrackingId"])) {
             $sendview["tokenget"] = self::paypalOnbroad($shopRes['shops'][0]['id'], $name);
         }

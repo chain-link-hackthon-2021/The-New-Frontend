@@ -200,6 +200,12 @@ input::-webkit-inner-spin-button {
 
                         </button>
                         <?php endif; ?>
+                        <?php if (!empty($shops[0]['stripeID'])) : ?>
+                        <button class="btn btn-info  payment-btn" @click="paycheckout('stripe')" v-html="btnthreeValue"
+                            :disabled="btnState">
+
+                        </button>
+                        <?php endif; ?>
                     </div>
 
                 </div>

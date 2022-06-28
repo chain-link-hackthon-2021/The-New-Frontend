@@ -325,11 +325,30 @@ justify-content: center;">
                                     <h4 class="text-bold">Stripe Settings</h4>
                                 </div>
                                 <div class="right">
-                                    <button type="submit" class="btn btn-primary">Save</button>
+                                    <!-- <button type="submit" class="btn btn-primary">Save</button> -->
                                     <!-- end select -->
                                 </div>
                             </div>
                             <div class="card-body">
+                                <?php if (!empty($stripeID)) : ?>
+                                <h3 class="text-center">stripe ID:</h3>
+                                <h4 class="text-center"><?= $shops[0]['stripeID']; ?></h4>
+                                <?php  ?>
+                                <?php endif ?>
+                                <br>
+                                <br>
+                                <?php if (!empty($stripeID)) : ?>
+                                <button type="button" class="main-btn danger-btn btn-hover w-100 text-center">Disconnect
+                                    Stripe</button>
+                                <?php else : ?>
+                                <a class="main-btn
+                              primary-btn
+                              btn-hover
+                              w-100
+                              text-center" rel="action_url" href="<?= $stripcon
+                                                                    ?>">Connect
+                                    Stripe</a>
+                                <?php endif; ?>
                             </div>
                         </form>
                     </div>

@@ -210,6 +210,12 @@
                     <i class="bi bi-people-fill"></i>
                     <span>Users</span>
                 </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="/backend/log">
+                    <i class="bi bi-people-fill"></i>
+                    <span>Login Log</span>
+                </a>
             </li><!-- End F.A.Q Page Nav -->
             <hr>
         </ul>

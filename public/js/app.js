@@ -39,7 +39,9 @@ if (document.getElementById("loadpayment")) {
                 price: 0,
                 btnState: false,
                 btnoneValue: "Pay With PayPal",
-                btntwoValue: '<i class="fas fa-bitcoin " style="vertical-align: middle;"></i> Pay With Crypto',
+                btntwoValue: "Pay With Crypto",
+                btnthreeValue: "Pay With Stripe",
+                // btntwoValue: '<i class="fas fa-bitcoin " style="vertical-align: middle;"></i> Pay With Crypto',
             };
         },
         mounted() {},
@@ -48,6 +50,8 @@ if (document.getElementById("loadpayment")) {
                 //alert(process.env);
                 if (paymethod == "bitcoin") {
                     this.btntwoValue = loading;
+                } else if (paymethod == "stripe") {
+                    this.btnthreeValue = loading;
                 } else {
                     this.btnoneValue = loading;
                 }
@@ -118,6 +122,14 @@ if (document.getElementById("loadpayment")) {
                                         "/OrderDetails/" +
                                         ress.data.orders.orderId;
                                 }, 3000);
+                            } else if (paymethod == "stripe") {
+                                setTimeout(() => {
+                                    window.location.href =
+                                        "/@" +
+                                        shopName +
+                                        "/StripePayment/" +
+                                        ress.data.orders.orderId;
+                                }, 3000);
                             } else {
                                 setTimeout(() => {
                                     window.location.href =
@@ -172,8 +184,9 @@ if (document.getElementById("payment")) {
             return {
                 price: 0,
                 btnState: false,
-                btnoneValue: "Pay With PayPal",
+                btnoneValue: "Pay With Crypto",
                 btntwoValue: "Pay With PayPal",
+                btntwoValue: "Pay With Stripe",
             };
         },
         mounted() {

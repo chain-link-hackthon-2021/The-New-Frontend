@@ -47,6 +47,7 @@ $routes->get('/@(:segment)/checkout/(:segment)', 'Login::shop/$1/$2');
 $routes->get('/@(:segment)/checkout/(:segment)/(:segment)', 'Login::shopnext/$1/$2/$3');
 $routes->get('/@(:segment)/OrderDetails/(:segment)', 'Login::productorder/$1/$2');
 $routes->get('/@(:segment)/CryptoPayment/(:segment)', 'Login::productorderbtc/$1/$2');
+$routes->get('/@(:segment)/StripePayment/(:segment)', 'Login::productorderstripe/$1/$2');
 
 // Post routes
 $routes->post('/Account/Login', 'Login::initiateLogin', ['filter' => 'noauth']);
@@ -209,6 +210,7 @@ $routes->group('/backend', function ($routes) {
 	$routes->add('/', 'Admin::index', ['filter' => 'adminauth']);
 	$routes->add('shop', 'Admin::shop', ['filter' => 'adminauth']);
 	$routes->add('users', 'Admin::users', ['filter' => 'adminauth']);
+	$routes->add('log', 'Admin::log', ['filter' => 'adminauth']);
 	$routes->add('addcredit', 'Admin::addcredit', ['filter' => 'adminauth']);
 	$routes->add('ordercredit', 'Admin::ordercredit', ['filter' => 'adminauth']);
 	$routes->add('notification', 'Admin::notification', ['filter' => 'adminauth']);

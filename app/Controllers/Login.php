@@ -382,6 +382,66 @@ class Login extends BaseController
             ]);
         }
     }
+    public function productorderstripe(string $shopName, string $orderId)
+    {
+        $data = [
+
+            'shopName' => $shopName,
+            'orderId' => $orderId,
+
+        ];
+        $apiEndpoints = config('ApiEndpoints');
+        $oauthxTokenEndpoint = $apiEndpoints->baseUrl . 'api/v1/fetch/orderbyid';
+
+        try {
+            $response = $this->client->request('GET', $oauthxTokenEndpoint, ['json' => $data]);
+        } catch (BadResponseException $exception) {
+            die($exception->getMessage());
+        }
+
+        $userRes = json_decode($response->getBody(), true);
+        $oauthxTokenEndpoint = $apiEndpoints->baseUrl . 'api/v1/fetch/single/shop/name';
+
+        try {
+            $response = $this->client->request('GET', $oauthxTokenEndpoint, ['json' => $data]);
+        } catch (BadResponseException $exception) {
+            die($exception->getMessage());
+        }
+
+        $shopRes = json_decode($response->getBody(), true);
+        if ($userRes["status"]  == "error") {
+            return redirect()->to('/@' . $shopName);
+            //redirect();
+        } else {
+
+            $oauthxTokenEndpoint = $apiEndpoints->baseUrl . 'create-checkout-session';
+            $datax = [
+
+                "shopName" =>  $shopName,
+                "productName" =>  $userRes["orders"][0]['productName'],
+                "price" =>  $userRes["orders"][0]['totalPrice'],
+                "orderid" => $orderId
+
+            ];
+            try {
+                $response = $this->client->request('POST', $oauthxTokenEndpoint, ['json' => $datax]);
+            } catch (BadResponseException $exception) {
+                die($exception->getMessage());
+            }
+
+            $stripe = json_decode($response->getBody(), true);
+
+            return view('account/productOrderstripe', [
+                'title' => "Products | " . $shopName,
+                'shops' => $shopRes['shops'],
+                "name" => $shopName,
+                'OrderId' => $orderId,
+                'orders' => $userRes["orders"][0],
+                "url" => $apiEndpoints->baseUrl,
+                "paylink" => $stripe['url']
+            ]);
+        }
+    }
     public function productorderbtc(string $shopName, string $orderId)
     {
         $data = [

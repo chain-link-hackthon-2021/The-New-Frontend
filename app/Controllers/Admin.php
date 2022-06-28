@@ -107,6 +107,21 @@ class Admin extends BaseController
         echo  view('admin/user');
         echo  view('admin/inc/footer');
     }
+    public function log()
+    {
+        $apiEndpoints = config('ApiEndpoints');
+        $oauthxTokenEndpoint = $apiEndpoints->baseUrl . 'api/v1/admin/logs';
+        try {
+            $response = $this->client->request('GET', $oauthxTokenEndpoint);
+        } catch (BadResponseException $exception) {
+            die($exception->getMessage());
+        }
+
+        $log = json_decode($response->getBody());
+        echo  view('admin/inc/header', ['title' => 'Users',]);
+        echo  view('admin/loginlog', ['log' => $log->Logs]);
+        echo  view('admin/inc/footer');
+    }
     public function addcredit()
     {
         echo  view('admin/inc/header', ['title' => 'Add Credit',]);

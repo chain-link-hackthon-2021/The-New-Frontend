@@ -35,7 +35,9 @@
 <script src="<?= base_url() ?>/front/js/main.js"></script>
 <script>
 var myTable = document.querySelector("#admintable");
-new DataTable(myTable);
+setTimeout(() => {
+    new DataTable(myTable);
+}, 2000);
 </script>
 </body>
 

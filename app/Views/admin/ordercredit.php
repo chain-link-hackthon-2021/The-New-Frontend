@@ -20,7 +20,7 @@
                         <h5 class="card-title">All Users </h5>
 
                         <!-- Table with stripped rows -->
-                        <table class="table datatable">
+                        <table class="table datatable" id="admintable">
                             <thead>
                                 <tr>
                                     <th scope="col">#</th>
