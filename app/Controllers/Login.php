@@ -431,7 +431,7 @@ class Login extends BaseController
 
             $stripe = json_decode($response->getBody(), true);
 
-            return view('account/productOrderstripe', [
+            return view('account/productorderstripe', [
                 'title' => "Products | " . $shopName,
                 'shops' => $shopRes['shops'],
                 "name" => $shopName,
