@@ -576,6 +576,7 @@ if (document.getElementById("paycredit")) {
         data() {
             return {
                 selectedcredit: "",
+                creditpay: "",
                 // btnState: false,
                 // btnoneValue: "Pay With PayPal",
             };
@@ -586,6 +587,7 @@ if (document.getElementById("paycredit")) {
                 "https://www.paypal.com/sdk/js?client-id=AZ4nF2Gcr-Afy1P2zqp8MeUIQ7kSS-e9kvADv5ynLTtw4HC_jMucHIvHesgXLRx8ooWebaJffVKp0yNW";
             script.addEventListener("load", this.setLoaded);
             document.body.appendChild(script);
+            // this.loadstripe();
         },
         methods: {
             setLoaded() {
@@ -668,6 +670,58 @@ if (document.getElementById("paycredit")) {
                         },
                     })
                     .render(this.$refs.paypal);
+            },
+            async loadstripe() {
+                var ddl = document.getElementById("check");
+                var selectedValue = ddl.options[ddl.selectedIndex].value;
+                this.selectedcredit = selectedValue;
+                const myArray = selectedValue.split(",");
+                //  myArray[0]
+                let shopname = this.$refs.shopname.outerText;
+                // let credit = this.selectedcredit;
+                let ordercerdit = myArray[1];
+                if (selectedValue == "") {
+                    alert("Please select a Credit type");
+                } else {
+                    await axios
+                        .post(
+                            baseUrl + "create-credit-session", {
+                                shopName: shopname,
+                                shopCredit: ordercerdit,
+                                amount: myArray[0],
+                            },
+                            config
+                        )
+                        .then((response) => {
+                            window.location.href = response.data.url;
+                        });
+                }
+            },
+            async loadcoinbase() {
+                var ddl = document.getElementById("check");
+                var selectedValue = ddl.options[ddl.selectedIndex].value;
+                this.selectedcredit = selectedValue;
+                const myArray = selectedValue.split(",");
+                //  myArray[0]
+                let shopname = this.$refs.shopname.outerText;
+                // let credit = this.selectedcredit;
+                let ordercerdit = myArray[1];
+                if (selectedValue == "") {
+                    alert("Please select a Credit type");
+                } else {
+                    await axios
+                        .post(
+                            baseUrl + "api/v1/payment/coinbase", {
+                                shopName: shopname,
+                                shopCredit: ordercerdit,
+                                amount: myArray[0],
+                            },
+                            config
+                        )
+                        .then((response) => {
+                            window.location.href = response.data.url;
+                        });
+                }
             },
         },
     }).mount("#paycredit");

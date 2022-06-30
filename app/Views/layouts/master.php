@@ -202,11 +202,11 @@
                                     } ?>">
                             <a href="/Shop/<?= $name; ?>/Settings"> General </a>
                         </li>
-                        <li class="<?php if ($uri == 'CryptoCurrencySettings') {
-                                        echo "active";
-                                    } ?>">
-                            <a href="/Shop/<?= $name; ?>/CryptoCurrencySettings"> Cryptocurrency </a>
-                        </li>
+                        <!-- <li class="<?php if ($uri == 'CryptoCurrencySettings') {
+                                            echo "active";
+                                        } ?>">
+                            <a href="/Shop/<?php $name; ?>/CryptoCurrencySettings"> Cryptocurrency </a>
+                        </li> -->
                         <li class="<?php if ($uri == 'Design') {
                                         echo "active";
                                     } ?>">

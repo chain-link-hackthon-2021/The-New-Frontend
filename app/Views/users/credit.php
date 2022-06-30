@@ -15,6 +15,7 @@
                                 <option value="45">150 credits- $45.00</option>
                                 <option value="60">200 credits- $60.00</option> -->
                 <div class="col-12">
+                    <input type="hidden" name="" value="<?= getenv("soapBaseUrl"); ?>" id="base_url">
                     <div class="select-style-1">
                         <label>Select Credit</label>
                         <div class="select-position">
@@ -32,7 +33,13 @@
                 <!-- end col -->
                 <div class="col-12">
                     <span v-show="nff" ref="shopname"><?= $name ?></span>
+                    <button class="btn btn-info w-100 btn-lg" @click="loadstripe()">Pay With Stripe</button>
+                    <br>
+                    <br>
 
+                    <button class="btn btn-primary w-100 btn-lg" @click="loadcoinbase()">Pay With Crypto</button>
+                    <br>
+                    <br>
                     <div ref="paypal"></div>
 
                 </div>
