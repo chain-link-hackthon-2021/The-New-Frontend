@@ -374,7 +374,7 @@ class Login extends BaseController
             return view('account/productOrder', [
                 'title' => "Products | " . $shopName,
                 'shops' => $shopRes['shops'],
-                "name" => $shopName,
+                "shopName" => $shopName,
                 'OrderId' => $orderId,
                 'orders' => $userRes["orders"][0],
                 "url" => $apiEndpoints->baseUrl,
