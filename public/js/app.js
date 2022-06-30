@@ -714,7 +714,7 @@ if (document.getElementById("paycredit")) {
                             baseUrl + "api/v1/payment/coinbase", {
                                 shopName: shopname,
                                 shopCredit: ordercerdit,
-                                amount: myArray[0],
+                                totalAmount: myArray[0],
                             },
                             config
                         )
