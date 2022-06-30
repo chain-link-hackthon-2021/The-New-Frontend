@@ -483,10 +483,10 @@ class Settings extends BaseController
 
         $data = [
             "shopName" => $shopName,
-            'sellerBtc' => $sellerBtc,
+            'coinbaseKey' => $sellerBtc,
         ];
         $apiEndpoints = config('ApiEndpoints');
-        $oauthxTokenEndpoint = $apiEndpoints->baseUrl . 'api/v1/add/shop/seller/btcadress';
+        $oauthxTokenEndpoint = $apiEndpoints->baseUrl . 'api/v1/vendors/add/coinbasekey';
 
         try {
             $response = $this->client->request('POST', $oauthxTokenEndpoint, ['json' => $data]);
@@ -495,6 +495,28 @@ class Settings extends BaseController
         }
         $productRes = json_decode($response->getBody(), true);
         //print_r($productRes);
+        return redirect()->back();
+    }
+    public function removestoreUserbtc()
+    {
+        helper(['form', 'url']);
+        $shopName = $this->request->getVar('shopName');
+
+        $data = [
+            "shopName" => $shopName,
+            'coinbaseKey' => "",
+        ];
+        //   print_r($data);
+        $apiEndpoints = config('ApiEndpoints');
+        $oauthxTokenEndpoint = $apiEndpoints->baseUrl . 'api/v1/vendors/add/coinbasekey';
+
+        try {
+            $response = $this->client->request('POST', $oauthxTokenEndpoint, ['json' => $data]);
+        } catch (BadResponseException $exception) {
+            die($exception->getMessage());
+        }
+        $productRes = json_decode($response->getBody(), true);
+        // dd($productRes);
         return redirect()->back();
     }
     public function UpdateUserpayal()

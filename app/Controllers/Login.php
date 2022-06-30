@@ -419,8 +419,10 @@ class Login extends BaseController
 
                 "shopName" =>  $shopName,
                 "productName" =>  $userRes["orders"][0]['productName'],
+                "productId" =>  $userRes["orders"][0]['productId'],
                 "price" =>  $userRes["orders"][0]['totalPrice'],
-                "orderid" => $orderId
+                "orderid" => $orderId,
+                "quantity" =>  $userRes["orders"][0]['quantity']
 
             ];
             try {
@@ -464,32 +466,30 @@ class Login extends BaseController
             return redirect()->to('/@' . $shopName);
             //redirect();
         } else {
+            $datax = [
 
-            if (empty($userRes["orders"][0]["btc_address"])) {
-                $oauthxTokenEndpoints = $apiEndpoints->baseUrl . 'api/v1/update/order/btc';
-                $address =  self::getWallet();
-                $data["btc_address"] = $address;
-                try {
-                    $response = $this->client->request('POST', $oauthxTokenEndpoints, ['json' => $data]);
-                } catch (BadResponseException $exception) {
-                    die($exception->getMessage());
-                }
-                $apiEndpoints = config('ApiEndpoints');
-                $oauthxTokenEndpoint = $apiEndpoints->baseUrl . 'api/v1/fetch/orderbyid';
+                "shopName" =>  $shopName,
+                "productname" =>  $userRes["orders"][0]['productName'],
+                "productId" =>  $userRes["orders"][0]['productId'],
+                "totalAmount" =>  $userRes["orders"][0]['totalPrice'],
+                "orderid" => $orderId,
+                "quantity" =>  $userRes["orders"][0]['quantity']
 
-                try {
-                    $response = $this->client->request('GET', $oauthxTokenEndpoint, ['json' => $data]);
-                } catch (BadResponseException $exception) {
-                    die($exception->getMessage());
-                }
+            ];
 
-                $userRes = json_decode($response->getBody(), true);
+            $oauthxTokenEndpoint = $apiEndpoints->baseUrl . 'api/v1/vendors/payment/coinbase';
+
+            try {
+                $response = $this->client->request('POST', $oauthxTokenEndpoint, ['json' => $datax]);
+            } catch (BadResponseException $exception) {
+                die($exception->getMessage());
             }
 
+            $coinbase = json_decode($response->getBody(), true);
 
             return view('account/productOrderbtc', [
                 'title' => "Products | " . $shopName,
-
+                "coinbasepay" => $coinbase["url"],
                 "name" => $shopName,
                 'OrderId' => $orderId,
                 'orders' => $userRes["orders"][0],
@@ -545,27 +545,45 @@ class Login extends BaseController
     }
     public function getDepositBalance()
     {
-        //echo "efefsd";
-        $address =  $this->request->getVar('address');
+        echo "efefsd";
+        // $address =  $this->request->getVar('address');
         $orderId = $this->request->getVar('orderId');
         $shopName = $this->request->getVar('shopName');
-        if ($address == "") {
-            print 0;
-        } else {
-            $confirm = "?confirmations=6";
-            $url = "https://blockchain.info/q/addressbalance/";
-            // $address = $addres;
-            try {
-                $response = $this->client->request('GET', $url . $address . $confirm);
-            } catch (BadResponseException $exception) {
-                die($exception->getMessage());
-            }
 
-            $result = json_decode($response->getBody(), true);
-            return  $this->respond($result);
-            // $loadresult = json_decode($result);
-            // echo $loadresult;
+        $data = [
+
+
+            'orderId' => $orderId,
+
+        ];
+        $apiEndpoints = config('ApiEndpoints');
+        $oauthxTokenEndpoint = $apiEndpoints->baseUrl . 'api/v1/fetch/orderbyid';
+
+        try {
+            $response = $this->client->request('GET', $oauthxTokenEndpoint, ['json' => $data]);
+        } catch (BadResponseException $exception) {
+            die($exception->getMessage());
         }
+
+        $userRes = json_decode($response->getBody(), true);
+
+        // if ($address == "") {
+        //     print 0;
+        // } else {
+        //  $confirm = "?confirmations=6";
+        // $url = "https://blockchain.info/q/addressbalance/";
+        // // $address = $addres;
+        // try {
+        //     $response = $this->client->request('GET', $url . $address . $confirm);
+        // } catch (BadResponseException $exception) {
+        //     die($exception->getMessage());
+        // }
+
+        // $result = json_decode($response->getBody(), true);
+        // return  $this->respond($result);
+        // $loadresult = json_decode($result);
+        // echo $loadresult;
+        //   }
     }
     public function confirmBalance()
     {

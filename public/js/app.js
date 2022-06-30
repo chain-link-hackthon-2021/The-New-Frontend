@@ -48,7 +48,7 @@ if (document.getElementById("loadpayment")) {
         methods: {
             async paycheckout(paymethod) {
                 //alert(process.env);
-                if (paymethod == "bitcoin") {
+                if (paymethod == "coinbase") {
                     this.btntwoValue = loading;
                 } else if (paymethod == "stripe") {
                     this.btnthreeValue = loading;
@@ -204,7 +204,7 @@ if (document.getElementById("payment")) {
             setLoaded() {
                 let price = this.$refs.amount.value;
                 let orderid = this.$refs.orderid.value;
-
+                let shopName = this.$refs.shopName.value;
                 window.paypal
                     .Buttons({
                         createOrder: (data, actions) => {
@@ -232,7 +232,7 @@ if (document.getElementById("payment")) {
                                     );
                                     let ress = await axios.post(
                                         baseUrl +
-                                        "api/v1/fetch/single/shop/name", { shopName: "TheEmperor" },
+                                        "api/v1/fetch/single/shop/name", { shopName: shopName },
                                         config
                                     );
                                     let credit =
@@ -456,114 +456,118 @@ if (document.getElementById("btcpayment")) {
         },
         methods: {
             getDepositBalance() {
-                var newAddress = this.$refs.newAddress.innerText;
+                //   var newAddress = this.$refs.newAddress.innerText;
                 var orderId = this.$refs.orderId.innerText;
                 var shopName = this.$refs.shopName.innerText;
                 // console.log(newAddress);
                 let fm = new FormData();
-                fm.append("address", newAddress);
+                // fm.append("address", newAddress);
                 fm.append("orderId", orderId);
                 fm.append("shopName", shopName);
                 //alert(siteUrl);
                 axios
                     .post("/api/getDepositBalance", fm, config)
                     .then((response) => {
-                        this.paidamount = response.data / 100000000;
+                        console.log(response.data);
+                        setTimeout(() => {
+                            // window.location.href = "";
+                        }, 2000);
+                        // this.paidamount = response.data / 100000000;
 
-                        if (this.paidamount == 0) {
-                            this.confirmBalance(
-                                this.paidamount,
-                                orderId,
-                                shopName
-                            );
-                        }
+                        // if (this.paidamount == 0) {
+                        //     this.confirmBalance(
+                        //         this.paidamount,
+                        //         orderId,
+                        //         shopName
+                        //     );
+                        // }
                     })
                     .catch((error) => {
                         console.log(error);
                     });
             },
-            checkUserAddress() {
-                var orderId = this.$refs.orderId.innerText;
-                let fm = new FormData();
-                fm.append("userId", userId);
-                fm.append("orderId", orderId);
-                axios
-                    .post(this.baseUrl + "Ajaxrequest/sellconfirmBalance", fm)
-                    .then((response) => {
-                        if (response.data[0].address === "") {
-                            this.getWalletAddress();
-                        }
-                    })
-                    .catch((error) => {
-                        console.log(error);
-                    });
-            },
-            async confirmBalance(amountReceive, orderid, shopName) {
-                var shopName = this.$refs.shopName.innerText;
-                //let orderId = this.$refs.orderId.innerText;
+            // checkUserAddress() {
+            //     var orderId = this.$refs.orderId.innerText;
+            //     let fm = new FormData();
+            //     fm.append("userId", userId);
+            //     fm.append("orderId", orderId);
+            //     axios
+            //         .post(this.baseUrl + "Ajaxrequest/sellconfirmBalance", fm)
+            //         .then((response) => {
+            //             if (response.data[0].address === "") {
+            //                 this.getWalletAddress();
+            //             }
+            //         })
+            //         .catch((error) => {
+            //             console.log(error);
+            //         });
+            // },
+            // async confirmBalance(amountReceive, orderid, shopName) {
+            //     var shopName = this.$refs.shopName.innerText;
+            //     //let orderId = this.$refs.orderId.innerText;
 
-                axios
-                    .post(
-                        baseUrl + "api/v1/fetch/orderbyid", { orderId: orderid },
-                        config
-                    )
-                    .then((response) => {
-                        var amountGet = response.data.orders[0].btcAmount;
-                        const Toast = Swal.mixin({
-                            toast: true,
-                            position: "top-end",
-                            showConfirmButton: false,
-                            timer: 4000,
-                            timerProgressBar: true,
-                            didOpen: (toast) => {
-                                toast.addEventListener(
-                                    "mouseenter",
-                                    Swal.stopTimer
-                                );
-                                toast.addEventListener(
-                                    "mouseleave",
-                                    Swal.resumeTimer
-                                );
-                            },
-                        });
-                        Toast.fire({
-                            icon: "info",
-                            title: "Waiting for your Payment to be process and Check",
-                        });
+            //     axios
+            //         .post(
+            //             baseUrl + "api/v1/fetch/orderbyid", { orderId: orderid },
+            //             config
+            //         )
+            //         .then((response) => {
+            //             var amountGet = response.data.orders[0].btcAmount;
+            //             const Toast = Swal.mixin({
+            //                 toast: true,
+            //                 position: "top-end",
+            //                 showConfirmButton: false,
+            //                 timer: 4000,
+            //                 timerProgressBar: true,
+            //                 didOpen: (toast) => {
+            //                     toast.addEventListener(
+            //                         "mouseenter",
+            //                         Swal.stopTimer
+            //                     );
+            //                     toast.addEventListener(
+            //                         "mouseleave",
+            //                         Swal.resumeTimer
+            //                     );
+            //                 },
+            //             });
+            //             Toast.fire({
+            //                 icon: "info",
+            //                 title: "Waiting for your Payment to be process and Check",
+            //             });
 
-                        if (amountReceive >= amountGet) {
-                            let fm = {
-                                shopName: response.data.orders[0].shopName,
-                                productId: response.data.orders[0].productId,
-                                productName: response.data.orders[0].productName,
-                                stock: response.data.orders[0].quantity,
-                                orderId: orderid,
-                            };
-                            axios
-                                .post("/api/UpdateBtcOrder", fm)
-                                .then((response) => {
-                                    Toast.fire({
-                                        icon: "success",
-                                        title: "Coin Cofirm Successfully",
-                                    });
-                                    //showNotification('top', 'center', "success", "Coin Cofirm Successfully");
-                                    setTimeout(() => {
-                                        window.location.href =
-                                            "/Completed/" + orderid;
-                                    }, 3000);
-                                    //console.log(response.data);
-                                })
-                                .catch((error) => {
-                                    console.log(error);
-                                });
-                        } else {
-                            //this.getDepositBalance();
-                        }
-                    })
-                    .catch((error) => {
-                        console.log(error);
-                    });
-            },
+            //             if (amountReceive >= amountGet) {
+            //                 let fm = {
+            //                     shopName: response.data.orders[0].shopName,
+            //                     productId: response.data.orders[0].productId,
+            //                     productName: response.data.orders[0].productName,
+            //                     stock: response.data.orders[0].quantity,
+            //                     orderId: orderid,
+            //                 };
+            //                 axios
+            //                     .post("/api/UpdateBtcOrder", fm)
+            //                     .then((response) => {
+            //                         Toast.fire({
+            //                             icon: "success",
+            //                             title: "Coin Cofirm Successfully",
+            //                         });
+            //                         //showNotification('top', 'center', "success", "Coin Cofirm Successfully");
+            //                         setTimeout(() => {
+            //                             window.location.href =
+            //                                 "/Completed/" + orderid;
+            //                         }, 3000);
+            //                         //console.log(response.data);
+            //                     })
+            //                     .catch((error) => {
+            //                         console.log(error);
+            //                     });
+            //             } else {
+            //                 //this.getDepositBalance();
+            //             }
+            //         })
+            //         .catch((error) => {
+            //             console.log(error);
+            //         });
+            // },
         },
     }).mount("#btcpayment");
 }

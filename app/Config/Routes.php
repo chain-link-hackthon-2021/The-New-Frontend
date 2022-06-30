@@ -184,6 +184,7 @@ $routes->post('/Shop/(:segment)/Design', 'Settings::DesignNow/$1', ['filter' => 
 $routes->post('/Shop/(:segment)/updatepaypal', 'Settings::UpdateUserpayal', ['filter' => 'auth', 'as' => 'updatepaypalsettings']);
 $routes->get('/Shop/(:segment)/paypal', 'Settings::storeUserpayal/$1', ['filter' => 'auth', 'as' => 'paypalsettings']);
 $routes->post('/Shop/(:segment)/btcsettings', 'Settings::storeUserbtc', ['filter' => 'auth', 'as' => 'btcsettings']);
+$routes->post('/Shop/(:segment)/removebtc', 'Settings::removestoreUserbtc', ['filter' => 'auth', 'as' => 'removebtc']);
 
 
 

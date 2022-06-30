@@ -188,8 +188,8 @@ input::-webkit-inner-spin-button {
                     </div>
 
                     <div id="hidden" style="display:none; ">
-                        <?php if (!empty($shops[0]['SellerBtc'])) : ?>
-                        <button class="btn btn-primary  payment-btn" @click="paycheckout('bitcoin')"
+                        <?php if (!empty($shops[0]['coinbaseKey'])) : ?>
+                        <button class="btn btn-primary  payment-btn" @click="paycheckout('coinbase')"
                             v-html="btntwoValue" :disabled="btnState">
 
                         </button>

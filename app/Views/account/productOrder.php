@@ -103,6 +103,7 @@
                                         Keep this page open or bookmark it. If your order does not complete this page
                                         will solve the issue automatically and the product will be displayed below.
                                         <input type="hidden" ref="amount" value="<?= $orders["totalPrice"] ?>">
+                                        <input type="hidden" ref="shopName" value="<?= $shopName ?>">
                                         <input type="hidden" ref="orderid" value="<?= $OrderId ?>">
                                     </p>
                                     <p>

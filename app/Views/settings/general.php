@@ -287,36 +287,44 @@
 
                     </div>
                     <div class="col-12 mt-10 mb-3">
-                        <form action="/Shop/<?= $name; ?>/btcsettings" method="POST" class="card-style">
-                            <div class="title d-flex flex-wrap justify-content-between">
-                                <div class="left">
-                                    <h4 class="text-bold">Crypto Settings</h4>
-                                </div>
-
-                            </div>
-                            <div class="card-body">
-                                <div class="form-group">
-                                    <input type="text" class="form-control" name="sellerBtc"
-                                        value="<?= $shops[0]['SellerBtc'] ?>">
-                                    <input type="hidden" class="form-control" name="shopName" value="<?= $name; ?>">
-                                </div>
-                                <?php if (!empty($shops[0]['SellerBtc'])) : ?>
-                                <div style="display: flex;
-justify-content: center;">
-                                    <img class="text-center"
-                                        src="https://www.bitcoinqrcodemaker.com/api/?style=bitcoin&address=<?= $shops[0]['SellerBtc'] ?>"
-                                        height="150" width="150" alt="Bitcoin QR Code" />
-                                </div>
-                                <button type="button" class="main-btn danger-btn btn-hover w-100 text-center">Disconnect
-                                    Bitcoin</button>
-                                <?php else : ?>
-                                <br>
-                                <br>
-                                <button type="submit" class="main-btn primary-btn btn-hover w-100 text-center">Connect
-                                    Bitcoin</button>
+                        <?php if (!empty($shops[0]['coinbaseKey'])) : ?>
+                        <form action="/Shop/<?= $name; ?>/removebtc" method="POST" class="card-style">
+                            <?php else : ?>
+                            <form action="/Shop/<?= $name; ?>/btcsettings" method="POST" class="card-style">
                                 <?php endif; ?>
-                            </div>
-                        </form>
+                                <div class="title d-flex flex-wrap justify-content-between">
+                                    <div class="left">
+                                        <h4 class="text-bold">CoinBase Settings</h4>
+                                    </div>
+
+                                </div>
+                                <div class="card-body">
+                                    <div class="form-group">
+                                        <input type="text" class="form-control" name="sellerBtc" id="sellerBtc"
+                                            value="<?= $shops[0]['coinbaseKey'] ?>">
+                                        <input type="hidden" class="form-control" id="shopName" name="shopName"
+                                            value="<?= $name; ?>">
+                                    </div>
+                                    <br>
+                                    <br>
+                                    <?php if (!empty($shops[0]['coinbaseKey'])) : ?>
+                                    <button type="submit"
+                                        class="main-btn danger-btn btn-hover w-100 text-center">Disconnect
+                                        Coinbase</button>
+                                    <?php endif; ?>
+                                    <?php if (empty($shops[0]['coinbaseKey'])) : ?>
+                                    <!-- <div style="display: flex; justify-content: center;">
+                                </div> -->
+
+                                    <button type="submit"
+                                        class="main-btn primary-btn btn-hover w-100 text-center">Connect
+                                        Coinbase</button>
+                                    <?php endif; ?>
+                                </div>
+                            </form>
+
+
+
                     </div>
                     <div class="col-12">
                         <form action="/Shop/<?= $name; ?>/Settings" method="POST" class="card-style">
