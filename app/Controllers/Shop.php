@@ -294,9 +294,10 @@ class Shop extends BaseController
         $data = [
             'username' => session()->username,
             'name' => $name,
+            'shopName' => $name,
         ];
 
-        // Get user details
+        // Get user detailss
         $apiEndpoints = config('ApiEndpoints');
         $oauthxTokenEndpoint = $apiEndpoints->baseUrl . 'api/v1/fetch/top/products';
 
@@ -308,9 +309,41 @@ class Shop extends BaseController
 
         $shopRes = json_decode($response->getBody(), true);
 
+        $oauthxTokenEndpoint = $apiEndpoints->baseUrl . 'api/v1/vendors/daily/revenue/dashboard';
+
+        try {
+            $response = $this->client->request('GET', $oauthxTokenEndpoint, ['json' => $data]);
+        } catch (BadResponseException $exception) {
+            die($exception->getMessage());
+        }
+
+        $revenue = json_decode($response->getBody(), true);
+
+        $oauthxTokenEndpoint = $apiEndpoints->baseUrl . 'api/v1/vendor/daily/orders/dashboard';
+
+        try {
+            $response = $this->client->request('GET', $oauthxTokenEndpoint, ['json' => $data]);
+        } catch (BadResponseException $exception) {
+            die($exception->getMessage());
+        }
+
+        $dailyorder = json_decode($response->getBody(), true);
+        $oauthxTokenEndpoint = $apiEndpoints->baseUrl . 'api/v1/vendor/overall/sales/dashboard';
+
+        try {
+            $response = $this->client->request('GET', $oauthxTokenEndpoint, ['json' => $data]);
+        } catch (BadResponseException $exception) {
+            die($exception->getMessage());
+        }
+
+        $overallSales = json_decode($response->getBody(), true);
+
         $status = $shopRes['status'];
         return view('shop/box-disputes', [
             'user' => $shopRes['products'],
+            'DailyRevenue' => $revenue['DailyRevenue']['DailyRevenue'],
+            'DailyOrderCount' => $dailyorder['DailyOrderCount']['orderCount'],
+            'overallSales' => $overallSales['overallSales']['overallSales']
         ]);
     }
 

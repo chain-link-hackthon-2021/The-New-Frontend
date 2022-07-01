@@ -549,7 +549,19 @@
 <body>
     <main class="main-wrappers">
         <!-- ========== header start ========== -->
+        <style>
+        .image {
+            max-width: 70px;
+            width: 100%;
+            border-radius: 50%;
+            overflow: hidden;
+            margin-right: 12px;
+        }
 
+        .image img {
+            width: 100%;
+        }
+        </style>
         <!-- ========== header end ========== -->
         <div class="content-wrapper">
             <section class="content-header"><br /></section>
@@ -578,9 +590,19 @@
                                         <div class="card-style project-card mb-30">
                                             <div class="title mb-10 d-flex justify-content-between align-items-center">
                                                 <h6 class="mb-10"><?= $product['productName']; ?></h6>
+                                                <!-- <div><img src="/Image/View.jpg" alt=""></div> -->
+                                                <div class="card-meta">
+                                                    <div class="image">
+                                                        <img src="<?= base_url() . $product['productImage'];  ?>"
+                                                            alt="" />
+                                                    </div>
+
+                                                </div>
 
                                             </div>
+
                                             <div class="card-body">
+
                                                 <div class="activity-meta">
                                                     <ul>
 
