@@ -20,7 +20,9 @@
     <div class="row">
         <div class="col-lg-6">
 
-            <?php foreach ($noteall as $all) : ?>
+            <?php
+            if (!empty($notsingle)) :
+                foreach ($noteall as $all) : ?>
             <div class="alert-box primary-alert">
                 <div class="alert">
                     <h4 class="alert-heading text-center"><?= $all["subject"] ?></h4>
@@ -30,22 +32,29 @@
                 </div>
             </div>
             <br>
-            <?php endforeach; ?>
+            <?php endforeach;
+            endif;
+            ?>
         </div>
 
         <div class="col-lg-6">
-            <?php foreach ($notsingle as $single) : ?>
+
+            <?php
+            if (!empty($notsingle)) :
+                foreach ($notsingle as $single) : ?>
 
             <div class="alert-box primary-alert">
                 <div class="alert">
-                    <h4 class="alert-heading text-center"><?= $all["subject"] ?></h4>
+                    <h4 class="alert-heading text-center"><?= $single["subject"] ?></h4>
                     <p class="text-medium">
-                        <?= $all["message"] ?>
+                        <?= $single["message"] ?>
                     </p>
                 </div>
             </div>
             <br>
-            <?php endforeach; ?>
+            <?php endforeach;
+            endif;
+            ?>
         </div>
 
         <hr>
