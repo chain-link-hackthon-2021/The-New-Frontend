@@ -131,7 +131,7 @@
                     <input type="hidden" name="" id="base_url" value="<?= getenv("soapBaseUrl"); ?>">
                     <div class="col-lg-5 col-md-5 col-6">
                         <div class="header-left d-flex align-items-center">
-                            <a href="/" id="header-logo" class="navbar-brand ml-1 p-0">
+                            <a href="/@<?= $orders["shopName"] ?>" id="header-logo" class="navbar-brand ml-1 p-0">
                                 <img src="/images/cube.png" alt="AnyBuy Logo" class="brand-image img-circle elevation-3"
                                     width="50px" style="opacity: .8">
                                 <input type="hidden" name="" id="site_url" value="<?= base_url(); ?>">
@@ -225,7 +225,7 @@
 
                                 </div>
 
-                                <div class="row">
+                                <!-- <div class="row">
 
                                     <div class="col-md-6">
                                         <h5><u>Message from Seller</u></h5>
@@ -235,7 +235,7 @@
                                     </div>
 
 
-                                </div>
+                                </div> -->
 
 
                                 <div class="row no-print">
@@ -253,9 +253,10 @@
                                         <table width="100%" border="0" cellspacing="0" cellpadding="0">
                                             <tr>
                                                 <td align="center">
-                                                    <!-- <div style="height: 20px; line-height: 60px; font-size: 10px;"> </div>
-                                                    <pre id="products">66.7.22,&#xD;&#xA;
-                                                        </pre> -->
+                                                    <div style="height: 20px; line-height: 60px; font-size: 10px;">
+                                                    </div>
+                                                    <pre id="products"><?= $orders["orderItem"] ?>&#xD;&#xA;
+                                                        </pre>
 
                                                     <div style="height: 20px; line-height: 60px; font-size: 10px;">
                                                     </div>

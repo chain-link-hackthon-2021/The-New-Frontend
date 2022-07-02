@@ -175,7 +175,8 @@ input::-webkit-inner-spin-button {
                         Seller: <a href="/@<?= $name; ?>"><?= $name; ?></a>
                     </p>
                     <p>
-                        Stock: <?= $products[0]['stock']; ?>
+                        Stock: <?php $stockcount = explode(',', $products[0]['stock']);
+                                echo count($stockcount); ?>
                     </p>
                     <p>
                         Feedback: <?= $products[0]['Feedback']; ?>
@@ -331,7 +332,7 @@ input::-webkit-inner-spin-button {
     });
 
     function outOfStock() {
-        let stock = <?= $products[0]['stock']; ?>;
+        let stock = <?= count($stockcount); ?>;
         if (stock == 0) {
             $("#qtyBar").html("<strong class='text-danger'>Out of stock</strong>");
             $("#productBar").html("<strong><?= $products[0]['productName']; ?></strong>");
@@ -343,7 +344,7 @@ input::-webkit-inner-spin-button {
     function qproduct() {
         let unitPrice = parseInt("<?= $products[0]['productPrice']; ?>");
         let quantity = parseInt($("#Quantity").val());
-        let unitp = parseInt("<?= $products[0]['stock']; ?>");
+        let unitp = parseInt("<?= count($stockcount); ?>");
         if (unitp >= quantity) {
             let newQuantity = parseInt(quantity);
             $("#Quantity").val(newQuantity)
@@ -483,7 +484,7 @@ input::-webkit-inner-spin-button {
         $("#increaseQuantityButton").on("click", function() {
             let unitPrice = parseInt("<?= $products[0]['productPrice']; ?>");
             let quantity = parseInt($("#Quantity").val());
-            let unitp = parseInt("<?= $products[0]['stock']; ?>");
+            let unitp = parseInt("<?= count($stockcount); ?>");
 
             if (unitp !== quantity) {
 

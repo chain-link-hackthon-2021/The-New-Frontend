@@ -22,6 +22,9 @@
             <input type="hidden" id="uid" name="uid" value="<?= $uniqueID; ?>" />
             <input type="hidden" id="ShopName" name="ShopName" value="<?= $name; ?>" />
             <div class="row">
+                <?php
+                $stockcount = explode(',', $products['product'][0]['stock']);
+                ?>
                 <div class="col-md-5">
                     <div class="input-style-1">
                         <label for="ProductName">Name</label>
@@ -32,8 +35,7 @@
                 <div class="col-md-3">
                     <div class="input-style-1">
                         <label for="ProductName">Stock count</label>
-                        <input type"text" id="stock" maxlength="58" name="stock"
-                            value="<?= $products['product'][0]['stock'] ?>" required />
+                        <input type"text" id="stock" name="stock" value="<?= count($stockcount) ?>" readonly />
                     </div>
                 </div>
                 <div class="col-md-4">
@@ -55,6 +57,14 @@
                         <label for="ProductType">Product Type</label>
                         <input type="text" id="ProductType" maxlength="58" name="ProductType"
                             value="<?= $products['product'][0]['productType'] ?>" />
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="input-style-1">
+                        <label for="description">Stock Product</label>
+                        <code>Note: separate each stock by comma ,</code>
+                        <textarea name="productstock" id="productstock" cols="30"
+                            rows="10"><?= $products['product'][0]['stock'] ?></textarea>
                     </div>
                 </div>
             </div>

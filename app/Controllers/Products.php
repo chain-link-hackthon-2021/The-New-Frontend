@@ -190,6 +190,7 @@ class Products extends BaseController
         $price = $this->request->getVar('ProductPrice');
         $productType = $this->request->getVar('ProductType');
         $description = $this->request->getVar('description');
+        $productstock = $this->request->getVar('productstock');
         if (empty($price)) {
             session()->setFlashdata('error', '<i class="lni lni-ban"></i> <strong>Error!</strong> Product Price is required ');
             return redirect()->back();
@@ -200,6 +201,10 @@ class Products extends BaseController
         }
         if (empty($description)) {
             session()->setFlashdata('error', '<i class="lni lni-ban"></i> <strong>Error!</strong> Product Description is required ');
+            return redirect()->back();
+        }
+        if (empty($productstock)) {
+            session()->setFlashdata('error', '<i class="lni lni-ban"></i> <strong>Error!</strong> Product  is required ');
             return redirect()->back();
         }
 
@@ -227,9 +232,9 @@ class Products extends BaseController
             'position' => $this->request->getVar('Position'),
             'webhookUrl' => $this->request->getVar('WebhookUrl'),
             'callbackURL' => $this->request->getVar('CallbackURL'),
-            'StockCount' => $this->request->getVar('StockCount'),
+            // 'StockCount' => $this->request->getVar('productstock'),
             'productImage' => $imageSrc,
-            'stock' => $this->request->getVar('stock'),
+            'stock' => $this->request->getVar('productstock'),
         ];
 
         $oauthxTokenEndpoint = $apiEndpoints->baseUrl . 'api/v1/update/product';

@@ -112,7 +112,9 @@
                         </div>
                         <div class="row">
                             <div class="col-sm-4 col-sm-push-8">Stock: </div>
-                            <div class="col-sm-8 col-sm-pull-4"> <?= $products[0]['stock']; ?></div>
+                            <div class="col-sm-8 col-sm-pull-4"> <?php
+                                                                    $stockcount = explode(',', $products[0]['stock']);
+                                                                    echo count($stockcount); ?></div>
                         </div>
 
                         <div class="row">

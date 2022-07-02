@@ -189,7 +189,8 @@ if (document.getElementById("payment")) {
                 btntwoValue: "Pay With Stripe",
             };
         },
-        mounted() {
+        async mounted() {
+            let pId = this.$refs.uniqueID.value;
             const script = document.createElement("script");
             script.src =
                 "https://www.paypal.com/sdk/js?&client-id=" +
@@ -226,26 +227,30 @@ if (document.getElementById("payment")) {
                                 let quantity = this.$refs.quantity.value;
                                 // let NewStock = 0;
                                 try {
-                                    let res = await axios.post(
-                                        baseUrl + "api/v1/fetch/single/product", { uniqueID: pId },
-                                        config
-                                    );
                                     let ress = await axios.post(
                                         baseUrl +
                                         "api/v1/fetch/single/shop/name", { shopName: shopName },
                                         config
                                     );
+                                    let res = await axios.post(
+                                        baseUrl + "api/v1/fetch/single/product", { uniqueID: pId },
+                                        config
+                                    );
+                                    // console.log(res.data.product[0].stock);
+
+                                    var stock = res.data.product[0].stock;
+                                    var nuestock = [];
+                                    var strstock = ([] = stock.split(","));
+                                    for (
+                                        let index = 0; index < parseInt(quantity); index++
+                                    ) {
+                                        nuestock[index] = strstock[index];
+                                    }
                                     let credit =
                                         parseInt(
                                             ress.data.shops[0].shopCredit
                                         ) - parseInt(1);
-                                    //console.log(ress);
-                                    // let stock = 66;
-                                    let stock =
-                                        parseInt(res.data.product[0].stock) -
-                                        parseInt(quantity);
-
-                                    // console.log(res.data.product[0].stock, quantity, pId);
+                                    // console.log(ress);
 
                                     axios
                                         .post(
@@ -253,6 +258,7 @@ if (document.getElementById("payment")) {
                                             "api/v1/update/order/status", {
                                                 orderId: orderid,
                                                 orderStatus: "completed",
+                                                orderItem: nuestock.join(","),
                                             },
                                             config
                                         )
@@ -260,9 +266,26 @@ if (document.getElementById("payment")) {
                                             axios
                                                 .post(
                                                     baseUrl +
+                                                    "api/v1/add/credits", {
+                                                        shopName: ress.data.shops[0]
+                                                            .name,
+                                                        shopCredit: credit,
+                                                    },
+                                                    config
+                                                )
+                                                .then((response) => {});
+                                            axios
+                                                .post(
+                                                    baseUrl +
                                                     "api/v1/update/product/stock", {
                                                         productId: pId,
-                                                        stock: stock,
+                                                        stock: strstock
+                                                            .splice(
+                                                                parseInt(
+                                                                    quantity
+                                                                )
+                                                            )
+                                                            .join(","),
                                                     },
                                                     config
                                                 )
@@ -279,17 +302,6 @@ if (document.getElementById("payment")) {
                                                             "";
                                                     }
                                                 });
-                                            axios
-                                                .post(
-                                                    baseUrl +
-                                                    "api/v1/add/credits", {
-                                                        shopName: ress.data.shops[0]
-                                                            .name,
-                                                        shopCredit: credit,
-                                                    },
-                                                    config
-                                                )
-                                                .then((response) => {});
                                         });
 
                                     //

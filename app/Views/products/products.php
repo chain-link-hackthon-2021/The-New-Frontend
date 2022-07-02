@@ -59,14 +59,18 @@
                                 <?= $product['productPrice']; ?>
                             </td>
                             <td class="min-width">
+
                                 <?php
-                                        if ($product['stock'] < 10) {
+                                        $stockcount = explode(',', $product['stock']);
+                                        ?>
+                                <?php
+                                        if (count($stockcount) < 10) {
                                             $stockClass = "text-danger";
                                         } else {
                                             $stockClass = "text-primary";
                                         }
                                         ?>
-                                <span class="<?= $stockClass; ?>"> <?= $product['stock']; ?></span>
+                                <span class="<?= $stockClass; ?>"> <?= count($stockcount); ?></span>
                             </td>
                             <td class="min-width">
                                 <div id="btn-controls">

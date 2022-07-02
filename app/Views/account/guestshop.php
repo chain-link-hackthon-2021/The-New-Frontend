@@ -569,7 +569,7 @@
                 <div class="col-xxl-9 col-lg-10 offset-md-1">
                     <div class="client-profile-wrapper mb-30">
                         <div class="client-cover">
-                            <img src="/Image/View.jpg" alt="cover-image" />
+                            <img src="<?= base_url() . $shops['imageSrc'];  ?>" alt="cover-image" />
 
                         </div>
 
@@ -609,19 +609,20 @@
                                                         <li>
                                                             <span>Stock Available</span>
                                                             <?php
-                                                                    if ($product['stock'] == 0 || $product['stock'] < 10) {
+                                                                    $stockcount = explode(',', $product['stock']);
+                                                                    if (count($stockcount) == 0 || count($stockcount) < 10) {
                                                                         $stockClass = "text-danger";
                                                                     } else {
                                                                         $stockClass = "text-primary";
                                                                     }
                                                                     ?>
                                                             <span
-                                                                class="mla <?= $stockClass; ?>"><?= $product['stock']; ?><strong>
+                                                                class="mla <?= $stockClass; ?>"><?= count($stockcount); ?><strong>
                                                                     <?php
-                                                                            if ($product['stock'] == 0) {
+                                                                            if (count($stockcount) == 0) {
                                                                                 echo "Out Stock";
                                                                             } else {
-                                                                                $product['stock'];
+                                                                                count($stockcount);
                                                                                 echo " In Stock";
                                                                             }
                                                                             ?>

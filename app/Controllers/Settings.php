@@ -29,7 +29,6 @@ class Settings extends BaseController
     public function paypalOnbroad($id, $shopname)
     {
         $curl = curl_init();
-
         curl_setopt_array($curl, array(
             CURLOPT_URL => 'https://api-m.sandbox.paypal.com/v1/oauth2/token',
             CURLOPT_RETURNTRANSFER => true,
@@ -40,9 +39,11 @@ class Settings extends BaseController
             CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
             CURLOPT_CUSTOMREQUEST => 'POST',
             CURLOPT_POSTFIELDS => 'grant_type=client_credentials&ignoreCache=true&return_authn_schemes=true&return_client_metadata=true&return_unconsented_scopes=true',
+
             CURLOPT_HTTPHEADER => array(
-                'Authorization: Basic QWY5OWNYZHB6bzZhNElnMnhyREZINkxBcm43UktzTV9qbHFMZ05FQmJ4WVhZNDNMdmNVWnkwck5zMVYtWWthM19maGZkbWlYQjZPRDNpNmE6RUJRaU5TMXhyVjRxblZQblhpLVVybF84Q3dEdE0ySG4zSmtwYmp3dlJOWmh5cUdwMGpiRG5lX0dWbUZub3c3NnB3TGU3RllrUnlUVWdPaGg=',
-                'Content-Type: application/x-www-form-urlencoded'
+                'Authorization: Basic    QVlPa01KWG1nU1kyNGtadWlhZUxKNGtIcmRMUklIeWlWMXhiNjZZS01sMjlzYzZwUENITXBxZWJfUF9xSEp1M3JpRkdIUmpxaGYwYXVQZ1Y6RUZ2OEEyWmVsNEJGVGxlMzVGN0hvWWtNeXg0RE1zS1FTa1NFUVZ3U0hGeFBabW9UanNfbzdRV3h3RHFjR045VnNLemtKcFJrc3FLMWxRVVM=',
+                'Content-Type: application/x-www-form-urlencoded',
+                // 'Accept: application/json'
             ),
         ));
 
@@ -138,7 +139,6 @@ class Settings extends BaseController
         if (empty($shopRes['shops'][0]["MerchantId"]) || empty($shopRes['shops'][0]["TrackingId"])) {
             $sendview["tokenget"] = self::paypalOnbroad($shopRes['shops'][0]['id'], $name);
         }
-
         return view('settings/general', $sendview);
     }
 
